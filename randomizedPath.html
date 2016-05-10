@@ -18,6 +18,7 @@
 			var direction;
 			var randomNumber;
 			var isMatched = false;
+			var correct = 0;
 			//generate a right size of grid based on user input
 			function generatedPath(){
 				var table = document.getElementById("grid");
@@ -31,7 +32,10 @@
 						column = document.createElement("td");
 						column.setAttribute("id",counter);
 						counter++;
-						column.style.background="yellow";
+						column.style.backgroundColor = "#0070c0";
+						column.setAttribute('onmouseover', 'mouseOver(this)');    //for testing purposes
+						column.setAttribute('onmouseout', 'mouseOut(this)');
+						column.setAttribute('onclick', 'mouseClick(this)');
 						row.appendChild(column);
 						tiles.push(column);
 					}
@@ -69,13 +73,10 @@
 				col = array.slice(0);
 				if(numOfTileInCol==1){
 					startPoint = parseInt(Math.random()*input);
-					col[startPoint].style.background="green";
 					pointer = startPoint;
 					path.push(col[startPoint]);
 				}else if(numOfTileInCol==2){
 					startPoint = parseInt(Math.random()*(input-1));
-					col[startPoint].style.background="green";
-					col[startPoint+1].style.background="green";
 					direction = parseInt(Math.random()*2);
 					if(direction ==0){
 						pointer = startPoint;
@@ -89,9 +90,6 @@
 
 				}else{
 					startPoint = parseInt(Math.random()*(input-2));
-					col[startPoint].style.background="green";
-					col[startPoint+1].style.background="green";
-					col[startPoint+2].style.background="green";
 					direction = parseInt(Math.random()*2);
 					if(direction ==0){
 						pointer = startPoint;
@@ -124,19 +122,15 @@
 					for(i=0;i<numOfTileInCol;i++){
 						usedValuesIncol[i] = randomNumber + i;
 					}
-					for(i=0;i<usedValuesIncol.length;i++){
-						col[usedValuesIncol[i]].style.background="green";
-					}
 					if(randomNumber==pointer){
-						col[usedValuesIncol[1]].style.background="green";
+
 						pointer = usedValuesIncol[1];
-						path.push(col[pointer+1]);
-						path.push(col[pointer]);
+						path.push(col[usedValuesIncol[0]]);
+						path.push(col[usedValuesIncol[1]]);
 					}else{
-						col[usedValuesIncol[0]].style.background="green";
 						pointer = usedValuesIncol[0];
-						path.push(col[pointer]);
-						path.push(col[pointer+1]);
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[0]]);
 					}
 				}else{
 					while(!isMatched){
@@ -149,21 +143,18 @@
 					for(i=0;i<numOfTileInCol;i++){
 						usedValuesIncol[i] = randomNumber + i;
 					}
-					for(i=0; i<numOfTileInCol;i++){
-						col[usedValuesIncol[i]].style.background="green";
-					}
 					if(randomNumber ==pointer){
-						col[usedValuesIncol[usedValuesIncol.length-1]].style.background="green";
+
 						pointer = usedValuesIncol[usedValuesIncol.length-1];
-						path.push(col[pointer+2]);
-						path.push(col[pointer+1]);
-						path.push(col[pointer]);
+						path.push(col[usedValuesIncol[0]]);
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[2]]);
 					}else{
-						col[usedValuesIncol[0]].style.background="green";
+						
 						pointer = usedValuesIncol[0];
-						path.push(col[pointer]);
-						path.push(col[pointer+1]);
-						path.push(col[pointer+2]);
+						path.push(col[usedValuesIncol[2]]);
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[0]]);
 					}
 				}
 				usedValuesIncol = [];
@@ -171,12 +162,40 @@
 			}
 		function drawPath(){
 			for(i=0;i<path.length;i++){
+				path[i].className = "step"+i;
 				path[i].style.background="green";
 			}
 		}
+		function mouseClick(e) {
+			if (e.classList.contains('step' + window.correct)){
+				e.style.backgroundColor = "green";
+				window.correct++;
+			} else {
+				if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "red";
+				//e.innerHTML = e.className;
+				}
+			}
+			
+			e.className += " clicked";
+		}
+			
+		function mouseOver(e) {
+			if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "blue";
+			}
+		}
+		
+		function mouseOut(e) {
+			if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "#0070c0";
+				//e.innerHTML = window.correct;
+			}
+		}
+		
 		window.addEventListener("load", generatedPath, false);
 		window.addEventListener("load", randomizedPath, false);	
-		
+		window.addEventListener("load", drawPath, false);
 		</script>
 	</head>
 	<body>
