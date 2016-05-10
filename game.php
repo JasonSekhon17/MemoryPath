@@ -15,7 +15,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Memory Path</title>
-		<link href="style.css" rel="stylesheet" type="text/css"/>
+		<link href="style1.css" rel="stylesheet" type="text/css"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
@@ -38,7 +38,8 @@
                 stageClearScreen();
                 calculateScore();
                 showScoreAchieved();
-
+                addToTotalScore();
+                startNewStage();
             }
 
             // This function starts the game.
