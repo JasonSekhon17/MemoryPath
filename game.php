@@ -25,21 +25,80 @@
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
-            
-            if (timeOver()) {               // If timer goes down to zero, check if life is zero.
-                if (lifeZero()) {           // If life is zero, continue onto game over screen.
-                    gameOver();             // If life isn't zero, call function to take away one life.
+            var gameClear = false;          // Represents the clear status of a stage. Becomes true when player reaches the last column.
+            var stageNumber;                // Represents the current stage number.
+            var totalScore;                 // Total score of player for this game.
+            var stageScore;                 // Score for current stage.
+            var timer;                      // Placeholder variable to represent timer, acts as an integer
+
+            // If timer counts down to zero, check if player's life is zero.
+            // If life is zero, continue onto gameover process.
+            // If life is not zero, take away one life and restart stage or reset stage.
+            if (timer == 0) {
+                if (lifeZero()) {
+                    gameOver();
                 } else {
                     lifeMinusOne();
+                    // restart or reset stage.
                 }
             }
 
-            if (stageClear()) {
+            // If the stage is cleared, a list of functions will be called.
+            // It will end with starting a new stage.
+            // **This code snippet needs to be constantly checked, possibly need to do something more.**
+            if (gameClear) {
                 stageClearScreen();
                 calculateScore();
                 showScoreAchieved();
                 addToTotalScore();
                 startNewStage();
+            }
+
+            // This function checks if the life of player has dropped to zero.
+            // True if life is zero, false otherwise.
+            function lifeZero() {
+                // Implementation needed.
+            }
+
+            // This function will take away one life from the player.
+            function lifeMinusOne() {
+                // Implementation here.
+            }
+
+            // This function contains the entire gameover process.
+            // Includes showing gameover screen, showing score achieved, entering name
+            // for ranking, and anything else that needs to be done.
+            function gameOver() {
+                // Implementation here.
+            }
+
+            // Shows a stage clear screen.
+            // May be a popup, or just some texts.
+            function stageClearScreen() {
+                // Implementation here.
+            }
+
+            // Calculate the score achieved by the player for the current stage.
+            // Calculation involves the time and life remaining.
+            function calculateScore() {
+                // Implementation here.
+            }
+
+            // Shows the score achieved by the player for the current stage.
+            // Can be done in any method desired.
+            function showScoreAchieved() {
+                // Implementation here.
+            }
+
+            // Add the current score to total score and reset the current score.
+            function addToTotalScore() {
+                // Implementation here.
+            }
+
+            // Reset timer, grid/table, life remaining, start button, and update total score.
+            // Grid/table size may be changed depending on stage number.
+            function startNewStage() {
+                // Implementation here.
             }
 
             // This function starts the game.
