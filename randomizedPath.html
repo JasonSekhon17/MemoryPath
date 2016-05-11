@@ -25,7 +25,7 @@
 			//array storaged tiles in each column one at a time
 			var col = [];
 			//choose a direction in first column, start from top 
-			// to bottom or bottom to top
+			// to bottom or bottom to top in a group of tiles
 			var direction;
 			//determine which tile is chosen 
 			var randomNumber;
@@ -225,9 +225,6 @@
 				}
 				h++;
 			}, 400);
-
-
-
 		}
 		function mouseClick(e) {
 			if (e.classList.contains('step' + counter)){
@@ -236,13 +233,10 @@
 			} else {
 				if (!e.classList.contains('clicked')){
 				e.style.backgroundColor = "red";
-				//e.innerHTML = e.className;
 				}
 			}
-			
 			e.className += " clicked";
 		}
-			
 		function mouseOver(e) {
 			if (!e.classList.contains('clicked')){
 				e.style.backgroundColor = "blue";
@@ -255,7 +249,6 @@
 				//e.innerHTML = window.correct;
 			}
 		}
-		
 		window.addEventListener("load", generateGrid, false);
 		window.addEventListener("load", randomizedPath, false);	
 		window.addEventListener("load", drawPath, false);

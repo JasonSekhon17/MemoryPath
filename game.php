@@ -31,7 +31,7 @@
             var stageScore;                 // Score for current stage.
             var life = 3;                   // Player's life for current stage.
             var timer = 60;                 // Placeholder variable to represent timer, acts as an integer
-            var pathArray;
+            var pathArray;                  // Records the correct path's coordinate.
             var playerArray;
 
             // If game has been started, the cells of the table will
@@ -39,7 +39,7 @@
             $(document).on("pagecreate", "#pageone", function () {
                 $("td.panel").click(function () {
                     if (gameStatus) {
-                        $(this).css("background-color", "yellow");
+                        $(this).css("background-color", "green");
                     }
                 });
             });
@@ -146,14 +146,22 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
-                for (i = 0; i < window.pathArray.length; i++) {
+                var i = 0;
+                var interval = setInterval(function () {
                     array = window.pathArray[i];
                     row = parseInt(array.substring(0, 1));
                     col = parseInt(array.substring(2, 3));
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background-color', 'white');
-                }
+                    $(cell).className += ' step' + i;
+                    //y.rows[row].cells[col].className += ' step' + i;
+                    i++;
+                    if (i == window.pathArray.length) {
+                        clearInterval(interval);
+                        setTimeout(resetGrid, 1000);
+                    }
+                }, 500);
             }
 
             // This function will reset the all the tiles inside the grid to original
