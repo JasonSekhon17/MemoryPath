@@ -146,14 +146,21 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
-                for (i = 0; i < window.pathArray.length; i++) {
+                var i = 0;
+                var interval = setInterval(function () {
                     array = window.pathArray[i];
                     row = parseInt(array.substring(0, 1));
                     col = parseInt(array.substring(2, 3));
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background-color', 'white');
-                }
+                    //y.rows[row].cells[col].className += ' step' + i;
+                    i++;
+                    if (i == window.pathArray.length) {
+                        clearInterval(interval);
+                        setTimeout(resetGrid, 1000);
+                    }
+                }, 500);
             }
 
             // This function will reset the all the tiles inside the grid to original
