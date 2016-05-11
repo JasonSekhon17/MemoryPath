@@ -198,21 +198,22 @@
 			//draw a path from 'path array' based on set timer
 		function drawPath(){
 			var h=0;
+			
 			var interval = setInterval(function(){
 				path[h].style.backgroundColor = "green";
-				//path[h].innerHTML = path[h].id;
+				
 				if(h > 0){
 					path[h-1].style.backgroundColor = "#0070c0";
 				}
-				
-				if(h == path.length-1){
-					path[h].style.backgroundColor = "#0070c0";
+				h++;
+				if(h == path.length){
+					setTimeout(function(){path[h - 1].style.backgroundColor = "#0070c0"}, 400);
 					clearInterval(interval);
 				}
-				h++;
+				
 			}, 400);
-
-
+			
+			
 
 		}
 		function mouseClick(e) {
@@ -222,7 +223,6 @@
 			} else {
 				if (!e.classList.contains('clicked')){
 				e.style.backgroundColor = "red";
-				//e.innerHTML = e.className;
 				}
 			}
 			
