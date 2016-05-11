@@ -32,14 +32,23 @@
             var life = 3;                   // Player's life for current stage.
             var timer = 60;                 // Placeholder variable to represent timer, acts as an integer
             var pathArray;                  // Records the correct path's coordinate.
-            var playerArray;
+            var stepOrder = 0;
 
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
                 $("td.panel").click(function () {
                     if (gameStatus) {
-                        $(this).css("background-color", "green");
+                        if ($(this).hasClass("step" + stepOrder)) {
+                            $(this).css("background-color", "green");
+                            stepOrder++;
+                        } else {
+                            if (!$(this).hasClass("clicked")) {
+                                $(this).css("background-color", "red");
+                            }
+                        }
+                        
+                        $(this).addClass("clicked");
                     }
                 });
             });
@@ -154,7 +163,7 @@
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background-color', 'white');
-                    $(cell).className += ' step' + i;
+                    $(cell).addClass('step' + i);
                     //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
