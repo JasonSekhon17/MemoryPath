@@ -198,10 +198,8 @@
 			//draw a path from 'path array' based on set timer
 		function drawPath(){
 			var h=0;
-			
 			var interval = setInterval(function(){
 				path[h].style.backgroundColor = "green";
-				
 				if(h > 0){
 					path[h-1].style.backgroundColor = "#0070c0";
 				}
@@ -210,11 +208,7 @@
 					setTimeout(function(){path[h - 1].style.backgroundColor = "#0070c0"}, 400);
 					clearInterval(interval);
 				}
-				
 			}, 400);
-			
-			
-
 		}
 		function mouseClick(e) {
 			if (e.classList.contains('step' + window.correct)){
