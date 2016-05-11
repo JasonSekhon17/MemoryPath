@@ -1,8 +1,8 @@
 table, th, td {
-	background-color:#0070c0;
+	background-color:#000000;
 	color: #001450;
 }
 td {
-	height:20px;
-	min-width:20px;
+	height:50px;
+	min-width:50px;
 }

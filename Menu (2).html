@@ -50,8 +50,8 @@
 				}
 				
 				
-			}	
-
+			}
+			
 			function inputGrid(){
 				var x = document.getElementById('grid').rows.length;
 				var y = document.getElementById('grid');
@@ -61,55 +61,21 @@
 						var cell = y.rows[i].cells[j];
 						cell.className += ' row' + i + ' col' + j;
 						cell.style.backgroundColor = "#0070c0";
+						cell.innerHTML = '';
+						cell.setAttribute('onmouseover', 'mouseOver(this)');    //for testing purposes
+						cell.setAttribute('onmouseout', 'mouseOut(this)');
+						cell.setAttribute('onclick', 'mouseClick(this)');
 					}
 				}				
+			}		
+			/*
+			function checkStep(){
+				
+				return step;
 			}
+			*/
 
-
-			/** validates the user's path **/
-
-			/** checks for wrong answers in each tile and refreshes page. Will lead to game over screen or remove a life in later versions **/
-			function checkWrong(){
-				var y = document.getElementById('grid');
-				var row;
-				var col;
-				var str;
-				for(i = 0; i < window.size; i++){
-					for(j = 0; j < window.size; j++){
-						var cell = y.rows[i].cells[j];
-						if ($(cell).hasClass("wrong")){
-							window.location.replace("file:///C:/Users/jason/Desktop/Memory%20Path/MemoryPath/Game.html")
-						}
-					}
-				}
-			}
-
-
-			/** checks if the user has the correct path **/
-			function checkCorrect(){
-				var y = document.getElementById('grid');
-				var row;
-				var col;
-				var str;
-				var amount = 0; //to be incremented whenever the user gets a correct answer
-				for(i = 0; i < window.size; i++){
-					for(j = 0; j < window.size; j++){
-						var cell = y.rows[i].cells[j];
-						if ($(cell).hasClass("correct")){
-							amount++;
-						}
-						if (amount == window.pathArray.length){
-							window.location.replace("file:///C:/Users/jason/Desktop/Memory%20Path/MemoryPath/Game.html")
-						}
-					}
-				}
-			}
-
-
-    		/** Mouse events **/
 			$(document).ready(function(){
-
-			var isDown = false;
 			
 			$(document).mousedown(function() {
 		   	isDown = true;      // When mouse goes down, set isDown to true
@@ -118,44 +84,54 @@
 		  	$(document).mouseup(function() {
 		    isDown = false;    // When mouse goes up, set isDown to false
 		  	});
+
 			$("td").mouseover(function(){
 				if(isDown){
-					if ($(this).hasClass("step" + window.correct)){
-						$(this).css("background-color", "green");
-						$(this).addClass("correct");
-						window.correct++;
-						window.checkCorrect();
-					} else {
-						$(this).css("background-color", "red");
-						$(this).addClass("wrong");
-						window.checkWrong();
-					}
-				}
+			$(this).css("background-color", "green");
+			}
 			});
+
 			$("td").mousedown(function(){
-			if ($(this).hasClass("step" + window.correct)){
-						$(this).css("background-color", "green");
-						$(this).addClass("correct");
-						window.correct++;
-						window.checkCorrect();
-					} else {
-						$(this).css("background-color", "red");
-						$(this).addClass("wrong");
-						window.checkWrong();
-					}
+			$(this).css("background-color", "green");
 			});
 
 			$("td").dblclick(function(){
-			$(this).css("background-color", "yellow");
+			$(this).css("background-color", "blue");
 			});
 
 			});
+
+			/**
+			function mouseClick(e) {
+				if (e.classList.contains('step' + window.correct)){
+					e.style.backgroundColor = "green";
+					window.correct++;
+				} else {
+					e.style.backgroundColor = "red";
+					//e.innerHTML = e.className;
+				}
+				
+				e.className += " clicked";
+			}
 			
+			function mouseOver(e) {
+				if (!e.classList.contains('clicked')){
+					e.style.backgroundColor = "blue";
+				}
+			}
+			
+			function mouseOut(e) {
+				if (!e.classList.contains('clicked')){
+					e.style.backgroundColor = "#0070c0";
+					//e.innerHTML = window.correct;
+				}
+			}
+			**/
 		</script>
 	</head>
-	<body onload="displayGrid()" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
+	<body onload="displayGrid()">
 		<div id="test"></div>
-		<table id="grid">
+		<table id="grid" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">
 			<tr>
 				<td></td>
 				<td></td>
