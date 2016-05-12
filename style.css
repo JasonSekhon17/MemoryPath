@@ -12,19 +12,25 @@ td {
     height: 100%;
     margin:  0;
     padding:  0;
-    background-color: #808080;
+    background-image: url("background2.png");
+    background-size:  cover;
+    background-repeat:  no-repeat;
     color: #fff;
 }
 
 #menu-button {
     display: block;
     margin:  0 10% 20px 10%;
+    z-index: 1;
 }
 
 #logo {
     margin-left: auto;
     margin-right: auto;
+    height: 220px;
+    width: 200px;
     display: block;
+    z-index: 1;
 }
 
 #popup-title {
@@ -47,6 +53,7 @@ td {
     display: inline;
     float: right;
     clear: right;
+    z-index: 1;
 }
 
 .game-panel {
@@ -66,4 +73,35 @@ td {
 
 .spaceDog{
     visibility: hidden;
+    height: 250px;
+    width: 250px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-image:url("dogspace.png");
+    background-size: cover;
+    margin:-100px 0px 0px -100px;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+@-ms-keyframes spin {
+    from { -ms-transform: rotate(0deg); }
+    to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }

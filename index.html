@@ -10,44 +10,81 @@
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script>
-        var triggerLeft = 0;
+            var triggerLeft = 0;
             var triggerUp = 0;
             var triggerRight = 0;
             var triggerDown = 0;
 
-        function showDog(){
-            if (window.triggerLeft == 1 && window.triggerUp && window.triggerRight == 1 && window.triggerDown == 1){
-                $(".spaceDog").css("visibility", "visible");
+            $(document).ready(function(){
+                animateDog();
+            });
+
+            function showDog() {
+                if (window.triggerLeft == 1 && window.triggerUp && window.triggerRight == 1 && window.triggerDown == 1) {
+                    $(".spaceDog").css("visibility", "visible");
+                }
             }
-        }
 
-        $(document).keydown(function(e) {
+            function changePosition() {
+                var h = $(window).height() - 250;
+                var w = $(window).width() - 250;
 
-            switch(e.which) {
-                case 37: // left
-                window.triggerLeft = 1;
-                window.showDog();
-                break;
+                var newh = Math.floor(Math.random() * h);
+                var neww = Math.floor(Math.random() * w);
 
-                case 38: // up
-                window.triggerUp = 1;
-                window.showDog();
-                break;
-
-                case 39: // right
-                window.triggerRight = 1;
-                window.showDog();
-                break;
-
-                case 40: // down
-                window.triggerDown = 1;
-                window.showDog();
-                break;
-
-                default: return; // exit this handler for other keys
+                return [newh, neww];
             }
-        e.preventDefault(); // prevent the default action (scroll / move caret)
-        });
+
+            function animateDog() {
+                var newCord = changePosition();
+                var oldCord = $('.spaceDog').offset();
+                var speed = calcSpeed([oldCord.top, oldCord.left], newCord);
+
+                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed ,function () {
+                    animateDog();
+                });
+            }
+
+            function calcSpeed(prev, next) {
+                var x = Math.abs(prev[1] - next[1]);
+                var y = Math.abs(prev[0] - next[0]);
+    
+                var greatest = x > y ? x : y;
+    
+                var speedModifier = 0.1;
+
+                var speed = Math.ceil(greatest/speedModifier);
+
+                return speed;
+            }
+
+            $(document).keydown(function (e) {
+
+                switch (e.which) {
+                    case 37: // left
+                        window.triggerLeft = 1;
+                        window.showDog();
+                        break;
+
+                    case 38: // up
+                        window.triggerUp = 1;
+                        window.showDog();
+                        break;
+
+                    case 39: // right
+                        window.triggerRight = 1;
+                        window.showDog();
+                        break;
+
+                    case 40: // down
+                        window.triggerDown = 1;
+                        window.showDog();
+                        break;
+
+                    default: return; // exit this handler for other keys
+                }
+                e.preventDefault(); // prevent the default action (scroll / move caret)
+            });
         </script>
 
 	</head>
@@ -58,7 +95,7 @@
             </div>
             <div data-role="content">
                 <div id="logo">
-                    <p><img src="./logo.png" alt="logo" id="logo"></p>
+                    <p><img src="logo2.png" alt="logo" id="logo"></p>
                 </div>
                 <a href="#gamemode" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" data-transition="pop" data-position-to="window" id="menu-button">Play</a>
                     <div id="gamemode" data-role="popup" class="ui-corner-all ui-content" data-theme="a" data-dismissible="false">
@@ -95,7 +132,6 @@
                     </div>
                 <a href="#" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" id="menu-button">Options</a>
                 <div class="spaceDog">
-                    <p><img src="dogspace.png" alt="logo" id="logo"></img></p>
                 </div>
             </div>
         </div>
