@@ -77,7 +77,7 @@
                         </form>
                     </div>
                 <a href="#highscore" data-rel="popup" data-transition="slideup" data-position-to="window" class="ui-btn ui-corner-all ui-btn-inline" id="menu-button">High Scores</a>
-                    <div id="highscore" data-role="popup" class="ui-content ui-btn-left" data-theme="a" data-dismissible="false" >
+                    <div id="highscore" data-role="popup" class="ui-content ui-btn-left" data-theme="a" data-dismissible="false" data-overlay-theme="a">
                         <div id="popup-title">
                             <h1>High Score</h1>
                             <div id="score-rank">
@@ -93,7 +93,11 @@
                             <a href="#" data-rel="back" data-transition="slidedown" class="ui-btn ui-corner-all" id="menu-button">Return</a>
                         </div>
                     </div>
-                <a href="#" class="ui-btn ui-corner-all ui-btn-inline" data-rel="back" id="menu-button">Options</a>
+                <a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
+                    <div id="option" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
+                        <h1>Options</h1>
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
+                    </div>
                 <div class="spaceDog">
                     <p><img src="dogspace.png" alt="logo" id="logo"></img></p>
                 </div>

@@ -27,7 +27,7 @@
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
             var gameClear = false;          // Represents the clear status of a stage. Becomes true when player reaches the last column.
-            var stageNumber;                // Represents the current stage number.
+            var stageNumber = 1;            // Represents the current stage number.
             var totalScore;                 // Total score of player for this game.
             var stageScore;                 // Score for current stage.
             var life = 3;                   // Player's life for current stage.
@@ -130,8 +130,23 @@
                 stepOrder = 0;
             }
 
+            // Function to continue onto next stage
+            function nextGame() {
+                gameStatus = false;
+                life = 3;
+                updateLifeMessage();
+                resetGrid();
+                stepOrder = 0;
+                stageNumber++;
+                updateStageNumber();
+            }
+
             function updateLifeMessage() {
                 $("#footer h3").html('Life: ' + life);
+            }
+
+            function updateStageNumber() {
+                $("#header h2").html('Stage ' + stageNumber);
             }
 
             // This function contains the entire gameover process.
@@ -253,11 +268,13 @@
     </head>
     <body>
         <div data-role="page" id="pageone">
-            <div data-role="header">
+            <div data-role="header" id="header">
                 <h1>Time: <script>document.write(timer);</script></h1>
+                <h2>Stage 1</h2>
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window">Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
+                        <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown">Return to game</a>
                     </div>
             </div>
@@ -292,7 +309,7 @@
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1>     
                     <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
             <div data-role="footer" id="footer">
