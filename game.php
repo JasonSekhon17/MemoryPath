@@ -42,6 +42,9 @@
                         if ($(this).hasClass("step" + stepOrder)) {
                             $(this).css("background-color", "green");
                             stepOrder++;
+                            if (stepOrder == pathArray.length) {
+                                alert('You cleared the stage!');
+                            }
                         } else {
                             if (!$(this).hasClass("clicked")) {
                                 $(this).css("background-color", "red");
