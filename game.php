@@ -51,19 +51,7 @@
                                 life--;
                                 $("#footer h3").html('Life: ' + life);
                                 if (life == 0) {
-                                    var $gameover = $("<div/>").popup({
-                                        dismissible: false,
-                                        transition: pop
-
-                                    }).bind("popupafterclose", function () {
-                                        $(this).remove();
-                                    });
-
-                                    $("<h1/>", {
-                                        text: Game_Over
-                                    }).appendTo($gameover);
-
-                                    $gameover.popup("open").trigger("create");
+                                    $("#gameover").popup("open");
                                 }
                             }
                         }
@@ -259,8 +247,9 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
-                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all">
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
+                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
                 </div>
             </div>
             <div data-role="footer" id="footer">
