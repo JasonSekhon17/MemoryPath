@@ -63,3 +63,7 @@ td {
 #game-screen {
     margin: 0 auto;
 }
+
+.spaceDog{
+    visibility: hidden;
+}
