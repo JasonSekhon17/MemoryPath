@@ -43,7 +43,7 @@
                             $(this).css("background-color", "green");
                             stepOrder++;
                             if (stepOrder == pathArray.length) {
-                                alert('You cleared the stage!');
+                                $("#clear").popup("open");
                             }
                         } else {
                             if (!$(this).hasClass("clicked")) {
@@ -72,10 +72,6 @@
                     // restart or reset stage.
                 }
             }
-            // Takes one life off the player.
-            function lifeMinusOne() {
-                window.life--;
-            }
 
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
@@ -86,17 +82,6 @@
                 showScoreAchieved();
                 addToTotalScore();
                 startNewStage();
-            }
-
-            // This function checks if the life of player has dropped to zero.
-            // True if life is zero, false otherwise.
-            function lifeZero() {
-                // Implementation needed.
-            }
-
-            // This function will take away one life from the player.
-            function lifeMinusOne() {
-                // Implementation here.
             }
 
             // This function contains the entire gameover process.
@@ -247,8 +232,14 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
+
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
+                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
+                </div>
+
+                <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Stage Cleared!</h1>     
                     <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
                 </div>
             </div>

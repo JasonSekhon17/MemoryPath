@@ -61,3 +61,7 @@ td {
 .spaceDog{
     visibility: hidden;
 }
+
+#clear, #gameover {
+    text-align: center;
+}
