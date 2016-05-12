@@ -22,6 +22,7 @@
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
+        <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
@@ -43,15 +44,15 @@
                             $(this).css("background-color", "green");
                             stepOrder++;
                             if (stepOrder == pathArray.length) {
-                                $("#clear").popup("open");
+                                stageClearScreen();
                             }
                         } else {
                             if (!$(this).hasClass("clicked")) {
                                 $(this).css("background-color", "red");
                                 life--;
-                                $("#footer h3").html('Life: ' + life);
+                                updateLifeMessage();
                                 if (life == 0) {
-                                    $("#gameover").popup("open");
+                                    gameOver();
                                 }
                             }
                         }
@@ -84,17 +85,30 @@
                 startNewStage();
             }
 
+            // Function to reset all game status.
+            // Used for testing stage
+            function resetGame() {
+                gameStatus = false;
+                life = 3;
+                updateLifeMessage();
+                resetGrid();
+            }
+
+            function updateLifeMessage() {
+                $("#footer h3").html('Life: ' + life);
+            }
+
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function gameOver() {
-                // Implementation here.
+                $("#gameover").popup("open");
             }
 
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
-                // Implementation here.
+                $("#clear").popup("open");
             }
 
             // Calculate the score achieved by the player for the current stage.
@@ -174,13 +188,13 @@
             // state, which means original color. The recorded randomized path is not 
             // affected.
             function resetGrid() {
-                for (i = 0; i < window.pathArray.length; i++) {
-                    array = window.pathArray[i];
-                    row = parseInt(array.substring(0, 1));
-                    col = parseInt(array.substring(2, 3));
-                    var table = $("#grid")[0];
-                    var cell = table.rows[row].cells[col];
-                    $(cell).css('background-color', '#808080');
+                var table = $("#grid")[0];
+                for (row = 0; row < window.size; row++) {
+                    for (col = 0; col < window.size; col++) {
+                        var cell = table.rows[row].cells[col];
+                        $(cell).css('background-color', '#808080');
+                    }
+                    col = 0;
                 }
             }
 
@@ -236,11 +250,13 @@
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
                     <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">New game</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1>     
                     <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">New game</a>
                 </div>
             </div>
             <div data-role="footer" id="footer">
