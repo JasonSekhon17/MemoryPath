@@ -48,6 +48,8 @@
                         } else {
                             if (!$(this).hasClass("clicked")) {
                                 $(this).css("background-color", "red");
+                                life--;
+                                $("#footer h3").html('Life: ' + life);
                             }
                         }
                         
@@ -66,6 +68,10 @@
                     lifeMinusOne();
                     // restart or reset stage.
                 }
+            }
+            // Takes one life off the player.
+            function lifeMinusOne() {
+                window.life--;
             }
 
             // If the stage is cleared, a list of functions will be called.
@@ -239,8 +245,8 @@
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
             </div>
-            <div data-role="footer">
-                <h3>Life: <script>document.write(life);</script></h3>
+            <div data-role="footer" id="footer">
+                <h3 id="life">Life: <script>document.write(life);</script></h3>
             </div>
         </div>
     </body>
