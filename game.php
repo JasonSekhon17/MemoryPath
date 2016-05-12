@@ -35,10 +35,20 @@
             var pathArray;                  // Records the correct path's coordinate.
             var stepOrder = 0;
 
+            var isDown = false;
+
+            $(document).mousedown(function () {
+                isDown = true;      // When mouse goes down, set isDown to true
+            })
+
+            $(document).mouseup(function () {
+                isDown = false;    // When mouse goes up, set isDown to false
+            });
+
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
-                $("td.panel").click(function () {
+                $("td.panel").mousedown(function () {
                     if (gameStatus) {
                         if ($(this).hasClass("step" + stepOrder)) {
                             $(this).css("background-color", "green");
@@ -58,6 +68,31 @@
                         }
 
                         $(this).addClass("clicked");
+                    }
+                });
+
+                $("td.panel").mouseover(function () {
+                    if (gameStatus) {
+                        if (isDown) {
+                            if ($(this).hasClass("step" + stepOrder)) {
+                                $(this).css("background-color", "green");
+                                stepOrder++;
+                                if (stepOrder == pathArray.length) {
+                                    stageClearScreen();
+                                }
+                            } else {
+                                if (!$(this).hasClass("clicked")) {
+                                    $(this).css("background-color", "red");
+                                    life--;
+                                    updateLifeMessage();
+                                    if (life == 0) {
+                                        gameOver();
+                                    }
+                                }
+                            }
+
+                            $(this).addClass("clicked");
+                        }
                     }
                 });
             });
@@ -92,6 +127,7 @@
                 life = 3;
                 updateLifeMessage();
                 resetGrid();
+                stepOrder = 0;
             }
 
             function updateLifeMessage() {
@@ -249,14 +285,14 @@
 
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
-                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">New game</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1>     
-                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">New game</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
             </div>
             <div data-role="footer" id="footer">
