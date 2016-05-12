@@ -50,9 +50,24 @@
                                 $(this).css("background-color", "red");
                                 life--;
                                 $("#footer h3").html('Life: ' + life);
+                                if (life == 0) {
+                                    var $gameover = $("<div/>").popup({
+                                        dismissible: false,
+                                        transition: pop
+
+                                    }).bind("popupafterclose", function () {
+                                        $(this).remove();
+                                    });
+
+                                    $("<h1/>", {
+                                        text: Game_Over
+                                    }).appendTo($gameover);
+
+                                    $gameover.popup("open").trigger("create");
+                                }
                             }
                         }
-                        
+
                         $(this).addClass("clicked");
                     }
                 });
@@ -243,6 +258,9 @@
                         echo '</table>';
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
+                </div>
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all">
+                    <h1>Game Over!</h1>     
                 </div>
             </div>
             <div data-role="footer" id="footer">
