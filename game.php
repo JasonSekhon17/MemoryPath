@@ -22,6 +22,7 @@
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
+        <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
@@ -34,24 +35,64 @@
             var pathArray;                  // Records the correct path's coordinate.
             var stepOrder = 0;
 
+            var isDown = false;
+
+            $(document).mousedown(function () {
+                isDown = true;      // When mouse goes down, set isDown to true
+            })
+
+            $(document).mouseup(function () {
+                isDown = false;    // When mouse goes up, set isDown to false
+            });
+
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
-                $("td.panel").click(function () {
+                $("td.panel").mousedown(function () {
                     if (gameStatus) {
                         if ($(this).hasClass("step" + stepOrder)) {
                             $(this).css("background-color", "green");
                             stepOrder++;
                             if (stepOrder == pathArray.length) {
-                                alert('You cleared the stage!');
+                                stageClearScreen();
                             }
                         } else {
                             if (!$(this).hasClass("clicked")) {
                                 $(this).css("background-color", "red");
+                                life--;
+                                updateLifeMessage();
+                                if (life == 0) {
+                                    gameOver();
+                                }
                             }
                         }
-                        
+
                         $(this).addClass("clicked");
+                    }
+                });
+
+                $("td.panel").mouseover(function () {
+                    if (gameStatus) {
+                        if (isDown) {
+                            if ($(this).hasClass("step" + stepOrder)) {
+                                $(this).css("background-color", "green");
+                                stepOrder++;
+                                if (stepOrder == pathArray.length) {
+                                    stageClearScreen();
+                                }
+                            } else {
+                                if (!$(this).hasClass("clicked")) {
+                                    $(this).css("background-color", "red");
+                                    life--;
+                                    updateLifeMessage();
+                                    if (life == 0) {
+                                        gameOver();
+                                    }
+                                }
+                            }
+
+                            $(this).addClass("clicked");
+                        }
                     }
                 });
             });
@@ -79,28 +120,31 @@
                 startNewStage();
             }
 
-            // This function checks if the life of player has dropped to zero.
-            // True if life is zero, false otherwise.
-            function lifeZero() {
-                // Implementation needed.
+            // Function to reset all game status.
+            // Used for testing stage
+            function resetGame() {
+                gameStatus = false;
+                life = 3;
+                updateLifeMessage();
+                resetGrid();
+                stepOrder = 0;
             }
 
-            // This function will take away one life from the player.
-            function lifeMinusOne() {
-                // Implementation here.
+            function updateLifeMessage() {
+                $("#footer h3").html('Life: ' + life);
             }
 
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function gameOver() {
-                // Implementation here.
+                $("#gameover").popup("open");
             }
 
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
-                // Implementation here.
+                $("#clear").popup("open");
             }
 
             // Calculate the score achieved by the player for the current stage.
@@ -180,13 +224,13 @@
             // state, which means original color. The recorded randomized path is not 
             // affected.
             function resetGrid() {
-                for (i = 0; i < window.pathArray.length; i++) {
-                    array = window.pathArray[i];
-                    row = parseInt(array.substring(0, 1));
-                    col = parseInt(array.substring(2, 3));
-                    var table = $("#grid")[0];
-                    var cell = table.rows[row].cells[col];
-                    $(cell).css('background-color', '#808080');
+                var table = $("#grid")[0];
+                for (row = 0; row < window.size; row++) {
+                    for (col = 0; col < window.size; col++) {
+                        var cell = table.rows[row].cells[col];
+                        $(cell).css('background-color', '#808080');
+                    }
+                    col = 0;
                 }
             }
 
@@ -227,7 +271,7 @@
                         while ($row <= $startingGridNum) {
                             echo '<tr>';
                             while ($col <= $startingGridNum) {
-                                echo '<td class="panel">' . '</td>';
+                                echo '<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' . '</td>';
                                 $col++;
                             }
                             echo '</tr>';
@@ -238,9 +282,21 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
+
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Game Over!</h1>     
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
+                </div>
+
+                <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Stage Cleared!</h1>     
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
+                </div>
             </div>
-            <div data-role="footer">
-                <h3>Life: <script>document.write(life);</script></h3>
+            <div data-role="footer" id="footer">
+                <h3 id="life">Life: <script>document.write(life);</script></h3>
             </div>
         </div>
     </body>

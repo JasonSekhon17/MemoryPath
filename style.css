@@ -37,13 +37,7 @@ td {
     text-align: center;
 }
 
-.ui-popup-container, .ui-popup {
-    height: 90%;
-    width: 85%;
-    position: absolute;
-    top: 0;
-    left:0;
-}
+
 
 #score-rank {
     display: block;
@@ -104,4 +98,8 @@ td {
     to {
         transform:rotate(360deg);
     }
+}
+
+#clear, #gameover {
+    text-align: center;
 }
