@@ -34,7 +34,8 @@
             var pathArray;                  // Records the correct path's coordinate.
             var stepOrder = 0;
 			var speed = 1;					// Speed of the step animation.
-			var length = 5;					// Number of rows and columns of the grid.
+			var length = 8;					// Length of the path.
+			var size = 5;					// Number of rows and columns of the grid
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
@@ -106,8 +107,8 @@
             function addScore() {
                 // Implementation here.
 				// 10 is the base score.
-				// Multiplier based on the grid length and speed.
-				stageScore += ((10 * (1 + (length / 9)) * speed) | 0);
+				// Multiplier based on the path length, grid size and speed.
+				stageScore += 10 * ((1 + (length / size) * speed) | 0);
             }
 			
             // Calculate the score achieved by the player for the current stage.
@@ -115,7 +116,7 @@
             function calculateScore() {
                 // Implementation here.
 				stageScore += stageScore * timer;
-				stageScore += (life * 100 * (1 + (length / 9)) | 0);
+				stageScore += life * 100 * ((1 + (length / size)) | 0);
             }
 
             // Shows the score achieved by the player for the current stage.
