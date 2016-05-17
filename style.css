@@ -16,12 +16,22 @@ td {
     background-size:  cover;
     background-repeat:  no-repeat;
     color: #fff;
+    position:absolute;
 }
-
+#menuContainer{
+    z-index: 99;
+}
+#header{
+    position: relative;
+    z-index: 99;
+}
+#content{
+    position: relative;
+    z-index: 99;   
+}
 #menu-button {
     display: block;
     margin:  0 10% 20px 10%;
-    z-index: 1;
 }
 
 #logo {
@@ -30,7 +40,7 @@ td {
     height: 220px;
     width: 200px;
     display: block;
-    z-index: 1;
+    z-index: 9999;
 }
 
 #popup-title {
@@ -98,6 +108,68 @@ td {
     to {
         transform:rotate(360deg);
     }
+}
+/*twinkling stars*/
+@keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-webkit-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-moz-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-ms-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+#menupage, #twinkling {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  display:block;
+  
+}
+
+#menupage {
+  background:#000 
+  url(background2.png)
+   repeat top center;
+  z-index:0;
+}
+
+#twinkling{
+  background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
+  z-index:0.1;
+
+  -moz-animation:move-twink-back 200s linear infinite;
+  -ms-animation:move-twink-back 200s linear infinite;
+  -o-animation:move-twink-back 200s linear infinite;
+  -webkit-animation:move-twink-back 200s linear infinite;
+  animation:move-twink-back 200s linear infinite;
+}
+#grid{
+    position: relative;
+    opacity: 0.9;
+}
+#gameover{
+    position: relative;
+    
+}
+#clear{
+    position: relative;
+    
+}
+#footer{
+    position: relative;
+    
 }
 
 #clear, #gameover {

@@ -22,80 +22,46 @@
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
-
-        <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
             var gameClear = false;          // Represents the clear status of a stage. Becomes true when player reaches the last column.
-            var stageNumber = 1;            // Represents the current stage number.
-            var totalScore=0;                 // Total score of player for this game.
-            var stageScore=0;                 // Score for current stage.
+            var stageNumber;                // Represents the current stage number.
+            var totalScore;                 // Total score of player for this game.
+            var stageScore = 0;             // Score for current stage.
             var life = 3;                   // Player's life for current stage.
-            var timer = 60;               // Placeholder variable to represent timer, acts as an integer
+            var timer = 60;                 // Placeholder variable to represent timer, acts as an integer
             var pathArray;                  // Records the correct path's coordinate.
             var stepOrder = 0;
-            var isDown = false;
-            var counter;
-            timer = new Countdown();
-
-            $(document).mousedown(function () {
-                isDown = true;      // When mouse goes down, set isDown to true
-            })
-
-            $(document).mouseup(function () {
-                isDown = false;    // When mouse goes up, set isDown to false
-            });
-
+			var speed = 1;					// Speed of the step animation.
+			var length = 8;					// Length of the path.
+			var size = 5;					// Number of rows and columns of the grid
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
-                $("td.panel").mousedown(function () {
+                $("td.panel").click(function () {
                     if (gameStatus) {
                         if ($(this).hasClass("step" + stepOrder)) {
                             $(this).css("background-color", "green");
                             stepOrder++;
+							addScore(); // adds score for each green tile
+							$("#score").html('Stage Score: ' + stageScore);
+                                
                             if (stepOrder == pathArray.length) {
-                                stageClearScreen();
-                                gameClear = true;
+                                $("#clear").popup("open");
                             }
                         } else {
                             if (!$(this).hasClass("clicked")) {
                                 $(this).css("background-color", "red");
                                 life--;
-                                updateLifeMessage();
+                                $("#life").html('Life: ' + life);
                                 if (life == 0) {
-                                    gameOver();
+                                    $("#gameover").popup("open");
                                 }
                             }
                         }
-                        $(this).addClass("clicked");
-                    }
-                });
 
-                $("td.panel").mouseover(function () {
-                    if (gameStatus) {
-                        if (isDown) {
-                            if ($(this).hasClass("step" + stepOrder)) {
-                                $(this).css("background-color", "green");
-                                stepOrder++;
-                                if (stepOrder == pathArray.length) {
-                                    stageClearScreen();
-                                    gameClear = true;
-                                }
-                            
-                            } else {
-                                if (!$(this).hasClass("clicked")) {
-                                    $(this).css("background-color", "red");
-                                    life--;
-                                    updateLifeMessage();
-                                    if (life == 0) {
-                                        gameOver();
-                                    }
-                                }
-                            }
-                            $(this).addClass("clicked");
-                        }
+                        $(this).addClass("clicked");
                     }
                 });
             });
@@ -123,59 +89,34 @@
                 startNewStage();
             }
 
-            // Function to reset all game status.
-            // Used for testing stage
-            function resetGame() {
-                gameStatus = false;
-                life = 3;
-                updateLifeMessage();
-                resetGrid();
-                stepOrder = 0;
-            }
-
-            // Function to continue onto next stage
-            function nextGame() {
-                gameStatus = false;
-                life = 3;
-                updateLifeMessage();
-                resetGrid();
-                stepOrder = 0;
-                stageNumber++;
-                updateStageNumber();
-            }
-
-            function updateLifeMessage() {
-                $("#footer h3").html('Life: ' + life);
-            }
-
-            function updateStageNumber() {
-                $("#header h2").html('Stage ' + stageNumber);
-            }
-
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function gameOver() {
-                calculateScore();
-                addToTotalScore();
-                $("#gameover").popup("open");
+                // Implementation here.
             }
 
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
-                calculateScore();
-                addToTotalScore();
-                $("#clear").popup("open");
-                $("#placeForScore").html("<h3>Score: "+totalScore+"</h3>");
-                stageScore = 0; 
-
+                // Implementation here.
             }
 
+			// Adds score to the current stage score based on difficulty.
+            // Calculation involves the stage and difficulty.
+            function addScore() {
+                // Implementation here.
+				// 10 is the base score.
+				// Multiplier based on the path length, grid size and speed.
+				stageScore += 10 * ((1 + (length / size) * speed) | 0);
+            }
+			
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
             function calculateScore() {
-                stageScore = 1000*(timer.seconds+""+timer.milliSecond);
+                // Implementation here.
+				stageScore += stageScore * timer;
+				stageScore += life * 100 * ((1 + (length / size)) | 0);
             }
 
             // Shows the score achieved by the player for the current stage.
@@ -186,7 +127,7 @@
 
             // Add the current score to total score and reset the current score.
             function addToTotalScore() {
-                totalScore += stageScore;
+                // Implementation here.
             }
 
             // Reset timer, grid/table, life remaining, start button, and update total score.
@@ -240,24 +181,25 @@
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
-                        setTimeout(resetGrid, 200);
-                        timer.init();
+                        setTimeout(resetGrid, 1000);
                     }
-                }, 200);
+                }, 500);
             }
+
             // This function will reset the all the tiles inside the grid to original
             // state, which means original color. The recorded randomized path is not 
             // affected.
             function resetGrid() {
-                var table = $("#grid")[0];
-                for (row = 0; row < window.size; row++) {
-                    for (col = 0; col < window.size; col++) {
-                        var cell = table.rows[row].cells[col];
-                        $(cell).css('background-color', '#808080');
-                    }
-                    col = 0;
+                for (i = 0; i < window.pathArray.length; i++) {
+                    array = window.pathArray[i];
+                    row = parseInt(array.substring(0, 1));
+                    col = parseInt(array.substring(2, 3));
+                    var table = $("#grid")[0];
+                    var cell = table.rows[row].cells[col];
+                    $(cell).css('background-color', '#808080');
                 }
             }
+
             // This function basically makes the timer start counting down.
             // It will be called when the start button is clicked on, or when 
             // the menu popup is cleared.
@@ -271,76 +213,17 @@
             function pauseGame() {
                 // Implementation needed.
             }
-           function Countdown(){
-                //time declared
-                this.start_time = "00:20:00";
-                this.target_id="#timer";
-                this.name = "timer";
 
-            }
-            // execute other functions
-            Countdown.prototype.init = function(){
-                this.reset();
-                counter = setInterval(this.name + '.tick()', 10);
-            }
-            // divide time declared into min, second and millisecond
-            // storaged in an array whose values are able to be used 
-            //individually
-            Countdown.prototype.reset = function(){
-                time = this.start_time.split(":");
-                this.minutes = parseInt(time[0]);
-                this.seconds = parseInt(time[1]);
-                this.milliSecond = parseInt(time[2]);
-                this.update_target();
-            }
-            // basic calculation decrementing time as countdown.
-            Countdown.prototype.tick= function(){
-                if(gameClear==true){
-                    clearInterval(counter);
-                    gameClear = false;
-                }
-                if(this.seconds > 0 || this.minutes > 0 || this.milliSecond > 0){
-                    if(milliSecond == 0){
-                        this.milliSecond = 99;
-                        if(this.seconds == 0){
-                            this.minutes = this.minutes -1;
-                            this.seconds = 59;
-                        }else {
-                        this.seconds = this.seconds -1;
-                        }
-                    }else {
-                        this.milliSecond--;
-                    }
-                }
-                this.update_target();
-            }
-            // update a new time from tick function every 10 millisecond
-            Countdown.prototype.update_target = function(){
-                milliSecond = this.milliSecond;
-                seconds = this.seconds;
-                minutes = this.minutes;
-                if(milliSecond< 10) milliSecond = "0"+ milliSecond;
-                if(seconds <10) seconds = "0" + seconds;
-                if(minutes<10) minutes = "0" + minutes;
-                if(minutes==0&&seconds==0&&milliSecond==0){
-                    $(this.target_id).html("Time Out!!");
-                    gameOver();
-                }else{
-                    $(this.target_id).html("Time: "+minutes+":"+seconds+":"+milliSecond);
-                }
-            }
 
         </script>
     </head>
     <body>
         <div data-role="page" id="pageone">
-            <div data-role="header" id="header">
-                <h1 id="timer">Time: </h1>
-                <h2>Stage 1</h2>
+            <div data-role="header">
+                <h1>Time: <script>document.write(timer);</script></h1>
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window">Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown">Return to game</a>
                     </div>
             </div>
@@ -354,7 +237,7 @@
                         while ($row <= $startingGridNum) {
                             echo '<tr>';
                             while ($col <= $startingGridNum) {
-                                echo '<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' . '</td>';
+                                echo '<td class="panel">' . '</td>';
                                 $col++;
                             }
                             echo '</tr>';
@@ -368,19 +251,17 @@
 
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
-                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Stage Cleared!</h1> 
-                    <div id="placeForScore"></div>    
-                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
+                    <h1>Stage Cleared!</h1>     
+                    <a data-rel="back" class="ui-btn ui-corner-all">Return to game</a>
                 </div>
             </div>
             <div data-role="footer" id="footer">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
+				<h3 id="score">Stage Score: <script>document.write(stageScore);</script></h3>
             </div>
         </div>
     </body>
