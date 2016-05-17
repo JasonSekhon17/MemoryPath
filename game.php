@@ -36,7 +36,12 @@
             var pathArray;                  // Records the correct path's coordinate.
             var stepOrder = 0;
             var isDown = false;
+            //timer object
             var counter;
+            //the place where current time is storaged when you pause
+            var currentTime;
+            //execute pause function
+            var pauseOn =false;
             timer = new Countdown();
 
             $(document).mousedown(function () {
@@ -273,10 +278,13 @@
             }
            function Countdown(){
                 //time declared
-                this.start_time = "00:20:00";
+                if(pauseOn==false){
+                    this.start_time = "00:20:00";
+                }else{
+                    this.start_time = currentTime;
+                }
                 this.target_id="#timer";
                 this.name = "timer";
-
             }
             // execute other functions
             Countdown.prototype.init = function(){
@@ -292,6 +300,7 @@
                 this.seconds = parseInt(time[1]);
                 this.milliSecond = parseInt(time[2]);
                 this.update_target();
+                
             }
             // basic calculation decrementing time as countdown.
             Countdown.prototype.tick= function(){
@@ -314,6 +323,18 @@
                 }
                 this.update_target();
             }
+             //pause timer when user click the menu button
+            Countdown.prototype.pauseTimer = function(){
+                pauseOn = true;
+                clearInterval(counter);
+                if(milliSecond< 10) this.milliSecond = "0"+ this.milliSecond;
+                if(seconds <10) this.seconds = "0" + this.seconds;
+                currentTime = this.minutes+":"+this.seconds+":"+this.milliSecond;
+                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
+            }
+            Countdown.prototype.restart = function(){
+                counter = setInterval(this.name+".tick()",10);
+            }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function(){
                 milliSecond = this.milliSecond;
@@ -324,6 +345,11 @@
                 if(minutes<10) minutes = "0" + minutes;
                 if(minutes==0&&seconds==0&&milliSecond==0){
                     $(this.target_id).html("Time Out!!");
+                    gameClear = true;
+                    if(gameClear==true){
+                        clearInterval(counter);
+                        gameClear = false;
+                    }
                     gameOver();
                 }else{
                     $(this.target_id).html("Time: "+minutes+":"+seconds+":"+milliSecond);
@@ -337,11 +363,11 @@
             <div data-role="header" id="header">
                 <h1 id="timer">Time: </h1>
                 <h2>Stage 1</h2>
-                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window">Menu</a>
+                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()">Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
                         <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
-                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown">Return to game</a>
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
             <div data-role="content" style="text-align: center;">
