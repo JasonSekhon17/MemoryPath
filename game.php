@@ -43,7 +43,19 @@
             //execute pause function
             var pauseOn =false;
             timer = new Countdown();
-
+			
+			//	Changes grid to a square
+			//	If grid width is greater than 800, it is changed to 50%
+			$(document).ready(function() {
+				
+				var cw = $('.game-panel').width();
+				if(cw > 800) {
+					$('.game-panel').css({'width':35+'%'});
+					cw = $('.game-panel').width();
+				}
+				$('.game-panel').css({'height':cw+'px'});
+			});
+			
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
