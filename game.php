@@ -1,6 +1,9 @@
 <?php
+    /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
     session_start();
     include_once 'Login/dbconnect.php';
+
+    **/
 
     $startingGridNum;
     

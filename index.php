@@ -39,7 +39,7 @@ $userRow=mysql_fetch_array($res);
             }
 
             function changePosition() {
-                var h = $(window).height() - 350;
+                var h = $(window).height() - 250;
                 var w = $(window).width() - 150;
 
                 var newh = Math.floor(Math.random() * h);
@@ -150,10 +150,11 @@ $userRow=mysql_fetch_array($res);
                         <h1>Options</h1>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
                     </div>
-                <div class="spaceDog">
+         
+            </div>
+            </div>
+            <div class="spaceDog">
                 </div>
-            </div>
-            </div>
             <div id="twinkling"></div>
         </div>
     </body>
