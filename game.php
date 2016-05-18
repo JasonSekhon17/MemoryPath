@@ -162,6 +162,7 @@
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
+                resetGridClass();
             }
 
             function updateLifeMessage() {
@@ -310,8 +311,7 @@
                         if ((path_row == 0) && (row == path_row + 1)
                             || (path_row == size - 1) && (row == path_row - 1)) {
                             return 3; // Represent no movement of row possible
-                        }
-                        if (path_row == row + 1) {
+                        } else if (path_row == row + 1) {
                             return 0; // Represent upward direction
                         } else if (path_row == row - 1) {
                             return 1; // Represent downward direction
@@ -355,6 +355,17 @@
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-color', '#808080');
+                    }
+                    col = 0;
+                }
+            }
+
+            function resetGridClass() {
+                var table = $("#grid")[0];
+                for (row = 0; row < window.size; row++) {
+                    for (col = 0; col < window.size; col++) {
+                        var cell = table.rows[row].cells[col];
+                        $(cell).removeClass("clicked stepOrder");
                     }
                     col = 0;
                 }
