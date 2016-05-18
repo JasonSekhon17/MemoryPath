@@ -466,18 +466,21 @@
         </script>
     </head>
     <body>
-        <div data-role="page" id="pageone">
-            <div data-role="header" id="header">
+      <div data-role="page" id="pageone">
+                <video autoplay id="space">
+                    <source src="space.mp4">
+                </video>
+            <div data-role="header" id="headerForGamePage">               
                 <h1 id="timer">Time: </h1>
                 <h2>Stage 1</h2>
-                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()">Menu</a>
+                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
                         <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
-            <div data-role="content" style="text-align: center;">
+            <div data-role="content" style="text-align: center;" id="game-container">
                 <div id="game-screen">
                     <?php
                         $row = 1;
@@ -498,7 +501,6 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
-
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
                     <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
@@ -512,8 +514,12 @@
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
+
             <div data-role="footer" id="footer">
+                <img src="life.jpg">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
+                <img src="star.jpeg">
+                <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
     </body>
