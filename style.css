@@ -1,12 +1,3 @@
-table, th, td {
-	background-color:#0070c0;
-	color: #001450;
-}
-td {
-	height:20px;
-	min-width:20px;
-}
-
 /* For Michael's work */
 #menupage {
     height: 100%;

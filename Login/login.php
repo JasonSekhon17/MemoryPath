@@ -4,7 +4,7 @@ include_once 'dbconnect.php';
 
 if(isset($_SESSION['user'])!="")
 {
- header("Location: home.php");
+ header("Location: ../index.php");
 }
 if(isset($_POST['btn-login']))
 {
@@ -15,7 +15,7 @@ if(isset($_POST['btn-login']))
  if($row['password']==($pass))
  {
   $_SESSION['user'] = $row['user_id'];
-  header("Location: home.php");
+  header("Location: ../index.php");
  }
  else
  {
@@ -34,10 +34,9 @@ if(isset($_POST['btn-login']))
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
-<center>
 <div id="login-form">
 <form method="post">
-<table align="center" width="30%" border="0">
+<table>
 <tr>
 <td><input type="text" name="name" placeholder="Your Username" required /></td>
 </tr>
@@ -53,6 +52,5 @@ if(isset($_POST['btn-login']))
 </table>
 </form>
 </div>
-</center>
 </body>
 </html>

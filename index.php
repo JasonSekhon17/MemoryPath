@@ -1,3 +1,14 @@
+<?php
+session_start();
+include_once 'Login/dbconnect.php';
+
+if(!isset($_SESSION['user']))
+{
+ header("Location: Login/login.php");
+}
+$res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
+$userRow=mysql_fetch_array($res);
+?>
 <!DOCTYPE html>
 	<html lang="en">
 	<head>
@@ -92,8 +103,7 @@
 		<div data-role="page" id="menupage">
             <div id="menuContainer">
             <div data-role="header" id="header">
-                <h1>Memory Path</h1>
-                <a href="#game-menu" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window">Menu</a>
+                <a href="Login/logout.php?logout" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window"><?php echo $userRow['username']; ?> : Sign Out</a>
             </div>
             <div data-role="content" id="content">
                 <div id="logo">
