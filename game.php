@@ -45,19 +45,19 @@
             //execute pause function
             var pauseOn = false;
             timer = new Countdown();
-			
-			//	Changes grid to a square
-			//	If grid width is greater than 800, it is changed to 50%
-			$(document).ready(function() {
-				
-				var cw = $('.game-panel').width();
-				if(cw > 800) {
-					$('.game-panel').css({'width':35+'%'});
-					cw = $('.game-panel').width();
-				}
-				$('.game-panel').css({'height':cw+'px'});
-			});
-			
+
+            //  Changes grid to a square
+            //  If grid width is greater than 800, it is changed to 50%
+            $(document).ready(function () {
+
+                var cw = $('.game-panel').width();
+                if (cw > 800) {
+                    $('.game-panel').css({ 'width': 35 + '%' });
+                    cw = $('.game-panel').width();
+                }
+                $('.game-panel').css({ 'height': cw + 'px' });
+            });
+
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
@@ -161,6 +161,7 @@
                 stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
+                pathArray = [];
             }
 
             function updateLifeMessage() {
@@ -240,18 +241,26 @@
                 path_row = 0;
                 path_col = 0;
 
-                path_row = randomIntFromInterval(0, size);
+                path_row = randomIntFromInterval(0, size - 1);
                 pathArray.push(path_row + " " + path_col);
 
-                while (path_col <= size) {
-                    direction = randomIntFromInterval(0, 1);
-                    if (direction == 0) {
+                while (path_col < size - 1) {
+
+                    rowMovement = checkTwoSides();
+                    if (rowMovement == 3) {
                         path_col++;
                     } else {
-                        changeRow();
+                        direction = randomIntFromInterval(0, 1);
+                        if (direction == 0) {
+                            path_col++;
+                        } else {
+                            changeRow();
+                        }
                     }
                     pathArray.push(path_row + " " + path_col);
                 }
+                alert(pathArray.length);
+                alert(pathArray);
 
                 /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
@@ -298,6 +307,10 @@
                     row = parseInt(array.substring(0, 1));
                     col = parseInt(array.substring(2, 3));
                     if (col == path_col) {
+                        if ((path_row == 0) && (row == path_row + 1)
+                            || (path_row == size - 1) && (row == path_row - 1)) {
+                            return 3; // Represent no movement of row possible
+                        }
                         if (path_row == row + 1) {
                             return 0; // Represent upward direction
                         } else if (path_row == row - 1) {
