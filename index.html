@@ -26,8 +26,8 @@
             }
 
             function changePosition() {
-                var h = $(window).height() - 250;
-                var w = $(window).width() - 100;
+                var h = $(window).height() - 350;
+                var w = $(window).width() - 150;
 
                 var newh = Math.floor(Math.random() * h);
                 var neww = Math.floor(Math.random() * w);
@@ -93,6 +93,7 @@
             <div id="menuContainer">
             <div data-role="header" id="header">
                 <h1>Memory Path</h1>
+                <a href="#game-menu" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window">Menu</a>
             </div>
             <div data-role="content" id="content">
                 <div id="logo">
