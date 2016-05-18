@@ -40,7 +40,7 @@ td {
     height: 220px;
     width: 200px;
     display: block;
-    z-index: 9999;
+    z-index: 99;
 }
 
 #popup-title {
@@ -82,6 +82,7 @@ td {
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index:-50;
     background-image:url("dogspace.png");
     background-size: cover;
     margin:-100px 0px 0px -100px;
@@ -142,12 +143,12 @@ td {
   background:#000 
   url(background2.png)
    repeat top center;
-  z-index:0;
+  z-index:1;
 }
 
 #twinkling{
   background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
-  z-index:0.1;
+  z-index:1;
 
   -moz-animation:move-twink-back 200s linear infinite;
   -ms-animation:move-twink-back 200s linear infinite;
