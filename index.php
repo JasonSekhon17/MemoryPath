@@ -10,16 +10,16 @@ $res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
 $userRow=mysql_fetch_array($res);
 ?>
 <!DOCTYPE html>
-	<html lang="en">
-	<head>
-	<meta charset="utf-8">
-		<title>Memory Path</title>
-		<link href="style.css" rel="stylesheet" type="text/css"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+        <title>Memory Path</title>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script>
             var triggerLeft = 0;
             var triggerUp = 0;
@@ -98,9 +98,9 @@ $userRow=mysql_fetch_array($res);
             });
         </script>
 
-	</head>
-	<body>
-		<div data-role="page" id="menupage">
+    </head>
+    <body>
+        <div data-role="page" id="menupage">
             <div id="menuContainer">
             <div data-role="header" id="header">
                 <a href="Login/logout.php?logout" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window"><?php echo $userRow['username']; ?> : Sign Out</a>
@@ -153,6 +153,6 @@ $userRow=mysql_fetch_array($res);
             </div>
             <div id="twinkling"></div>
         </div>
-	</body>
+    </body>
 </html>
-	
+    

@@ -1,7 +1,4 @@
 <?php
-    session_start();
-    include_once 'Login/dbconnect.php';
-
     $startingGridNum;
     
     if ($_POST['game-mode'] == 'easy') {
@@ -306,23 +303,35 @@
 
 
             function checkTwoSides() {
-                for (i = 0; i < pathArray.length; i++) {
-                    array = window.pathArray[i];
+					upRow = path_row + 1;
+					downRow = path_row - 1;
+					array = window.pathArray[window.pathArray.length - 1];
+					if (window.pathArray.length > 1) {
+						array = window.pathArray[window.pathArray.length - 2];
+					}
                     row = parseInt(array.substring(0, 1));
                     col = parseInt(array.substring(2, 3));
                     if (col == path_col) {
-                        if ((path_row == 0) && (row == path_row + 1)
-                            || (path_row == size - 1) && (row == path_row - 1)) {
+                        if (((path_row == 0) && (row == path_row + 1) 
+                            || (path_row == size - 1) && (row == path_row - 1))
+							&& (col == path_col)) {
                             return 3; // Represent no movement of row possible
-                        } else if (path_row == row + 1) {
+                        } else 
+							if (
+							path_row  == row + 1
+							//$.inArray((upRow + ' ' + path_column), array )
+							) {
                             return 0; // Represent upward direction
-                        } else if (path_row == row - 1) {
+                        } else if (
+							path_row  == row - 1
+							//$.inArray((downRow + ' ' + path_column), array )
+							) {
                             return 1; // Represent downward direction
                         } else {
                             return 2; // Represent no used tile up or down
                         }
                     }
-                }
+                
             }
 
             // This function will use the random path generated in another function 
@@ -368,7 +377,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                        $(cell).removeClass("clicked stepOrder");
+                        $(cell).removeClass();
                     }
                     col = 0;
                 }
@@ -469,21 +478,18 @@
         </script>
     </head>
     <body>
-      <div data-role="page" id="pageone">
-                <video autoplay id="space">
-                    <source src="space.mp4">
-                </video>
-            <div data-role="header" id="headerForGamePage">               
+        <div data-role="page" id="pageone">
+            <div data-role="header" id="header">
                 <h1 id="timer">Time: </h1>
                 <h2>Stage 1</h2>
-                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
+                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()">Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.php" class="ui-btn ui-corner-all">Back to main menu</a>
+                        <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
-            <div data-role="content" style="text-align: center;" id="game-container">
+            <div data-role="content" style="text-align: center;">
                 <div id="game-screen">
                     <?php
                         $row = 1;
@@ -504,25 +510,22 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
+
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1> 
                     <div id="placeForScore"></div>    
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
-
             <div data-role="footer" id="footer">
-                <img src="life.jpg">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg">
-                <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
     </body>
