@@ -6,7 +6,7 @@
     } else if ($_POST['game-mode'] == 'normal') {
         $startingGridNum = 5;
     } else if ($_POST['game-mode'] == 'hard') {
-        $startingGridNum = 5;
+        $startingGridNum = 6;
     }
 ?>
 
@@ -29,19 +29,21 @@
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
             var gameClear = false;          // Represents the clear status of a stage. Becomes true when player reaches the last column.
             var stageNumber = 1;            // Represents the current stage number.
-            var totalScore=0;                 // Total score of player for this game.
-            var stageScore=0;                 // Score for current stage.
+            var totalScore = 0;                 // Total score of player for this game.
+            var stageScore = 0;                 // Score for current stage.
             var life = 3;                   // Player's life for current stage.
             var timer = 60;               // Placeholder variable to represent timer, acts as an integer
-            var pathArray;                  // Records the correct path's coordinate.
+            var pathArray = [];                  // Records the correct path's coordinate.
             var stepOrder = 0;
             var isDown = false;
+            var path_col;
+            var path_row;
             //timer object
             var counter;
             //the place where current time is storaged when you pause
             var currentTime;
             //execute pause function
-            var pauseOn =false;
+            var pauseOn = false;
             timer = new Countdown();
 
             $(document).mousedown(function () {
@@ -88,7 +90,7 @@
                                     stageClearScreen();
                                     gameClear = true;
                                 }
-                            
+
                             } else {
                                 if (!$(this).hasClass("clicked")) {
                                     $(this).css("background-color", "red");
@@ -172,15 +174,15 @@
                 calculateScore();
                 addToTotalScore();
                 $("#clear").popup("open");
-                $("#placeForScore").html("<h3>Score: "+totalScore+"</h3>");
-                stageScore = 0; 
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
+                stageScore = 0;
 
             }
 
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
             function calculateScore() {
-                stageScore = 1000*(timer.seconds+""+timer.milliSecond);
+                stageScore = 1000 * (timer.seconds + "" + timer.milliSecond);
             }
 
             // Shows the score achieved by the player for the current stage.
@@ -222,8 +224,77 @@
             // No validation of game status is needed because this function will
             // only be called when validation is done.
             function generatePath() {
-                // hard coded path.
+
+                path_row = 0;
+                path_col = 0;
+
+                path_row = randomIntFromInterval(0, size);
+                pathArray.push(path_row + " " + path_col);
+
+                while (path_col <= size) {
+                    direction = randomIntFromInterval(0, 1);
+                    if (direction == 0) {
+                        path_col++;
+                    } else {
+                        changeRow();
+                    }
+                    pathArray.push(path_row + " " + path_col);
+                }
+
+                /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
+
+                x_coord = 2;
+                y_coord = 5;
+                pathArray.push(x_coord + " " + y_coord);
+
+                while (pathArray.length <= size) {
+                pathArray.push(path_row + " " + path_col);
+                path_col++; 
+                }*/
+            }
+
+            function changeRow() {
+                upRow = path_row + 1;
+                downRow = path_row - 1;
+                if (path_row == 0) {
+                    path_row++;
+                } else if (path_row == size - 1) {
+                    path_row--;
+                } else if (checkTwoSides() == 0) {
+                    path_row++;
+                } else if (checkTwoSides() == 1) {
+                    path_row--;
+                } else {
+                    dir = randomIntFromInterval(0, 1);
+                    if (dir == 0) {
+                        path_row++;
+                    } else {
+                        path_row--;
+                    }
+                }
+            }
+
+            function randomIntFromInterval(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+
+
+            function checkTwoSides() {
+                for (i = 0; i < pathArray.length; i++) {
+                    array = window.pathArray[i];
+                    row = parseInt(array.substring(0, 1));
+                    col = parseInt(array.substring(2, 3));
+                    if (col == path_col) {
+                        if (path_row == row + 1) {
+                            return 0; // Represent upward direction
+                        } else if (path_row == row - 1) {
+                            return 1; // Represent downward direction
+                        } else {
+                            return 2; // Represent no used tile up or down
+                        }
+                    }
+                }
             }
 
             // This function will use the random path generated in another function 
@@ -276,83 +347,83 @@
             function pauseGame() {
                 // Implementation needed.
             }
-           function Countdown(){
+            function Countdown() {
                 //time declared
-                if(pauseOn==false){
+                if (pauseOn == false) {
                     this.start_time = "00:20:00";
-                }else{
+                } else {
                     this.start_time = currentTime;
                 }
-                this.target_id="#timer";
+                this.target_id = "#timer";
                 this.name = "timer";
             }
             // execute other functions
-            Countdown.prototype.init = function(){
+            Countdown.prototype.init = function () {
                 this.reset();
                 counter = setInterval(this.name + '.tick()', 10);
             }
             // divide time declared into min, second and millisecond
             // storaged in an array whose values are able to be used 
             //individually
-            Countdown.prototype.reset = function(){
+            Countdown.prototype.reset = function () {
                 time = this.start_time.split(":");
                 this.minutes = parseInt(time[0]);
                 this.seconds = parseInt(time[1]);
                 this.milliSecond = parseInt(time[2]);
                 this.update_target();
-                
+
             }
             // basic calculation decrementing time as countdown.
-            Countdown.prototype.tick= function(){
-                if(gameClear==true){
+            Countdown.prototype.tick = function () {
+                if (gameClear == true) {
                     clearInterval(counter);
                     gameClear = false;
                 }
-                if(this.seconds > 0 || this.minutes > 0 || this.milliSecond > 0){
-                    if(milliSecond == 0){
+                if (this.seconds > 0 || this.minutes > 0 || this.milliSecond > 0) {
+                    if (milliSecond == 0) {
                         this.milliSecond = 99;
-                        if(this.seconds == 0){
-                            this.minutes = this.minutes -1;
+                        if (this.seconds == 0) {
+                            this.minutes = this.minutes - 1;
                             this.seconds = 59;
-                        }else {
-                        this.seconds = this.seconds -1;
+                        } else {
+                            this.seconds = this.seconds - 1;
                         }
-                    }else {
+                    } else {
                         this.milliSecond--;
                     }
                 }
                 this.update_target();
             }
-             //pause timer when user click the menu button
-            Countdown.prototype.pauseTimer = function(){
+            //pause timer when user click the menu button
+            Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                if(milliSecond< 10) this.milliSecond = "0"+ this.milliSecond;
-                if(seconds <10) this.seconds = "0" + this.seconds;
-                currentTime = this.minutes+":"+this.seconds+":"+this.milliSecond;
-                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
+                if (milliSecond < 10) this.milliSecond = "0" + this.milliSecond;
+                if (seconds < 10) this.seconds = "0" + this.seconds;
+                currentTime = this.minutes + ":" + this.seconds + ":" + this.milliSecond;
+                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
-            Countdown.prototype.restart = function(){
-                counter = setInterval(this.name+".tick()",10);
+            Countdown.prototype.restart = function () {
+                counter = setInterval(this.name + ".tick()", 10);
             }
             // update a new time from tick function every 10 millisecond
-            Countdown.prototype.update_target = function(){
+            Countdown.prototype.update_target = function () {
                 milliSecond = this.milliSecond;
                 seconds = this.seconds;
                 minutes = this.minutes;
-                if(milliSecond< 10) milliSecond = "0"+ milliSecond;
-                if(seconds <10) seconds = "0" + seconds;
-                if(minutes<10) minutes = "0" + minutes;
-                if(minutes==0&&seconds==0&&milliSecond==0){
+                if (milliSecond < 10) milliSecond = "0" + milliSecond;
+                if (seconds < 10) seconds = "0" + seconds;
+                if (minutes < 10) minutes = "0" + minutes;
+                if (minutes == 0 && seconds == 0 && milliSecond == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
-                    if(gameClear==true){
+                    if (gameClear == true) {
                         clearInterval(counter);
                         gameClear = false;
                     }
                     gameOver();
-                }else{
-                    $(this.target_id).html("Time: "+minutes+":"+seconds+":"+milliSecond);
+                } else {
+                    $(this.target_id).html("Time: " + minutes + ":" + seconds + ":" + milliSecond);
                 }
             }
 
