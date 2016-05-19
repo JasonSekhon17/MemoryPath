@@ -466,7 +466,7 @@
     </head>
     <body>
       <div data-role="page" id="pageone">
-                <video autoplay id="space">
+                <video autoplay loop id="space">
                     <source src="space1.mp4">
                 </video>
             <div data-role="header" id="headerForGamePage">               
