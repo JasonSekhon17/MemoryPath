@@ -277,8 +277,6 @@
             }
 
             function changeRow() {
-                upRow = path_row + 1;
-                downRow = path_row - 1;
                 if (path_row == 0) {
                     path_row++;
                 } else if (path_row == size - 1) {
@@ -365,7 +363,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                        $(cell).removeClass("clicked stepOrder");
+                        $(cell).removeClass();
                     }
                     col = 0;
                 }
