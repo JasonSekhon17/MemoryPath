@@ -347,13 +347,13 @@
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background-image', 'url(aliens6.jpg)');
-                    $(cell).css("animation","walk-east 0.2s steps(4) infinite");
                     $(cell).addClass('step' + i);
+                    $(cell).css("animation","walk-east 0.2s steps(4) infinite");
                     //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
-                        setTimeout(resetGrid, 200);
+                        setTimeout(resetGrid, 800);
                         timer.init();
                     }
                 }, 200);
