@@ -28,6 +28,8 @@
 
 
         <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
+
+        
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
@@ -151,24 +153,14 @@
                 life = 3;
                 updateLifeMessage();
                 resetGrid();
-                stepOrder = 0; 
+                stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
+                updateGridSize();
             }
 
-            function updateGridSize() {
-                if (size < 9) {
-                    if (stageNumber % 5 == 0) {
-                        size++;
-                        $.mobile.changePage('game.php', {
-                            reloadPage: true,
-                            allowSamePageTransition: true,
-                            transition: 'none'
-                        });
-                    }
-                }
-            }
+            
 
             function updateLifeMessage() {
                 $("#footer h3").html('Life: ' + life);
@@ -176,6 +168,7 @@
             function updateStageNumber() {
                 $("#headerForGamePage h2").html('Stage ' + stageNumber);
             }
+
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
@@ -334,7 +327,7 @@
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background', 'white');
-                  
+
                     $(cell).addClass('step' + i);
                     i++;
                     if (i == window.pathArray.length) {
@@ -352,7 +345,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                      
+
                         $(cell).css('background-color', '#808080');
                     }
                     col = 0;
@@ -497,9 +490,9 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img src="life.jpg">
+                <img src="life.jpg" alt="life points">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg">
+                <img src="star.jpeg" alt="score">
                 <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
