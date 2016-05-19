@@ -179,7 +179,10 @@
             function gameOver() {
                 calculateScore();
                 addToTotalScore();
+                clearInterval(counter);
+                $("#timer").html("Time: ");
                 $("#gameover").popup("open");
+                
             }
 
             // Shows a stage clear screen.
@@ -187,9 +190,12 @@
             function stageClearScreen() {
                 calculateScore();
                 addToTotalScore();
+                clearInterval(counter);
+                $("#timer").html("Time: ");
                 $("#clear").popup("open");
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 stageScore = 0;
+                
 
             }
 
@@ -386,7 +392,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = "00:20:00";
+                    this.start_time = 20+(5*stageNumber);
                 } else {
                     this.start_time = currentTime;
                 }
@@ -396,16 +402,13 @@
             // execute other functions
             Countdown.prototype.init = function () {
                 this.reset();
-                counter = setInterval(this.name + '.tick()', 10);
+                counter = setInterval(this.name + '.tick()', 1000);
             }
             // divide time declared into min, second and millisecond
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                time = this.start_time.split(":");
-                this.minutes = parseInt(time[0]);
-                this.seconds = parseInt(time[1]);
-                this.milliSecond = parseInt(time[2]);
+                this.seconds = this.start_time;
                 this.update_target();
 
             }
@@ -415,18 +418,8 @@
                     clearInterval(counter);
                     gameClear = false;
                 }
-                if (this.seconds > 0 || this.minutes > 0 || this.milliSecond > 0) {
-                    if (milliSecond == 0) {
-                        this.milliSecond = 99;
-                        if (this.seconds == 0) {
-                            this.minutes = this.minutes - 1;
-                            this.seconds = 59;
-                        } else {
-                            this.seconds = this.seconds - 1;
-                        }
-                    } else {
-                        this.milliSecond--;
-                    }
+                if (this.seconds > 0) {   
+                    this.seconds = this.seconds - 1;
                 }
                 this.update_target();
             }
@@ -434,23 +427,23 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                if (milliSecond < 10) this.milliSecond = "0" + this.milliSecond;
+                
                 if (seconds < 10) this.seconds = "0" + this.seconds;
-                currentTime = this.minutes + ":" + this.seconds + ":" + this.milliSecond;
-                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
+                currentTime =  this.seconds;
+                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
-                counter = setInterval(this.name + ".tick()", 10);
+                counter = setInterval(this.name + ".tick()", 1000);
             }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function () {
-                milliSecond = this.milliSecond;
+                
                 seconds = this.seconds;
-                minutes = this.minutes;
-                if (milliSecond < 10) milliSecond = "0" + milliSecond;
+                
+                
                 if (seconds < 10) seconds = "0" + seconds;
-                if (minutes < 10) minutes = "0" + minutes;
-                if (minutes == 0 && seconds == 0 && milliSecond == 0) {
+                
+                if ( seconds == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
                     if (gameClear == true) {
@@ -459,7 +452,7 @@
                     }
                     gameOver();
                 } else {
-                    $(this.target_id).html("Time: " + minutes + ":" + seconds + ":" + milliSecond);
+                    $(this.target_id).html("Time: "  + seconds);
                 }
             }
 
@@ -468,7 +461,7 @@
     <body>
       <div data-role="page" id="pageone">
                 <video autoplay id="space">
-                    <source src="space.mp4">
+                    <source src="space1.mp4">
                 </video>
             <div data-role="header" id="headerForGamePage">               
                 <h1 id="timer">Time: </h1>
