@@ -92,7 +92,7 @@ body{
   width:100%;
   height:10%;
   max-height:10%;
-  opacity: 0.8;
+  opacity: 0.9;
   color:white;
   background:#262829;
   position:relative;
@@ -133,6 +133,7 @@ body{
 }
 .game-panel {
     width: 85%;
+    max-height:90%;
     height:6%;
     text-align: center;
     margin: 0 auto;
