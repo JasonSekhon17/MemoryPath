@@ -151,12 +151,27 @@
                 life = 3;
                 updateLifeMessage();
                 resetGrid();
-                stepOrder = 0;
-                stageNumber++;
-                updateStageNumber();
+                stepOrder = 0; 
                 pathArray = [];
                 resetGridClass();
+                updateGridSize();
+                stageNumber++;
+                updateStageNumber();
             }
+
+            function updateGridSize() {
+                if (size < 9) {
+                    if (stageNumber % 5 == 0) {
+                        size++;
+                        $.mobile.changePage('game.php', {
+                            reloadPage: true,
+                            allowSamePageTransition: true,
+                            transition: 'none'
+                        });
+                    }
+                }
+            }
+
             function updateLifeMessage() {
                 $("#footer h3").html('Life: ' + life);
             }
@@ -172,7 +187,7 @@
                 clearInterval(counter);
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
-                
+
             }
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
@@ -184,7 +199,7 @@
                 $("#clear").popup("open");
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 stageScore = 0;
-                
+
             }
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
@@ -243,7 +258,7 @@
                     }
                     pathArray.push(path_row + " " + path_col);
                 }
-                
+
                 /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
                 x_coord = 2;
@@ -278,34 +293,34 @@
                 return Math.floor(Math.random() * (max - min + 1) + min);
             }
             function checkTwoSides() {
-               upRow = path_row + 1;
-					downRow = path_row - 1;
-					array = window.pathArray[window.pathArray.length - 1];
-					if (window.pathArray.length > 1) {
-						array = window.pathArray[window.pathArray.length - 2];
-					}
-                    row = parseInt(array.substring(0, 1));
-                    col = parseInt(array.substring(2, 3));
-                    if (col == path_col) {
-                        if (((path_row == 0) && (row == path_row + 1) 
+                upRow = path_row + 1;
+                downRow = path_row - 1;
+                array = window.pathArray[window.pathArray.length - 1];
+                if (window.pathArray.length > 1) {
+                    array = window.pathArray[window.pathArray.length - 2];
+                }
+                row = parseInt(array.substring(0, 1));
+                col = parseInt(array.substring(2, 3));
+                if (col == path_col) {
+                    if (((path_row == 0) && (row == path_row + 1)
                             || (path_row == size - 1) && (row == path_row - 1))
-							&& (col == path_col)) {
-                            return 3; // Represent no movement of row possible
-                        } else 
-							if (
-							path_row  == row + 1
-							//$.inArray((upRow + ' ' + path_column), array )
-							) {
+                            && (col == path_col)) {
+                        return 3; // Represent no movement of row possible
+                    } else
+                        if (
+                            path_row == row + 1
+                        //$.inArray((upRow + ' ' + path_column), array )
+                            ) {
                             return 0; // Represent upward direction
                         } else if (
-							path_row  == row - 1
-							//$.inArray((downRow + ' ' + path_column), array )
-							) {
+                            path_row == row - 1
+                        //$.inArray((downRow + ' ' + path_column), array )
+                            ) {
                             return 1; // Represent downward direction
                         } else {
                             return 2; // Represent no used tile up or down
                         }
-                    }
+                }
             }
             // This function will use the random path generated in another function 
             // and show the path to the player by making the corresponding tiles
@@ -321,9 +336,8 @@
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background-image', 'url(aliens6.jpg)');
-                    $(cell).css("animation","walk-east 0.2s steps(4) infinite");
+                    $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
                     $(cell).addClass('step' + i);
-                    //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
@@ -371,7 +385,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = 20+(5*stageNumber);
+                    this.start_time = 20 + (5 * stageNumber);
                 } else {
                     this.start_time = currentTime;
                 }
@@ -396,7 +410,7 @@
                     clearInterval(counter);
                     gameClear = false;
                 }
-                if (this.seconds > 0) {   
+                if (this.seconds > 0) {
                     this.seconds = this.seconds - 1;
                 }
                 this.update_target();
@@ -405,23 +419,23 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                
+
                 if (seconds < 10) this.seconds = "0" + this.seconds;
-                currentTime =  this.seconds;
-                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
+                currentTime = this.seconds;
+                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
                 counter = setInterval(this.name + ".tick()", 1000);
             }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function () {
-                
+
                 seconds = this.seconds;
-                
-                
+
+
                 if (seconds < 10) seconds = "0" + seconds;
-                
-                if ( seconds == 0) {
+
+                if (seconds == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
                     if (gameClear == true) {
@@ -430,7 +444,7 @@
                     }
                     gameOver();
                 } else {
-                    $(this.target_id).html("Time: "  + seconds);
+                    $(this.target_id).html("Time: " + seconds);
                 }
             }
         </script>
