@@ -145,6 +145,7 @@
                 resetGrid();
                 stepOrder = 0;
                 pathArray = [];
+                resetGridClass();
             }
             // Function to continue onto next stage
             function nextGame() {
@@ -156,8 +157,8 @@
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
-                updateScoreMessage();
-                updateGridSize();
+                updateScoreMessage;
+                resetGridClass();
             }
 
             function updateGridSize() {
@@ -357,7 +358,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                        $(cell).removeClass("clicked stepOrder");
+                        $(cell).removeClass();
                     }
                     col = 0;
                 }
