@@ -1,10 +1,4 @@
 <?php
-    /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
-    session_start();
-    include_once 'Login/dbconnect.php';
-
-    **/
-
     $startingGridNum;
     
     if ($_POST['game-mode'] == 'easy') {
@@ -185,10 +179,7 @@
             function gameOver() {
                 calculateScore();
                 addToTotalScore();
-                clearInterval(counter);
-                $("#timer").html("Time: ");
                 $("#gameover").popup("open");
-                
             }
 
             // Shows a stage clear screen.
@@ -196,12 +187,9 @@
             function stageClearScreen() {
                 calculateScore();
                 addToTotalScore();
-                clearInterval(counter);
-                $("#timer").html("Time: ");
                 $("#clear").popup("open");
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 stageScore = 0;
-                
 
             }
 
@@ -315,23 +303,35 @@
 
 
             function checkTwoSides() {
-                for (i = 0; i < pathArray.length; i++) {
-                    array = window.pathArray[i];
+					upRow = path_row + 1;
+					downRow = path_row - 1;
+					array = window.pathArray[window.pathArray.length - 1];
+					if (window.pathArray.length > 1) {
+						array = window.pathArray[window.pathArray.length - 2];
+					}
                     row = parseInt(array.substring(0, 1));
                     col = parseInt(array.substring(2, 3));
                     if (col == path_col) {
-                        if ((path_row == 0) && (row == path_row + 1)
-                            || (path_row == size - 1) && (row == path_row - 1)) {
+                        if (((path_row == 0) && (row == path_row + 1) 
+                            || (path_row == size - 1) && (row == path_row - 1))
+							&& (col == path_col)) {
                             return 3; // Represent no movement of row possible
-                        } else if (path_row == row + 1) {
+                        } else 
+							if (
+							path_row  == row + 1
+							//$.inArray((upRow + ' ' + path_column), array )
+							) {
                             return 0; // Represent upward direction
-                        } else if (path_row == row - 1) {
+                        } else if (
+							path_row  == row - 1
+							//$.inArray((downRow + ' ' + path_column), array )
+							) {
                             return 1; // Represent downward direction
                         } else {
                             return 2; // Represent no used tile up or down
                         }
                     }
-                }
+                
             }
 
             // This function will use the random path generated in another function 
@@ -377,7 +377,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                        $(cell).removeClass("clicked stepOrder");
+                        $(cell).removeClass();
                     }
                     col = 0;
                 }
@@ -398,7 +398,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = 20+(5*stageNumber);
+                    this.start_time = "00:20:00";
                 } else {
                     this.start_time = currentTime;
                 }
@@ -408,13 +408,16 @@
             // execute other functions
             Countdown.prototype.init = function () {
                 this.reset();
-                counter = setInterval(this.name + '.tick()', 1000);
+                counter = setInterval(this.name + '.tick()', 10);
             }
             // divide time declared into min, second and millisecond
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.seconds = this.start_time;
+                time = this.start_time.split(":");
+                this.minutes = parseInt(time[0]);
+                this.seconds = parseInt(time[1]);
+                this.milliSecond = parseInt(time[2]);
                 this.update_target();
 
             }
@@ -424,8 +427,18 @@
                     clearInterval(counter);
                     gameClear = false;
                 }
-                if (this.seconds > 0) {   
-                    this.seconds = this.seconds - 1;
+                if (this.seconds > 0 || this.minutes > 0 || this.milliSecond > 0) {
+                    if (milliSecond == 0) {
+                        this.milliSecond = 99;
+                        if (this.seconds == 0) {
+                            this.minutes = this.minutes - 1;
+                            this.seconds = 59;
+                        } else {
+                            this.seconds = this.seconds - 1;
+                        }
+                    } else {
+                        this.milliSecond--;
+                    }
                 }
                 this.update_target();
             }
@@ -433,23 +446,23 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                
+                if (milliSecond < 10) this.milliSecond = "0" + this.milliSecond;
                 if (seconds < 10) this.seconds = "0" + this.seconds;
-                currentTime =  this.seconds;
-                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
+                currentTime = this.minutes + ":" + this.seconds + ":" + this.milliSecond;
+                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
-                counter = setInterval(this.name + ".tick()", 1000);
+                counter = setInterval(this.name + ".tick()", 10);
             }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function () {
-                
+                milliSecond = this.milliSecond;
                 seconds = this.seconds;
-                
-                
+                minutes = this.minutes;
+                if (milliSecond < 10) milliSecond = "0" + milliSecond;
                 if (seconds < 10) seconds = "0" + seconds;
-                
-                if ( seconds == 0) {
+                if (minutes < 10) minutes = "0" + minutes;
+                if (minutes == 0 && seconds == 0 && milliSecond == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
                     if (gameClear == true) {
@@ -458,28 +471,25 @@
                     }
                     gameOver();
                 } else {
-                    $(this.target_id).html("Time: "  + seconds);
+                    $(this.target_id).html("Time: " + minutes + ":" + seconds + ":" + milliSecond);
                 }
             }
 
         </script>
     </head>
     <body>
-      <div data-role="page" id="pageone">
-                <video autoplay id="space">
-                    <source src="space1.mp4">
-                </video>
-            <div data-role="header" id="headerForGamePage">               
+        <div data-role="page" id="pageone">
+            <div data-role="header" id="header">
                 <h1 id="timer">Time: </h1>
                 <h2>Stage 1</h2>
-                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
+                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()">Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.php" class="ui-btn ui-corner-all">Back to main menu</a>
+                        <a href="index.html" class="ui-btn ui-corner-all">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
-            <div data-role="content" style="text-align: center;" id="game-container">
+            <div data-role="content" style="text-align: center;">
                 <div id="game-screen">
                     <?php
                         $row = 1;
@@ -500,25 +510,22 @@
                     ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
+
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1> 
                     <div id="placeForScore"></div>    
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.html" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
-
             <div data-role="footer" id="footer">
-                <img src="life.jpg">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg">
-                <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
     </body>

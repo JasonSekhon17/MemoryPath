@@ -1,3 +1,16 @@
+<?php
+    /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
+session_start();
+include_once 'Login/dbconnect.php';
+
+if(!isset($_SESSION['user']))
+{
+ header("Location: Login/login.php");
+}
+$res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
+$userRow=mysql_fetch_array($res);
+**/
+?>
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -27,7 +40,7 @@
 
             function changePosition() {
                 var h = $(window).height() - 250;
-                var w = $(window).width() - 250;
+                var w = $(window).width() - 150;
 
                 var newh = Math.floor(Math.random() * h);
                 var neww = Math.floor(Math.random() * w);
@@ -91,8 +104,9 @@
     <body>
         <div data-role="page" id="menupage">
             <div id="menuContainer">
-            <div data-role="header" id="headerForMenuPage">
+            <div data-role="header" id="header">
                 <h1>Memory Path</h1>
+                <a href="Login/logout.php?logout" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window"><?php echo $userRow['username'];?> : Sign Out</a>
             </div>
             <div data-role="content" id="content">
                 <div id="logo">
@@ -136,10 +150,11 @@
                         <h1>Options</h1>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
                     </div>
-                <div class="spaceDog">
+         
+            </div>
+            </div>
+            <div class="spaceDog">
                 </div>
-            </div>
-            </div>
             <div id="twinkling"></div>
         </div>
     </body>
