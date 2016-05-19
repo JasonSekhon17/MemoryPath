@@ -488,9 +488,9 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img src="life.jpg">
+                <img src="life.jpg" alt="life points">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg">
+                <img src="star.jpeg" alt="score">
                 <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
