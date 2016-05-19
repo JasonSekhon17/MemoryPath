@@ -51,9 +51,7 @@ body{
     text-align: center;
 }
 
-.footer-image {
-    display:  inline;
-}
+
 
 #score-rank {
     display: block;
@@ -98,31 +96,28 @@ body{
   position:relative;
 
 }
+#headerForGamePage > #stageSign {
+  position:absolute;
+  width:25%;
+  height:45%;
+  margin:0;
+  margin-left:-15%;
+  margin-top:2%;
+  padding:0;
+  left:50%;
+  text-align:center;
+}
 #headerForGamePage > h1 {
   position:absolute;
-  width:30%;
-  height:50%;
-  margin-left:-15%;
+  width:25%;
+  height:45%;
+  margin:0;
+  margin-top:2%;
+  right:0;
   padding:0;
-  left:50%;
   text-align:center;
 }
-#headerForGamePage > h2 {
-  position:absolute;
-  bottom: 0px;
-  width:30%;
-  height:50%;
-  margin-left:-15%;
-  padding:0;
-  left:50%;
-  text-align:center;
-}
-#game-container{
-  height:75%;
-  padding:0px;
-  margin:0px;
-  max-height:75%;
-}
+
 
 #game-screen {
     width:100%;

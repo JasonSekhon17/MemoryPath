@@ -416,7 +416,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = 20 + (5 * stageNumber);
+                    this.start_time = 20;
                 } else {
                     this.start_time = currentTime;
                 }
@@ -432,7 +432,7 @@
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.seconds = this.start_time;
+                this.start_time = 20 + (5 * stageNumber);
                 this.update_target();
             }
             // basic calculation decrementing time as countdown.
@@ -450,7 +450,7 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                if (seconds < 10) this.seconds = "0" + this.seconds;
+                if (this.seconds < 10) this.seconds = "0" + this.seconds;
                 currentTime = this.seconds;
                 $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
@@ -481,8 +481,9 @@
                     <source src="space1.mp4">
                 </video>
             <div data-role="header" id="headerForGamePage">               
+                <h2 id="stageSign">Stage 1</h2>
                 <h1 id="timer">Time: </h1>
-                <h2>Stage 1</h2>
+                
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
