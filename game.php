@@ -156,7 +156,6 @@
                 updateStageNumber();
                 pathArray = [];
             }
-
             function updateGridSize() {
                 if (size < 9) {
                     if (stageNumber % 5 == 0) {
@@ -169,7 +168,6 @@
                     }
                 }
             }
-
             function updateLifeMessage() {
                 $("#footer h3").html('Life: ' + life);
             }
@@ -185,7 +183,6 @@
                 clearInterval(counter);
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
-
             }
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
@@ -197,7 +194,6 @@
                 $("#clear").popup("open");
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 stageScore = 0;
-
             }
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
@@ -256,7 +252,6 @@
                     }
                     pathArray.push(path_row + " " + path_col);
                 }
-
                 /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
                 x_coord = 2;
@@ -418,7 +413,6 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-
                 if (seconds < 10) this.seconds = "0" + this.seconds;
                 currentTime = this.seconds;
                 $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
@@ -428,12 +422,8 @@
             }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function () {
-
                 seconds = this.seconds;
-
-
                 if (seconds < 10) seconds = "0" + seconds;
-
                 if (seconds == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
@@ -498,9 +488,9 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img src="life.jpg">
+                <img src="life.jpg" alt="life points">
                 <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg">
+                <img src="star.jpeg" alt="score">
                 <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
