@@ -246,6 +246,18 @@ body{
     from { background-position: 0px; }
     to { background-position: -960px; }
   }
+  @-webkit-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+  @-moz-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+  @-ms-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
 #menupage, #twinkling {
   position:absolute;
   top:0;
