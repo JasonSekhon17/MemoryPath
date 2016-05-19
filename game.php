@@ -152,11 +152,9 @@
                 updateLifeMessage();
                 resetGrid();
                 stepOrder = 0; 
-                pathArray = [];
-                resetGridClass();
-                updateGridSize();
                 stageNumber++;
                 updateStageNumber();
+                pathArray = [];
             }
 
             function updateGridSize() {
@@ -176,7 +174,7 @@
                 $("#footer h3").html('Life: ' + life);
             }
             function updateStageNumber() {
-                $("#header h2").html('Stage ' + stageNumber);
+                $("#headerForGamePage h2").html('Stage ' + stageNumber);
             }
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
@@ -204,7 +202,7 @@
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
             function calculateScore() {
-                stageScore = 1000 * (timer.seconds + "" + timer.milliSecond);
+                stageScore = 1000 * (timer.seconds);
             }
             // Shows the score achieved by the player for the current stage.
             // Can be done in any method desired.
@@ -335,8 +333,8 @@
                     col = parseInt(array.substring(2, 3));
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
-                    $(cell).css('background-image', 'url(aliens6.jpg)');
-                    $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
+                    $(cell).css('background', 'white');
+                  
                     $(cell).addClass('step' + i);
                     i++;
                     if (i == window.pathArray.length) {
@@ -354,7 +352,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-                        $(cell).css('background-image', 'none');
+                      
                         $(cell).css('background-color', '#808080');
                     }
                     col = 0;
