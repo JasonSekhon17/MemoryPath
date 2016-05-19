@@ -151,10 +151,11 @@
                 life = 3;
                 updateLifeMessage();
                 resetGrid();
-                stepOrder = 0; 
+                stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
+                updateScoreMessage();
             }
             function updateGridSize() {
                 if (size < 9) {
@@ -169,7 +170,10 @@
                 }
             }
             function updateLifeMessage() {
-                $("#footer h3").html('Life: ' + life);
+                $("#footer #life").html('Life: ' + life);
+            }
+            function updateScoreMessage() {
+                $("#footer #score").html('Score: ' + totalScore);
             }
             function updateStageNumber() {
                 $("#headerForGamePage h2").html('Stage ' + stageNumber);
@@ -328,9 +332,9 @@
                     col = parseInt(array.substring(2, 3));
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
-                    $(cell).css('background-image', 'url(aliens6.jpg)');
+                    $(cell).css('background', 'white');
                     $(cell).addClass('step' + i);
-                    $(cell).css("animation","walk-east 0.2s steps(4) infinite");
+                    $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
                     //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
@@ -488,9 +492,10 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img src="life.jpg" alt="life points">
-                <h3 id="life">Life: <script>document.write(life);</script></h3>
-                <img src="star.jpeg" alt="score">
+                <img class="footer-image" src="life.jpg" alt="life points">
+                    <h3 id="life">Life: <script>document.write(life);</script></h3>
+                
+                <img class="footer-image" src="star.jpeg" alt="score">
                 <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
             </div>
         </div>
