@@ -144,6 +144,7 @@
                 updateLifeMessage();
                 resetGrid();
                 stepOrder = 0;
+                pathArray = [];
             }
             // Function to continue onto next stage
             function nextGame() {
@@ -156,18 +157,11 @@
                 updateStageNumber();
                 pathArray = [];
                 updateScoreMessage();
+                updateGridSize();
             }
+
             function updateGridSize() {
-                if (size < 9) {
-                    if (stageNumber % 5 == 0) {
-                        size++;
-                        $.mobile.changePage('game.php', {
-                            reloadPage: true,
-                            allowSamePageTransition: true,
-                            transition: 'none'
-                        });
-                    }
-                }
+                $("#game-screen").reload();
             }
             function updateLifeMessage() {
                 $("#footer #life").html('Life: ' + life);
