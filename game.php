@@ -272,8 +272,7 @@
                     }
                     pathArray.push(path_row + " " + path_col);
                 }
-                alert(pathArray.length);
-                alert(pathArray);
+                
 
                 /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
@@ -347,7 +346,8 @@
                     col = parseInt(array.substring(2, 3));
                     var table = $("#grid")[0];
                     var cell = table.rows[row].cells[col];
-                    $(cell).css('background-color', 'white');
+                    $(cell).css('background-image', 'url(aliens6.jpg)');
+                    $(cell).css("animation","walk-east 0.2s steps(4) infinite");
                     $(cell).addClass('step' + i);
                     //y.rows[row].cells[col].className += ' step' + i;
                     i++;
@@ -366,6 +366,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
+                        $(cell).css('background-image', 'none');
                         $(cell).css('background-color', '#808080');
                     }
                     col = 0;
@@ -377,6 +378,7 @@
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
+
                         $(cell).removeClass("clicked stepOrder");
                     }
                     col = 0;
