@@ -51,14 +51,26 @@
             timer = new Countdown();
             //  Changes grid to a square
             //  If grid width is greater than 800, it is changed to 50%
+            //  Changes grid to a square based on viewport size ratio
             $(document).ready(function () {
                 var cw = $('.game-panel').width();
-                if (cw > 800) {
-                    $('.game-panel').css({ 'width': 35 + '%' });
-                    cw = $('.game-panel').width();
-                }
+				var screenRatio = $(window).width()/$(window).height();
+                if (2.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 30 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.7 < screenRatio) {
+					$('.game-panel').css({ 'width': 35 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.3 < screenRatio) {
+					$('.game-panel').css({ 'width': 40 + '%' });
+					cw = $('.game-panel').width();
+                } else if (1.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 45 + '%' });
+					cw = $('.game-panel').width();
+				}
                 $('.game-panel').css({ 'height': cw + 'px' });
             });
+			
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
@@ -67,7 +79,7 @@
             });
             // If game has been started, the cells of the table will
             // respond to clicks.
-            $(document).on("pagecreate", "#pageone", function () {
+            $(document).on("finishShowPath", function () {
                 $("td.panel").mousedown(function () {
                     if (gameStatus) {
                         if ($(this).hasClass("step" + stepOrder)) {
@@ -152,12 +164,16 @@
                 gameStatus = false;
                 life = 3;
                 updateLifeMessage();
-                resetGrid();
                 stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
                 updateScoreMessage;
+				
+				if(stageNumber % 2 == 0) {
+					increaseGridSize();
+				}
+                resetGrid();
                 resetGridClass();
             }
 
@@ -180,6 +196,8 @@
                 calculateScore();
                 addToTotalScore();
                 clearInterval(counter);
+				currentTime = 0;
+				life = 0;
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
             }
@@ -224,7 +242,7 @@
             // This function will start the game. Timer will start to count down.
             // Only called by the start button.
             function startGame() {
-                generatePath();         // Generate random path. (Not done)
+                generatePath();         // Generate random path. 
                 showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
                 resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
@@ -320,6 +338,7 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
+				
                 var i = 0;
                 var interval = setInterval(function () {
                     array = window.pathArray[i];
@@ -329,12 +348,13 @@
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background', 'white');
                     $(cell).addClass('step' + i);
-                    $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
+                    //$(cell).css("animation", "walk-east 0.2s steps(4) infinite");
                     //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
+						$(document).trigger("finishShowPath");
                         timer.init();
                     }
                 }, 200);
@@ -348,20 +368,38 @@
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-image', 'none');
+                        //$(cell).html($(cell).attr('class'));
                         $(cell).css('background-color', '#808080');
                     }
                     col = 0;
                 }
             }
             function resetGridClass() {
+				
                 var table = $("#grid")[0];
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).removeClass();
+						$(cell).addClass('panel');
                     }
                     col = 0;
                 }
+            }
+			
+			function increaseGridSize() {
+                var table = $("#grid")[0];
+                for (row = 0; row < size; row++) {
+                    var cell = table.rows[row];
+					$(cell).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+                }
+				
+				$(table).append('<tr></tr>');
+				for (i = 0; i <= size; i++) {
+                    var row = table.rows[window.size];
+					$(row).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+				}
+				window.size++;
             }
             // This function basically makes the timer start counting down.
             // It will be called when the start button is clicked on, or when 
