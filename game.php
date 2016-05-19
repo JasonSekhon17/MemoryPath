@@ -354,8 +354,9 @@
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
-						$(document).trigger("finishShowPath");
                         timer.init();
+						$(document).trigger("finishShowPath");
+                        
                     }
                 }, 200);
             }
@@ -432,7 +433,7 @@
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.start_time = 20 + (5 * stageNumber);
+                this.seconds = 20 + (5 * stageNumber);
                 this.update_target();
             }
             // basic calculation decrementing time as countdown.
@@ -452,7 +453,7 @@
                 clearInterval(counter);
                 if (this.seconds < 10) this.seconds = "0" + this.seconds;
                 currentTime = this.seconds;
-                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
+                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
                 counter = setInterval(this.name + ".tick()", 1000);
