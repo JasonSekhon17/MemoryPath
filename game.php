@@ -526,11 +526,8 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img class="footer-image" src="life.jpg" alt="life points">
-                    <h3 id="life">Life: <script>document.write(life);</script></h3>
-                
-                <img class="footer-image" src="star.jpeg" alt="score">
-                <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
+                    <div id="life">Life: <script>document.write(life);</script></div>
+                <div id="score">Score: <script>document.write(totalScore);</script></div>
             </div>
         </div>
     </body>
