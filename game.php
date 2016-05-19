@@ -2,9 +2,7 @@
     /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
     session_start();
     include_once 'Login/dbconnect.php';
-
     **/
-
     $startingGridNum;
     
     if ($_POST['game-mode'] == 'easy') {
@@ -51,11 +49,9 @@
             //execute pause function
             var pauseOn = false;
             timer = new Countdown();
-
             //  Changes grid to a square
             //  If grid width is greater than 800, it is changed to 50%
             $(document).ready(function () {
-
                 var cw = $('.game-panel').width();
                 if (cw > 800) {
                     $('.game-panel').css({ 'width': 35 + '%' });
@@ -63,15 +59,12 @@
                 }
                 $('.game-panel').css({ 'height': cw + 'px' });
             });
-
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
-
             $(document).mouseup(function () {
                 isDown = false;    // When mouse goes up, set isDown to false
             });
-
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("pagecreate", "#pageone", function () {
@@ -97,7 +90,6 @@
                         $(this).addClass("clicked");
                     }
                 });
-
                 $("td.panel").mouseover(function () {
                     if (gameStatus) {
                         if (isDown) {
@@ -108,7 +100,6 @@
                                     stageClearScreen();
                                     gameClear = true;
                                 }
-
                             } else {
                                 if (!$(this).hasClass("clicked")) {
                                     $(this).css("background-color", "red");
@@ -124,7 +115,6 @@
                     }
                 });
             });
-
             // If timer counts down to zero, check if player's life is zero.
             // If life is zero, continue onto gameover process.
             // If life is not zero, take away one life and restart stage or reset stage.
@@ -136,7 +126,6 @@
                     // restart or reset stage.
                 }
             }
-
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
@@ -147,7 +136,6 @@
                 addToTotalScore();
                 startNewStage();
             }
-
             // Function to reset all game status.
             // Used for testing stage
             function resetGame() {
@@ -157,28 +145,37 @@
                 resetGrid();
                 stepOrder = 0;
             }
-
             // Function to continue onto next stage
             function nextGame() {
                 gameStatus = false;
                 life = 3;
                 updateLifeMessage();
                 resetGrid();
-                stepOrder = 0;
+                stepOrder = 0; 
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
-                resetGridClass();
+            }
+
+            function updateGridSize() {
+                if (size < 9) {
+                    if (stageNumber % 5 == 0) {
+                        size++;
+                        $.mobile.changePage('game.php', {
+                            reloadPage: true,
+                            allowSamePageTransition: true,
+                            transition: 'none'
+                        });
+                    }
+                }
             }
 
             function updateLifeMessage() {
                 $("#footer h3").html('Life: ' + life);
             }
-
             function updateStageNumber() {
-                $("#header h2").html('Stage ' + stageNumber);
+                $("#headerForGamePage h2").html('Stage ' + stageNumber);
             }
-
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
@@ -188,9 +185,8 @@
                 clearInterval(counter);
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
-                
-            }
 
+            }
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
@@ -201,33 +197,27 @@
                 $("#clear").popup("open");
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 stageScore = 0;
-                
 
             }
-
             // Calculate the score achieved by the player for the current stage.
             // Calculation involves the time and life remaining.
             function calculateScore() {
-                stageScore = 1000 * (timer.seconds + "" + timer.milliSecond);
+                stageScore = 1000 * (timer.seconds);
             }
-
             // Shows the score achieved by the player for the current stage.
             // Can be done in any method desired.
             function showScoreAchieved() {
                 // Implementation here.
             }
-
             // Add the current score to total score and reset the current score.
             function addToTotalScore() {
                 totalScore += stageScore;
             }
-
             // Reset timer, grid/table, life remaining, start button, and update total score.
             // Grid/table size may be changed depending on stage number.
             function startNewStage() {
                 // Implementation here.
             }
-
             // This function starts the game.
             function gameAct() {
                 if (!gameStatus) {
@@ -236,7 +226,6 @@
                     // Try to make the button disappear. (Not done)
                 }
             }
-
             // This function will start the game. Timer will start to count down.
             // Only called by the start button.
             function startGame() {
@@ -245,20 +234,15 @@
                 resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
             }
-
             // This function will generate the random path for each stage.
             // No validation of game status is needed because this function will
             // only be called when validation is done.
             function generatePath() {
-
                 path_row = 0;
                 path_col = 0;
-
                 path_row = randomIntFromInterval(0, size - 1);
                 pathArray.push(path_row + " " + path_col);
-
                 while (path_col < size - 1) {
-
                     rowMovement = checkTwoSides();
                     if (rowMovement == 3) {
                         path_col++;
@@ -272,21 +256,17 @@
                     }
                     pathArray.push(path_row + " " + path_col);
                 }
-                
 
                 /* hard coded path.
                 window.pathArray = ["3 0", "3 1", "2 1", "1 1", "1 2", "1 3", "2 3", "2 4"];
-
                 x_coord = 2;
                 y_coord = 5;
                 pathArray.push(x_coord + " " + y_coord);
-
                 while (pathArray.length <= size) {
                 pathArray.push(path_row + " " + path_col);
                 path_col++; 
                 }*/
             }
-
             function changeRow() {
                 upRow = path_row + 1;
                 downRow = path_row - 1;
@@ -307,32 +287,39 @@
                     }
                 }
             }
-
             function randomIntFromInterval(min, max) {
                 return Math.floor(Math.random() * (max - min + 1) + min);
             }
-
-
             function checkTwoSides() {
-                for (i = 0; i < pathArray.length; i++) {
-                    array = window.pathArray[i];
-                    row = parseInt(array.substring(0, 1));
-                    col = parseInt(array.substring(2, 3));
-                    if (col == path_col) {
-                        if ((path_row == 0) && (row == path_row + 1)
-                            || (path_row == size - 1) && (row == path_row - 1)) {
-                            return 3; // Represent no movement of row possible
-                        } else if (path_row == row + 1) {
+                upRow = path_row + 1;
+                downRow = path_row - 1;
+                array = window.pathArray[window.pathArray.length - 1];
+                if (window.pathArray.length > 1) {
+                    array = window.pathArray[window.pathArray.length - 2];
+                }
+                row = parseInt(array.substring(0, 1));
+                col = parseInt(array.substring(2, 3));
+                if (col == path_col) {
+                    if (((path_row == 0) && (row == path_row + 1)
+                            || (path_row == size - 1) && (row == path_row - 1))
+                            && (col == path_col)) {
+                        return 3; // Represent no movement of row possible
+                    } else
+                        if (
+                            path_row == row + 1
+                        //$.inArray((upRow + ' ' + path_column), array )
+                            ) {
                             return 0; // Represent upward direction
-                        } else if (path_row == row - 1) {
+                        } else if (
+                            path_row == row - 1
+                        //$.inArray((downRow + ' ' + path_column), array )
+                            ) {
                             return 1; // Represent downward direction
                         } else {
                             return 2; // Represent no used tile up or down
                         }
-                    }
                 }
             }
-
             // This function will use the random path generated in another function 
             // and show the path to the player by making the corresponding tiles
             // change color in order.
@@ -358,7 +345,7 @@
                     }
                 }, 200);
             }
-            // This function will reset the all the tiles inside the grid to original
+            //will reset the all the tiles inside the grid to original
             // state, which means original color. The recorded randomized path is not 
             // affected.
             function resetGrid() {
@@ -372,13 +359,11 @@
                     col = 0;
                 }
             }
-
             function resetGridClass() {
                 var table = $("#grid")[0];
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
-
                         $(cell).removeClass("clicked stepOrder");
                     }
                     col = 0;
@@ -390,7 +375,6 @@
             function gameStart() {
                 // Implementation needed.
             }
-
             // This function will pause the game, which means making the timer stop.
             // It will only be called when the menu button is clicked on and the menu 
             // popup appears.
@@ -400,7 +384,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = 20+(5*stageNumber);
+                    this.start_time = 20 + (5 * stageNumber);
                 } else {
                     this.start_time = currentTime;
                 }
@@ -418,7 +402,6 @@
             Countdown.prototype.reset = function () {
                 this.seconds = this.start_time;
                 this.update_target();
-
             }
             // basic calculation decrementing time as countdown.
             Countdown.prototype.tick = function () {
@@ -426,7 +409,7 @@
                     clearInterval(counter);
                     gameClear = false;
                 }
-                if (this.seconds > 0) {   
+                if (this.seconds > 0) {
                     this.seconds = this.seconds - 1;
                 }
                 this.update_target();
@@ -435,23 +418,23 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                
+
                 if (seconds < 10) this.seconds = "0" + this.seconds;
-                currentTime =  this.seconds;
-                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
+                currentTime = this.seconds;
+                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
                 counter = setInterval(this.name + ".tick()", 1000);
             }
             // update a new time from tick function every 10 millisecond
             Countdown.prototype.update_target = function () {
-                
+
                 seconds = this.seconds;
-                
-                
+
+
                 if (seconds < 10) seconds = "0" + seconds;
-                
-                if ( seconds == 0) {
+
+                if (seconds == 0) {
                     $(this.target_id).html("Time Out!!");
                     gameClear = true;
                     if (gameClear == true) {
@@ -460,10 +443,9 @@
                     }
                     gameOver();
                 } else {
-                    $(this.target_id).html("Time: "  + seconds);
+                    $(this.target_id).html("Time: " + seconds);
                 }
             }
-
         </script>
     </head>
     <body>
@@ -486,7 +468,6 @@
                     <?php
                         $row = 1;
                         $col = 1;
-
                         echo '<table class="game-panel" id="grid">';
                         while ($row <= $startingGridNum) {
                             echo '<tr>';
