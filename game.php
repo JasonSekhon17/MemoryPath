@@ -58,6 +58,7 @@
                     cw = $('.game-panel').width();
                 }
                 $('.game-panel').css({ 'height': cw + 'px' });
+                generateTable();
             });
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
@@ -125,6 +126,20 @@
                     lifeMinusOne();
                     // restart or reset stage.
                 }
+            }
+
+            function generateTable() {
+                mytable = $('<table></table>').attr({ id: "grid", class: "game-panel" });
+                var tr = [];
+                for (var i = 0; i < size; i++) {
+                    var row = $('<tr></tr>').appendTo(mytable);
+                    for (var j = 0; j < size; j++) {
+                        $('<td></td>').attr({ class: "panel", id: "tile" }).appendTo(row);
+                    }
+
+                }
+                mytable.appendTo("#table");
+                alert($("#tile").hasClass("panel"));
             }
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
@@ -330,7 +345,6 @@
                     $(cell).css('background', 'white');
                     $(cell).addClass('step' + i);
                     $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
-                    //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
@@ -454,22 +468,8 @@
             </div>
             <div data-role="content" style="text-align: center;" id="game-container">
                 <div id="game-screen">
-                    <?php
-                        $row = 1;
-                        $col = 1;
-                        echo '<table class="game-panel" id="grid">';
-                        while ($row <= $startingGridNum) {
-                            echo '<tr>';
-                            while ($col <= $startingGridNum) {
-                                echo '<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' . '</td>';
-                                $col++;
-                            }
-                            echo '</tr>';
-                            $row++;
-                            $col = 1;
-                        }
-                        echo '</table>';
-                    ?>
+                    <div id="table">
+                    </div>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
