@@ -28,7 +28,7 @@ $userRow=mysql_fetch_array($res);
             var triggerRight = 0;
             var triggerDown = 0;
 
-            $(document).ready(function(){
+            $(document).ready(function () {
                 animateDog();
             });
 
@@ -53,7 +53,7 @@ $userRow=mysql_fetch_array($res);
                 var oldCord = $('.spaceDog').offset();
                 var speed = calcSpeed([oldCord.top, oldCord.left], newCord);
 
-                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed ,function () {
+                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed, function () {
                     animateDog();
                 });
             }
@@ -61,12 +61,12 @@ $userRow=mysql_fetch_array($res);
             function calcSpeed(prev, next) {
                 var x = Math.abs(prev[1] - next[1]);
                 var y = Math.abs(prev[0] - next[0]);
-    
+
                 var greatest = x > y ? x : y;
-    
+
                 var speedModifier = 0.1;
 
-                var speed = Math.ceil(greatest/speedModifier);
+                var speed = Math.ceil(greatest / speedModifier);
 
                 return speed;
             }
@@ -98,6 +98,16 @@ $userRow=mysql_fetch_array($res);
                 }
                 e.preventDefault(); // prevent the default action (scroll / move caret)
             });
+
+
+
+            function openMenu() {
+                $("#option").popup('close');
+                window.setTimeout(function () {
+                    $("#instructions").popup('open')
+                }, 100);
+
+            }
         </script>
 
     </head>
@@ -165,14 +175,14 @@ $userRow=mysql_fetch_array($res);
 						  </div>
 						</fieldset>
 						
-                        <a href="#" id="instructionsLink" class="ui-btn ui-corner-all" data-rel="popup" data-transition="pop" data-position-to="window">Instructions</a>
+                        <a href="#" id="instructionsLink" class="ui-btn ui-corner-all" onclick="openMenu()">Instructions</a>
 						<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
 						
-						<div data-role="popup" id="instructions">
-							<p>This is a simple popup.</p>
-						</div>					
+											
 					</div>
-         
+                    <div data-role="popup" id="instructions">
+							<p>This is a simple popup.</p>
+			        </div>
             </div>
             </div>
             <div class="spaceDog">
