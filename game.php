@@ -42,6 +42,7 @@
             var isDown = false;
             var path_col;
             var path_row;
+			var length = size;	// Path length desired
             //timer object
             var counter;
             //the place where current time is storaged when you pause
@@ -51,15 +52,26 @@
             timer = new Countdown();
             //  Changes grid to a square
             //  If grid width is greater than 800, it is changed to 50%
+            //  Changes grid to a square based on viewport size ratio
             $(document).ready(function () {
                 var cw = $('.game-panel').width();
-                if (cw > 800) {
-                    $('.game-panel').css({ 'width': 35 + '%' });
-                    cw = $('.game-panel').width();
-                }
+				var screenRatio = $(window).width()/$(window).height();
+                if (2.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 30 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.7 < screenRatio) {
+					$('.game-panel').css({ 'width': 35 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.3 < screenRatio) {
+					$('.game-panel').css({ 'width': 40 + '%' });
+					cw = $('.game-panel').width();
+                } else if (1.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 45 + '%' });
+					cw = $('.game-panel').width();
+				}
                 $('.game-panel').css({ 'height': cw + 'px' });
-                generateTable();
             });
+			
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
@@ -68,7 +80,7 @@
             });
             // If game has been started, the cells of the table will
             // respond to clicks.
-            $(document).on("pagecreate", "#pageone", function () {
+            $(document).on("finishShowPath", function () {
                 $("td.panel").mousedown(function () {
                     if (gameStatus) {
                         if ($(this).hasClass("step" + stepOrder)) {
@@ -127,20 +139,6 @@
                     // restart or reset stage.
                 }
             }
-
-            function generateTable() {
-                mytable = $('<table></table>').attr({ id: "grid", class: "game-panel" });
-                var tr = [];
-                for (var i = 0; i < size; i++) {
-                    var row = $('<tr></tr>').appendTo(mytable);
-                    for (var j = 0; j < size; j++) {
-                        $('<td></td>').attr({ class: "panel", id: "tile" }).appendTo(row);
-                    }
-
-                }
-                mytable.appendTo("#table");
-                alert($("#tile").hasClass("panel"));
-            }
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
@@ -165,17 +163,18 @@
             // Function to continue onto next stage
             function nextGame() {
                 gameStatus = false;
+				gameClear = false;
                 life = 3;
                 updateLifeMessage();
-                resetGrid();
                 stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
-                updateScoreMessage;
+                updateScoreMessage();
+				increaseDifficulty();
+                resetGrid();
                 resetGridClass();
             }
-
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -195,6 +194,8 @@
                 calculateScore();
                 addToTotalScore();
                 clearInterval(counter);
+				currentTime = 0;
+				life = 0;
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
             }
@@ -239,12 +240,30 @@
             // This function will start the game. Timer will start to count down.
             // Only called by the start button.
             function startGame() {
-                generatePath();         // Generate random path. (Not done)
+                chosenPath();           // Generate random path. 
                 showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
                 resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
             }
-            // This function will generate the random path for each stage.
+            
+			// This function will make the game more difficult
+			function increaseDifficulty() {
+				length++;
+				if(stageNumber % 5 == 0 && size < 10) {
+					increaseGridSize();
+					length = size + ((stageNumber / 3) | 0);
+				}
+			}
+			
+			// This function randomizes paths until one matched length desired
+			function chosenPath() {				
+				while (pathArray.length != length) {
+					pathArray = [];
+					generatePath();
+				}
+			}
+			
+			// This function will generate the random path for each stage.
             // No validation of game status is needed because this function will
             // only be called when validation is done.
             function generatePath() {
@@ -335,6 +354,7 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
+				
                 var i = 0;
                 var interval = setInterval(function () {
                     array = window.pathArray[i];
@@ -344,14 +364,18 @@
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background', 'white');
                     $(cell).addClass('step' + i);
-                    $(cell).css("animation", "walk-east 0.2s steps(4) infinite");
+                    //$(cell).css("animation", "walk-east 0.2s steps(4) infinite");
+                    //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
                         timer.init();
+						$(document).trigger("finishShowPath");
+                        
                     }
                 }, 200);
+				//alert (gameStatus + ' ' + gameClear);
             }
             //will reset the all the tiles inside the grid to original
             // state, which means original color. The recorded randomized path is not 
@@ -362,20 +386,38 @@
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-image', 'none');
+                        //$(cell).html($(cell).attr('class'));
                         $(cell).css('background-color', '#808080');
                     }
                     col = 0;
                 }
             }
             function resetGridClass() {
+				
                 var table = $("#grid")[0];
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).removeClass();
+						$(cell).addClass('panel');
                     }
                     col = 0;
                 }
+            }
+			
+			function increaseGridSize() {
+                var table = $("#grid")[0];
+                for (row = 0; row < size; row++) {
+                    var cell = table.rows[row];
+					$(cell).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+                }
+				
+				$(table).append('<tr></tr>');
+				for (i = 0; i <= size; i++) {
+                    var row = table.rows[window.size];
+					$(row).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+				}
+				window.size++;
             }
             // This function basically makes the timer start counting down.
             // It will be called when the start button is clicked on, or when 
@@ -392,7 +434,7 @@
             function Countdown() {
                 //time declared
                 if (pauseOn == false) {
-                    this.start_time = 20 + (5 * stageNumber);
+                    this.start_time = 20;
                 } else {
                     this.start_time = currentTime;
                 }
@@ -408,7 +450,7 @@
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.seconds = this.start_time;
+                this.seconds = 20 + (5 * stageNumber);
                 this.update_target();
             }
             // basic calculation decrementing time as countdown.
@@ -426,9 +468,9 @@
             Countdown.prototype.pauseTimer = function () {
                 pauseOn = true;
                 clearInterval(counter);
-                if (seconds < 10) this.seconds = "0" + this.seconds;
+                if (this.seconds < 10) this.seconds = "0" + this.seconds;
                 currentTime = this.seconds;
-                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
+                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
                 counter = setInterval(this.name + ".tick()", 1000);
@@ -457,8 +499,9 @@
                     <source src="space1.mp4">
                 </video>
             <div data-role="header" id="headerForGamePage">               
+                <h2 id="stageSign">Stage 1</h2>
                 <h1 id="timer">Time: </h1>
-                <h2>Stage 1</h2>
+                
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
@@ -468,8 +511,22 @@
             </div>
             <div data-role="content" style="text-align: center;" id="game-container">
                 <div id="game-screen">
-                    <div id="table">
-                    </div>
+                    <?php
+                        $row = 1;
+                        $col = 1;
+                        echo '<table class="game-panel" id="grid">';
+                        while ($row <= $startingGridNum) {
+                            echo '<tr>';
+                            while ($col <= $startingGridNum) {
+                                echo '<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' . '</td>';
+                                $col++;
+                            }
+                            echo '</tr>';
+                            $row++;
+                            $col = 1;
+                        }
+                        echo '</table>';
+                    ?>
                     <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
                 </div>
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
@@ -487,11 +544,8 @@
             </div>
 
             <div data-role="footer" id="footer">
-                <img class="footer-image" src="life.jpg" alt="life points">
-                    <h3 id="life">Life: <script>document.write(life);</script></h3>
-                
-                <img class="footer-image" src="star.jpeg" alt="score">
-                <h3 id="score">Score: <script>document.write(totalScore);</script></h3>
+                    <div id="life">Life: <script>document.write(life);</script></div>
+                <div id="score">Score: <script>document.write(totalScore);</script></div>
             </div>
         </div>
     </body>
