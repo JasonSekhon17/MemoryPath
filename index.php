@@ -104,7 +104,7 @@ $userRow=mysql_fetch_array($res);
             function openMenu() {
                 $("#option").popup('close');
                 window.setTimeout(function () {
-                    $("#instructions").popup('open')
+                    $("#instructions").popup('open');
                 }, 100);
 
             }
@@ -155,7 +155,7 @@ $userRow=mysql_fetch_array($res);
                             <a href="#" data-rel="back" data-transition="slidedown" class="ui-btn ui-corner-all" id="menu-button">Return</a>
                         </div>
                     </div>
-                <a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
+				<a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
                     <div id="option" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
                         <h1>Options</h1>
 						<fieldset>
@@ -175,13 +175,15 @@ $userRow=mysql_fetch_array($res);
 						  </div>
 						</fieldset>
 						
-                        <a href="#" id="instructionsLink" class="ui-btn ui-corner-all" onclick="openMenu()">Instructions</a>
+                        <a href="#instructions" id="instructionsLink" class="ui-btn ui-corner-all" onclick="openMenu()">Instructions</a>
 						<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
 						
 											
 					</div>
-                    <div data-role="popup" id="instructions">
+                    <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
 							<p>This is a simple popup.</p>
+							<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Close</a>
+						
 			        </div>
             </div>
             </div>

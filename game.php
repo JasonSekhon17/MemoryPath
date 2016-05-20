@@ -50,27 +50,43 @@
             //execute pause function
             var pauseOn = false;
             timer = new Countdown();
-            //  Changes grid to a square
-            //  If grid width is greater than 800, it is changed to 50%
-            //  Changes grid to a square based on viewport size ratio
-            $(document).ready(function () {
-                var cw = $('.game-panel').width();
-                var screenRatio = $(window).width() / $(window).height();
-                if (2.0 < screenRatio) {
-                    $('.game-panel').css({ 'width': 30 + '%' });
-                    cw = $('.game-panel').width();
-                } else if (1.7 < screenRatio) {
-                    $('.game-panel').css({ 'width': 35 + '%' });
-                    cw = $('.game-panel').width();
-                } else if (1.3 < screenRatio) {
-                    $('.game-panel').css({ 'width': 40 + '%' });
-                    cw = $('.game-panel').width();
-                } else if (1.0 < screenRatio) {
-                    $('.game-panel').css({ 'width': 45 + '%' });
-                    cw = $('.game-panel').width();
-                }
-                $('.game-panel').css({ 'height': cw + 'px' });
-            });
+            
+			$(document).ready(
+				resize
+			);
+			
+			//  Changes grid to a square based on viewport size ratio
+            function resize() {
+				var cw = $('.game-panel').width();
+				var screenRatio = $(window).width()/$(window).height();
+				if (2.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 30 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.7 < screenRatio) {
+					$('.game-panel').css({ 'width': 35 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.3 < screenRatio) {
+					$('.game-panel').css({ 'width': 40 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.0 < screenRatio) {
+					$('.game-panel').css({ 'width': 50 + '%' });
+					cw = $('.game-panel').width();
+				} else if (.80 < screenRatio) {
+					$('.game-panel').css({ 'width': 85 + '%' });
+					cw = $('.game-panel').width();
+				}
+				$('.game-panel').css({ 'height': cw + 'px' });
+			}
+			
+			//	Dynamically changes grid size when resizing
+			$(document).mouseleave(function () { 
+				var number = 1;
+				var resizing = setInterval(resize, (1000/6));
+						
+				$(document).mouseenter( function() {
+					clearInterval(resizing);
+				});
+			});
 
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
