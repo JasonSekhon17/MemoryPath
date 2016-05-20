@@ -42,6 +42,7 @@
             var isDown = false;
             var path_col;
             var path_row;
+			var length = size;	// Path length desired
             //timer object
             var counter;
             //the place where current time is storaged when you pause
@@ -170,9 +171,7 @@
                 updateStageNumber();
                 pathArray = [];
                 updateScoreMessage();
-				if(stageNumber % 2 == 0) {
-					increaseGridSize();
-				}
+				increaseDifficulty();
                 resetGrid();
                 resetGridClass();
             }
@@ -242,12 +241,30 @@
             // This function will start the game. Timer will start to count down.
             // Only called by the start button.
             function startGame() {
-                generatePath();         // Generate random path. 
+                chosenPath();           // Generate random path. 
                 showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
                 resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
             }
-            // This function will generate the random path for each stage.
+            
+			// This function will make the game more difficult
+			function increaseDifficulty() {
+				length++;
+				if(stageNumber % 5 == 0 && size < 10) {
+					increaseGridSize();
+					length = size + ((stageNumber / 3) | 0);
+				}
+			}
+			
+			// This function randomizes paths until one matched length desired
+			function chosenPath() {				
+				while (pathArray.length != length) {
+					pathArray = [];
+					generatePath();
+				}
+			}
+			
+			// This function will generate the random path for each stage.
             // No validation of game status is needed because this function will
             // only be called when validation is done.
             function generatePath() {
