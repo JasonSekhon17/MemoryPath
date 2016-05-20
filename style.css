@@ -71,20 +71,14 @@ body{
   position:absolute;
   top:0px;
   left:0px;
-  background:black;
+  background-image:url(background2.png);
+  z-index: 1;
 }
-#space{
-  width:100%;
-  height:100%;
-  position:absolute;
-  top:0px;
-  left:0px;
-  background:black; 
-  z-index:0;
-}
+
 #game-menu{
   color:white;
   opacity: 0.9;
+  z-index: 99;
 }
 #headerForGamePage{
   width:100%;
@@ -94,7 +88,7 @@ body{
   color:white;
   background:#262829;
   position:relative;
-
+  z-index: 99;
 }
 #headerForGamePage > #stageSign {
   position:absolute;
@@ -106,6 +100,7 @@ body{
   padding:0;
   left:50%;
   text-align:center;
+  z-index: 99;
 }
 #headerForGamePage > h1 {
   position:absolute;
@@ -116,6 +111,7 @@ body{
   right:0;
   padding:0;
   text-align:center;
+  z-index: 99;
 }
 
 
@@ -125,6 +121,7 @@ body{
     margin: 0;
     padding:0;
     max-height:100%;
+    z-index: 99;
 }
 .game-panel {
     width: 85%;
@@ -133,9 +130,11 @@ body{
     margin-top:20px;
     padding:0;
     opacity:1; 
+    z-index: 99;
 }
 .panel {
     background-color: #262829;
+    z-index: 99;
 }
 #actButton{
   width:100px;
@@ -146,44 +145,52 @@ body{
   position:relative;
   background:#262829;
   opacity: 0.9;
+  z-index: 99;
 }
 #footer{
   width:100%;
   height:10%;
-  
+  position:absolute;
   color:white;
   background:black;
   font-size:20px;
   opacity: 0.8;
   border: none;
   bottom:0;
+  z-index: 99;
   
 }
-#footer >img{
-  width:10%;
-  height:100%;
-  position:relative;
-  float:left;
 
-}
 #footer > #life{
-  width:25%;
+  width:50%;
   height:100%;
   margin:0;
   padding:0;
   float:left;
-  line-height: 700%;
+  line-height: 30%;
   font-size:20px;
-
+  line-height: 300%;
+  text-align: center;
+  background-image:url(life.jpg);
+  background-repeat:no-repeat;
+  background-size:15% 100%;
+  background-position:left;
+  z-index: 99;
 }
 #footer >#score{
-  width:45%;
+  width:50%;
   height:100%;
   margin:0;
   padding:0;
   float:left;
-  line-height: 700%;
+  line-height: 300%;
   font-size:20px;
+  text-align: center;
+  background-image:url(star.jpeg);
+  background-repeat:no-repeat;
+  background-size:15% 100%;
+  background-position:left;
+  z-index: 99;
 } 
 .spaceDog{
     visibility: hidden;
@@ -254,7 +261,7 @@ body{
     from { background-position: 0px; }
     to { background-position: -960px; }
   }
-#menupage, #twinkling {
+#menupage, #twinkling, #twinkling2  {
   position:absolute;
   top:0;
   left:0;
@@ -273,7 +280,7 @@ body{
   z-index:1;
 }
 
-#twinkling{
+#twinkling, #twinkling2{
   background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
   z-index:-10;
 
@@ -283,6 +290,7 @@ body{
   -webkit-animation:move-twink-back 200s linear infinite;
   animation:move-twink-back 200s linear infinite;
 }
+
 #grid{
     position: relative;
     opacity: 0.9;
