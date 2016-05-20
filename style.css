@@ -161,31 +161,34 @@ body{
   bottom:0;
   
 }
-#footer >img{
-  width:10%;
-  height:100%;
-  position:relative;
-  float:left;
 
-}
 #footer > #life{
-  width:25%;
+  width:50%;
   height:100%;
   margin:0;
   padding:0;
   float:left;
-  line-height: 700%;
+  line-height: 30%;
   font-size:20px;
+  background-image:url(life.jpg);
+  background-repeat: :no-repeat;
+  background-size:15% 100%;
+  background-position:left;
 
 }
 #footer >#score{
-  width:45%;
+  width:50%;
   height:100%;
   margin:0;
   padding:0;
   float:left;
   line-height: 700%;
   font-size:20px;
+  background-image:url(star.jpeg);
+  background-repeat: :no-repeat;
+  background-size:15% 100%;
+  background-position:left;
+
 } 
 .spaceDog{
     visibility: hidden;
