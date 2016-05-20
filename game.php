@@ -496,9 +496,7 @@
     </head>
     <body>
       <div data-role="page" id="pageone">
-                <video autoplay loop id="space">
-                    <source src="space1.mp4">
-                </video>
+              
             <div data-role="header" id="headerForGamePage">               
                 <h2 id="stageSign">Stage 1</h2>
                 <h1 id="timer">Time: </h1>
@@ -548,6 +546,7 @@
                     <div id="life">Life: <script>document.write(life);</script></div>
                 <div id="score">Score: <script>document.write(totalScore);</script></div>
             </div>
+            <div id="twinkling2"></div>
         </div>
     </body>
 </html>
