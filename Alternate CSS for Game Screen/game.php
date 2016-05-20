@@ -42,7 +42,7 @@
             var isDown = false;
             var path_col;
             var path_row;
-            var length = size;  // Path length desired
+			var length = size;	// Path length desired
             //timer object
             var counter;
             //the place where current time is storaged when you pause
@@ -55,23 +55,26 @@
             //  Changes grid to a square based on viewport size ratio
             $(document).ready(function () {
                 var cw = $('.game-panel').width();
-                var screenRatio = $(window).width() / $(window).height();
+				var screenRatio = $(window).width()/$(window).height();
                 if (2.0 < screenRatio) {
-                    $('.game-panel').css({ 'width': 30 + '%' });
-                    cw = $('.game-panel').width();
-                } else if (1.7 < screenRatio) {
-                    $('.game-panel').css({ 'width': 35 + '%' });
-                    cw = $('.game-panel').width();
-                } else if (1.3 < screenRatio) {
-                    $('.game-panel').css({ 'width': 40 + '%' });
-                    cw = $('.game-panel').width();
+					$('.game-panel').css({ 'width': 30 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.7 < screenRatio) {
+					$('.game-panel').css({ 'width': 35 + '%' });
+					cw = $('.game-panel').width();
+				} else if (1.3 < screenRatio) {
+					$('.game-panel').css({ 'width': 40 + '%' });
+					cw = $('.game-panel').width();
                 } else if (1.0 < screenRatio) {
-                    $('.game-panel').css({ 'width': 45 + '%' });
-                    cw = $('.game-panel').width();
-                }
+					$('.game-panel').css({ 'width': 45 + '%' });
+					cw = $('.game-panel').width();
+				}
                 $('.game-panel').css({ 'height': cw + 'px' });
+				$('#grid').css({ 'top': (($(window).height() - cw)/2) + 'px' });
+				$('#actButton').css({ 'margin': (-70.3/2) +'px' });
+				$('#actButton').css({ 'top': ($(window).height() * .90) + 'px' });
             });
-
+			
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
             })
@@ -163,7 +166,7 @@
             // Function to continue onto next stage
             function nextGame() {
                 gameStatus = false;
-                gameClear = false;
+				gameClear = false;
                 life = 3;
                 updateLifeMessage();
                 stepOrder = 0;
@@ -171,10 +174,11 @@
                 updateStageNumber();
                 pathArray = [];
                 updateScoreMessage();
-                increaseDifficulty();
+				increaseDifficulty();
                 resetGrid();
                 resetGridClass();
             }
+
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -194,8 +198,8 @@
                 calculateScore();
                 addToTotalScore();
                 clearInterval(counter);
-                currentTime = 0;
-                life = 0;
+				currentTime = 0;
+				life = 0;
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
             }
@@ -232,8 +236,8 @@
             // This function starts the game.
             function gameAct() {
                 if (!gameStatus) {
+                    gameStatus = true;
                     startGame();
-					gameStatus = true;
                     // Try to make the button disappear. (Not done)
                 }
             }
@@ -245,32 +249,25 @@
                 resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
             }
-
-            // This function will make the game more difficult
-            function increaseDifficulty() {
-                if (size == 4) {
-                    length++;
-                } else if (size < 7) {
-                    length += 2;
-                } else {
-                    length += 3;
-                }
-
-                if (stageNumber % 5 == 0 && size < 10) {
-                    increaseGridSize();
-                    length = size + ((stageNumber / 3) | 0);
-                }
-            }
-
-            // This function randomizes paths until one matched length desired
-            function chosenPath() {
-                while (pathArray.length != length) {
-                    pathArray = [];
-                    generatePath();
-                }
-            }
-
-            // This function will generate the random path for each stage.
+            
+			// This function will make the game more difficult
+			function increaseDifficulty() {
+				length++;
+				if(stageNumber % 5 == 0 && size < 10) {
+					increaseGridSize();
+					length = size + ((stageNumber / 3) | 0);
+				}
+			}
+			
+			// This function randomizes paths until one matched length desired
+			function chosenPath() {				
+				while (pathArray.length != length) {
+					pathArray = [];
+					generatePath();
+				}
+			}
+			
+			// This function will generate the random path for each stage.
             // No validation of game status is needed because this function will
             // only be called when validation is done.
             function generatePath() {
@@ -361,7 +358,7 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
-
+				
                 var i = 0;
                 var interval = setInterval(function () {
                     array = window.pathArray[i];
@@ -378,11 +375,11 @@
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
                         timer.init();
-                        $(document).trigger("finishShowPath");
-
+						$(document).trigger("finishShowPath");
+                        
                     }
                 }, 200);
-                //alert (gameStatus + ' ' + gameClear);
+				//alert (gameStatus + ' ' + gameClear);
             }
             //will reset the all the tiles inside the grid to original
             // state, which means original color. The recorded randomized path is not 
@@ -400,31 +397,31 @@
                 }
             }
             function resetGridClass() {
-
+				
                 var table = $("#grid")[0];
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).removeClass();
-                        $(cell).addClass('panel');
+						$(cell).addClass('panel');
                     }
                     col = 0;
                 }
             }
-
-            function increaseGridSize() {
+			
+			function increaseGridSize() {
                 var table = $("#grid")[0];
                 for (row = 0; row < size; row++) {
                     var cell = table.rows[row];
-                    $(cell).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+					$(cell).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
                 }
-
-                $(table).append('<tr></tr>');
-                for (i = 0; i <= size; i++) {
+				
+				$(table).append('<tr></tr>');
+				for (i = 0; i <= size; i++) {
                     var row = table.rows[window.size];
-                    $(row).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
-                }
-                window.size++;
+					$(row).append('<td class="panel" onmousedown="event.preventDefault ? event.preventDefault() : event.returnValue = false">' + '</td>');
+				}
+				window.size++;
             }
             // This function basically makes the timer start counting down.
             // It will be called when the start button is clicked on, or when 
@@ -477,7 +474,7 @@
                 clearInterval(counter);
                 if (this.seconds < 10) this.seconds = "0" + this.seconds;
                 currentTime = this.seconds;
-                $(game - menu).append("<div>Pause</div><br><div>currentTime</div>");
+                $(game-menu).append("<div>Pause</div><br><div>currentTime</div>");
             }
             Countdown.prototype.restart = function () {
                 counter = setInterval(this.name + ".tick()", 1000);
@@ -502,12 +499,14 @@
     </head>
     <body>
       <div data-role="page" id="pageone">
-              
+                <video autoplay loop id="space">
+                    <source src="space1.mp4">
+                </video>
             <div data-role="header" id="headerForGamePage">               
-                <h2 id="stageSign">Stage 1</h2>
+                <h1 id="stageSign">Stage 1</h1>
                 <h1 id="timer">Time: </h1>
                 
-                <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
+                <a id="gameMenuButton" href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
                         <a href="index.php" class="ui-btn ui-corner-all">Back to main menu</a>
@@ -532,8 +531,10 @@
                         }
                         echo '</table>';
                     ?>
-                    <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
-                </div>
+					<div id="actButtonDiv">
+					<a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
+					</div>
+				</div>
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>     
                     <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
@@ -549,10 +550,9 @@
             </div>
 
             <div data-role="footer" id="footer">
-                    <div id="life">Life: <script>document.write(life);</script></div>
-                <div id="score">Score: <script>document.write(totalScore);</script></div>
+                <h1 id="life">Life: <script>document.write(life);</script></h1>
+                <h1 id="score">Score: <script>document.write(totalScore);</script></h1>
             </div>
-            <div id="twinkling2"></div>
         </div>
     </body>
 </html>
