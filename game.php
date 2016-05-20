@@ -233,8 +233,8 @@
             // This function starts the game.
             function gameAct() {
                 if (!gameStatus) {
-                    gameStatus = true;
                     startGame();
+					gameStatus = true;
                     // Try to make the button disappear. (Not done)
                 }
             }

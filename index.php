@@ -148,8 +148,30 @@ $userRow=mysql_fetch_array($res);
                 <a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
                     <div id="option" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
                         <h1>Options</h1>
-                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
-                    </div>
+						<fieldset>
+						  <div data-role="fieldcontain">
+							<label for="gameGrid">Grid</label>
+							<select id="gameGrid" name="gameGrid" data-role="flipswitch">
+								<option>Off</option>
+								<option>On</option>
+							</select>
+						  </div>
+						  <div data-role="fieldcontain">
+							<label for="globalBGM">BGM</label>
+							<select id="globalBGM" name="globalBGM" data-role="flipswitch">
+								<option>Off</option>
+								<option selected = "">On</option>
+							</select>
+						  </div>
+						</fieldset>
+						
+                        <a href="#" id="instructionsLink" class="ui-btn ui-corner-all" data-rel="popup" data-transition="pop" data-position-to="window">Instructions</a>
+						<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
+						
+						<div data-role="popup" id="instructions">
+							<p>This is a simple popup.</p>
+						</div>					
+					</div>
          
             </div>
             </div>
