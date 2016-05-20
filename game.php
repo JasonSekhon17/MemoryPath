@@ -162,14 +162,14 @@
             // Function to continue onto next stage
             function nextGame() {
                 gameStatus = false;
+				gameClear = false;
                 life = 3;
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber++;
                 updateStageNumber();
                 pathArray = [];
-                updateScoreMessage;
-				
+                updateScoreMessage();
 				if(stageNumber % 2 == 0) {
 					increaseGridSize();
 				}
@@ -359,6 +359,7 @@
                         
                     }
                 }, 200);
+				//alert (gameStatus + ' ' + gameClear);
             }
             //will reset the all the tiles inside the grid to original
             // state, which means original color. The recorded randomized path is not 
