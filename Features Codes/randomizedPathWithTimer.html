@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Memory Path</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script>
+			var numOfTileInCol;
+			var usedValuesIncol = [];
+			var k =0;
+			var path=[];
+			var pointer;
+			var startPoint;
+			var input = 5;
+			var path = [];
+			var tiles = [];
+			var col = [];
+			var direction;
+			var randomNumber;
+			var isMatched = false;
+			var correct = 0;
+			//generate a right size of grid based on user input
+			function generateGrid(){
+				//generate table to a certain size of grid
+				//based on differnet user input(depended on 
+				// "input" value)
+				var table = document.getElementById("grid");
+				var tbody = document.createElement("tbody");
+				var row,column;
+				var i;
+				var counter = 1;
+				for(i=1;i<=input;i++){
+					//create each row
+					row = document.createElement("tr");
+					//create each column in a row
+					//provide mouse effects and ID to each tile
+					//when those created too.
+					for(var j=1;j<=input;j++){
+						column = document.createElement("td");
+						column.setAttribute("id",counter);
+						counter++;
+						column.style.backgroundColor = "#0070c0";
+						column.setAttribute('onmouseover', 'mouseOver(this)');    //for testing purposes
+						column.setAttribute('onmouseout', 'mouseOut(this)');
+						column.setAttribute('onclick', 'mouseClick(this)');
+						row.appendChild(column);
+						tiles.push(column);
+					}
+					tbody.appendChild(row);
+				}
+				table.appendChild(tbody);
+			}
+			//provide randomized path
+			function randomizedPath(){
+				counter =1;
+				 //In order to create a completed path from left
+				 //side to right, it is broken down into each //column and determine a random sequent path in
+				 // each column at first, so below code picks 
+				 // a group of tiles depended on the same column 
+				 //on a grid.
+				 while(counter <= input){
+						for(var j=0;j<tiles.length;j++){
+							if(parseInt(tiles[j].id)%input==counter){
+								col.push(tiles[j]);
+							}
+							if(counter==input&&parseInt(tiles[j].id)%input==0){
+								col.push(tiles[j]);	
+							}
+						}
+					//first column use different variables to
+					//determine a sequent blocks
+					if(counter==1){
+						determineFirstCol(col);
+					}else{
+						determineOtherCol(col);
+					}
+					counter++;
+					col = [];
+				 }
+			}
+			//
+			function determineFirstCol(array){
+				//maximize 3 blocks as the biggest possible
+				//to be choosen from each column.
+				numOfTileInCol = parseInt(Math.random()*3+1);
+				//copy all variables from chosen array into 
+				//a new array which is more flexible to use in
+				//this method.
+				col = array.slice(0);
+				//only one tile would be chosen out of a certain
+				//column
+				if(numOfTileInCol==1){
+					startPoint = parseInt(Math.random()*input);
+					//pointer represent a startpoint, in next
+					//column, so make sure the a group of tiles
+					//from a first column and another group of  
+					//tiles from next column attach together.
+					//it looks like a sequent path
+					pointer = startPoint;
+					//storage chosen tiles in an array
+					//to remember an exact path.
+					path.push(col[startPoint]);
+				//two of tiles would be chosen out of first 
+				//column
+				}else if(numOfTileInCol==2){
+					startPoint = parseInt(Math.random()*(input-1));
+					direction = parseInt(Math.random()*2);
+					if(direction ==0){
+						pointer = startPoint;
+						path.push(col[startPoint+1]);
+						path.push(col[startPoint]);
+					}else{
+						pointer = startPoint + 1;
+						path.push(col[startPoint]);
+						path.push(col[startPoint+1]);
+					}
+				//three of tiles'd be chosen out of first column
+				}else{
+					startPoint = parseInt(Math.random()*(input-2));
+					direction = parseInt(Math.random()*2);
+					if(direction ==0){
+						pointer = startPoint;
+						path.push(col[startPoint+2]);
+						path.push(col[startPoint+1]);
+						path.push(col[startPoint]);
+					}else{
+						pointer = startPoint+2;
+						path.push(col[startPoint]);
+						path.push(col[startPoint+1]);
+						path.push(col[startPoint+2]);
+					}
+				}
+				col = [];
+			}
+			//from second column
+			function determineOtherCol(array){
+				//maximize three blocks as the biggest possible
+				numOfTileInCol = parseInt(Math.random()*3+1);
+				col = array.slice(0);
+				//one tile'd be selected
+				if(numOfTileInCol==1){
+					path.push(col[pointer]);
+				//two sequent tiles'd be selected
+				}else if(numOfTileInCol==2){
+					//To stick previous blocks and current blocks
+					//that are chosen in this column has to have
+					// at least one block each other in the same 
+					//'pointer'
+					while(!isMatched){
+						randomNumber = parseInt(Math.random()*4);
+						if(randomNumber==pointer  && randomNumber+1 <=(input-1)|| randomNumber+1==pointer && randomNumber+1 <=(input-1)){
+							isMatched = true;
+						}
+					}
+					isMatched = false;
+					for(i=0;i<numOfTileInCol;i++){
+						usedValuesIncol[i] = randomNumber + i;
+					}
+					if(randomNumber==pointer){
+
+						pointer = usedValuesIncol[1];
+						path.push(col[usedValuesIncol[0]]);
+						path.push(col[usedValuesIncol[1]]);
+					}else{
+						pointer = usedValuesIncol[0];
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[0]]);
+					}
+				//three sequent blocks'd be selected
+				}else{
+					while(!isMatched){
+						randomNumber = parseInt(Math.random()*3);
+						if(randomNumber==pointer && randomNumber+2 <=(input-1) || randomNumber+2==pointer && randomNumber+2 <=(input-1)){
+							isMatched = true;
+						}
+					}
+					isMatched = false;
+					for(i=0;i<numOfTileInCol;i++){
+						usedValuesIncol[i] = randomNumber + i;
+					}
+					if(randomNumber ==pointer){
+
+						pointer = usedValuesIncol[usedValuesIncol.length-1];
+						path.push(col[usedValuesIncol[0]]);
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[2]]);
+					}else{
+						
+						pointer = usedValuesIncol[0];
+						path.push(col[usedValuesIncol[2]]);
+						path.push(col[usedValuesIncol[1]]);
+						path.push(col[usedValuesIncol[0]]);
+					}
+				}
+				usedValuesIncol = [];
+				col = [];
+			}
+			//draw a path from 'path array' based on set timer
+		function drawPath(){
+			var h=0;
+			var interval = setInterval(function(){
+				path[h].style.backgroundColor = "green";
+				if(h > 0){
+					path[h-1].style.backgroundColor = "#0070c0";
+				}
+				h++;
+				if(h == path.length){
+					setTimeout(function(){path[h - 1].style.backgroundColor = "#0070c0"}, 400);
+					clearInterval(interval);
+				}
+			}, 400);
+		}
+		function mouseClick(e) {
+			if (e.classList.contains('step' + window.correct)){
+				e.style.backgroundColor = "green";
+				window.correct++;
+			} else {
+				if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "red";
+				}
+			}
+			
+			e.className += " clicked";
+		}
+			
+		function mouseOver(e) {
+			if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "blue";
+			}
+		}
+		
+		function mouseOut(e) {
+			if (!e.classList.contains('clicked')){
+				e.style.backgroundColor = "#0070c0";
+				//e.innerHTML = window.correct;
+			}
+		}
+		
+		window.addEventListener("load", generateGrid, false);
+		window.addEventListener("load", randomizedPath, false);	
+		window.addEventListener("load", drawPath, false);
+		</script>
+	</head>
+	<body>
+		
+		<table id="grid"></table>
+	</body>
+</html>

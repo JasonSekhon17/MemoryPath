@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+        <title>Memory Path</title>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script>
+            var triggerLeft = 0;
+            var triggerUp = 0;
+            var triggerRight = 0;
+            var triggerDown = 0;
+
+            $(document).ready(function(){
+                animateDog();
+            });
+
+            function showDog() {
+                if (window.triggerLeft == 1 && window.triggerUp && window.triggerRight == 1 && window.triggerDown == 1) {
+                    $(".spaceDog").css("visibility", "visible");
+                }
+            }
+
+            function changePosition() {
+                var h = $(window).height() - 250;
+                var w = $(window).width() - 250;
+
+                var newh = Math.floor(Math.random() * h);
+                var neww = Math.floor(Math.random() * w);
+
+                return [newh, neww];
+            }
+
+            function animateDog() {
+                var newCord = changePosition();
+                var oldCord = $('.spaceDog').offset();
+                var speed = calcSpeed([oldCord.top, oldCord.left], newCord);
+
+                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed ,function () {
+                    animateDog();
+                });
+            }
+
+            function calcSpeed(prev, next) {
+                var x = Math.abs(prev[1] - next[1]);
+                var y = Math.abs(prev[0] - next[0]);
+    
+                var greatest = x > y ? x : y;
+    
+                var speedModifier = 0.1;
+
+                var speed = Math.ceil(greatest/speedModifier);
+
+                return speed;
+            }
+
+            $(document).keydown(function (e) {
+
+                switch (e.which) {
+                    case 37: // left
+                        window.triggerLeft = 1;
+                        window.showDog();
+                        break;
+
+                    case 38: // up
+                        window.triggerUp = 1;
+                        window.showDog();
+                        break;
+
+                    case 39: // right
+                        window.triggerRight = 1;
+                        window.showDog();
+                        break;
+
+                    case 40: // down
+                        window.triggerDown = 1;
+                        window.showDog();
+                        break;
+
+                    default: return; // exit this handler for other keys
+                }
+                e.preventDefault(); // prevent the default action (scroll / move caret)
+            });
+        </script>
+
+    </head>
+    <body>
+        <div data-role="page" id="menupage">
+            <div id="menuContainer">
+            <div data-role="header" id="headerForMenuPage">
+                <h1>Memory Path</h1>
+            </div>
+            <div data-role="content" id="content">
+                <div id="logo">
+                    <p><img src="logo2.png" alt="logo" id="logo"></p>
+                </div>
+                <a href="#gamemode" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" data-transition="pop" data-position-to="window" id="menu-button">Play</a>
+                    <div id="gamemode" data-role="popup" class="ui-corner-all ui-content" data-theme="a" data-dismissible="false">
+                        <form method="post" action="game.php" data-ajax="false">
+                            <fieldset data-role="controlgroup">
+                                <legend>Please choose your game mode</legend>
+                                <input type="radio" name="game-mode" id="game-mode-1" value="easy" checked="checked">
+                                <label for="game-mode-1">Easy mode</label>
+                                <input type="radio" name="game-mode" id="game-mode-2" value="normal">
+                                <label for="game-mode-2">Normal mode</label>
+                                <input type="radio" name="game-mode" id="game-mode-3" value="hard">
+                                <label for="game-mode-3">Hard mode</label>
+                            </fieldset>
+                            <a href="#" data-rel="back" class="ui-btn ui-corner-all" id="menu-button">Return</a>
+                            <input type="submit" name="submit" value="Start game">
+                        </form>
+                    </div>
+                <a href="#highscore" data-rel="popup" data-transition="slideup" data-position-to="window" class="ui-btn ui-corner-all ui-btn-inline" id="menu-button">High Scores</a>
+                    <div id="highscore" data-role="popup" class="ui-content ui-btn-left" data-theme="a" data-dismissible="false" data-overlay-theme="a">
+                        <div id="popup-title">
+                            <h1>High Score</h1>
+                            <div id="score-rank">
+                                <ol data-role="listview">
+                                    <li>User 1<p id="high-score">99999</p></li>
+                                    <li>User 2<p id="high-score">99999</p></li>
+                                    <li>User 3<p id="high-score">99999</p></li>
+                                    <li>User 4<p id="high-score">99999</p></li>
+                                    <li>User 5<p id="high-score">99999</p></li>
+                                </ol>
+                            </div>
+                            <br><br>
+                            <a href="#" data-rel="back" data-transition="slidedown" class="ui-btn ui-corner-all" id="menu-button">Return</a>
+                        </div>
+                    </div>
+                <a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
+                    <div id="option" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
+                        <h1>Options</h1>
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
+                    </div>
+                <div class="spaceDog">
+                </div>
+            </div>
+            </div>
+            <div id="twinkling"></div>
+        </div>
+    </body>
+</html>
+    

@@ -1,0 +1,314 @@
+body{
+  overflow: hidden;
+  height: 100%;
+}
+.md-scroll-mask { position: initial;}
+
+table, th, td {
+	background-color:#0070c0;
+	color: #001450;
+}
+td {
+	height:20px;
+	min-width:20px;
+}
+body{
+  width:100%;
+  height:100%;
+}
+/* For Michael's work */
+#menupage {
+    height: 100%;
+    margin:  0;
+    padding:  0;
+    background-image: url("background2.png");
+    background-size:  cover;
+    background-repeat:  no-repeat;
+    color: #fff;
+    position:absolute;
+}
+#menuContainer{
+    z-index: 99;
+}
+#headerForMenuPage{
+    position: relative;
+    z-index: 99;
+}
+#content{
+    position: relative;
+    z-index: 99;   
+}
+#menu-button {
+    display: block;
+    margin:  0 10% 20px 10%;
+}
+
+#logo {
+    margin-left: auto;
+    margin-right: auto;
+    height: 220px;
+    width: 200px;
+    display: block;
+    z-index: 99;
+}
+
+#popup-title {
+    text-align: center;
+}
+
+
+
+#score-rank {
+    display: block;
+}
+
+#high-score {
+    display: inline;
+    float: right;
+    clear: right;
+    z-index: 1;
+}
+/*game screen*/
+
+#pageone{
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0px;
+  left:0px;
+  background-image:url(background2.png);
+  z-index: 1;
+}
+
+#game-menu{
+  color:white;
+  opacity: 0.9;
+  z-index: 99;
+}
+#headerForGamePage{
+  width:100%;
+  height:10%;
+  max-height:10%;
+  opacity: 0.9;
+  color:white;
+  background:#262829;
+  position:relative;
+  z-index: 99;
+}
+#headerForGamePage > #stageSign {
+  position:absolute;
+  width:25%;
+  height:45%;
+  margin:0;
+  margin-left:-15%;
+  margin-top:2%;
+  padding:0;
+  left:50%;
+  text-align:center;
+  z-index: 99;
+}
+#headerForGamePage > h1 {
+  position:absolute;
+  width:25%;
+  height:45%;
+  margin:0;
+  margin-top:2%;
+  right:0;
+  padding:0;
+  text-align:center;
+  z-index: 99;
+}
+
+
+#game-screen {
+    width:100%;
+    margin: 0;
+    padding:0;
+    max-height:100%;
+    z-index: 99;
+}
+.game-panel {
+    width: 85%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top:20px;
+    padding:0;
+    opacity:1; 
+    z-index: 99;
+}
+.panel {
+    background-color: #262829;
+    z-index: 99;
+}
+#actButton{
+  width:100px;
+  height:30px;
+  font-size:18px;
+  line-height: 200%;
+  color:white;
+  position:relative;
+  background:#262829;
+  opacity: 0.9;
+  z-index: 99;
+}
+#footer{
+  width:100%;
+  height:10%;
+  position:absolute;
+  color:white;
+  background:black;
+  font-size:20px;
+  opacity: 0.8;
+  border: none;
+  bottom:0;
+  z-index: 99;
+  
+}
+
+#footer > #life{
+  width:50%;
+  height:100%;
+  margin:0;
+  padding:0;
+  float:left;
+  line-height: 30%;
+  font-size:20px;
+  line-height: 300%;
+  text-align: center;
+  background-image:url(life.jpg);
+  background-repeat:no-repeat;
+  background-size:15% 100%;
+  background-position:left;
+  z-index: 99;
+}
+#footer >#score{
+  width:50%;
+  height:100%;
+  margin:0;
+  padding:0;
+  float:left;
+  line-height: 300%;
+  font-size:20px;
+  text-align: center;
+  background-image:url(star.jpeg);
+  background-repeat:no-repeat;
+  background-size:15% 100%;
+  background-position:left;
+  z-index: 99;
+} 
+.spaceDog{
+    visibility: hidden;
+    height: 250px;
+    width: 250px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index:-1;
+    background-image:url("dogspace.png");
+    background-size: cover;
+    margin:-100px 0px 0px -100px;
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+@-ms-keyframes spin {
+    from { -ms-transform: rotate(0deg); }
+    to { -ms-transform: rotate(360deg); }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+/*twinkling stars*/
+@keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-webkit-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-moz-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+@-ms-keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+/*for tile animation*/
+@keyframes walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+  @-webkit-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+  @-moz-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+  @-ms-walk-east {
+    from { background-position: 0px; }
+    to { background-position: -960px; }
+  }
+#menupage, #twinkling, #twinkling2  {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  display:block;
+  
+}
+
+#menupage {
+  background:#000 
+  url(background2.png)
+   repeat top center;
+  z-index:1;
+}
+
+#twinkling, #twinkling2{
+  background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
+  z-index:-10;
+
+  -moz-animation:move-twink-back 200s linear infinite;
+  -ms-animation:move-twink-back 200s linear infinite;
+  -o-animation:move-twink-back 200s linear infinite;
+  -webkit-animation:move-twink-back 200s linear infinite;
+  animation:move-twink-back 200s linear infinite;
+}
+
+#grid{
+    position: relative;
+    opacity: 0.9;
+}
+#gameover{
+    position: relative;
+    
+}
+#clear{
+    position: relative;
+    
+}
+
+
+#clear, #gameover {
+    text-align: center;
+}

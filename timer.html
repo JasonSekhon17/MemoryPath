@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.3.min.js
+"></script>
+</head>
+<body>
+	<div id="container"></div>
+	<script type="text/javascript">
+		//put id of comtainer which is going to contain this timer on topright side
+		var container = document.getElementById("id for container");
+		var divForTimer = document.createElement("div");		
+		divForTimer.id = "timer";
+		divForTimer.style.position = "absolute";
+		divForTimer.style.top = "10px";
+		divForTimer.style.right="10px";
+		divForTimer.style.background="black";
+		divForTimer.style.color="white";
+		divForTimer.style.border = "2px groove black";
+		divForTimer.style.padding="20px";
+		container.appendChild(divForTimer);
+		var min=0, second = 0, tenSecond=0, millisecond = 0, tenMillisecond = 0;
+		setInterval("timer()", 10);
+		function timer(){
+			millisecond++;
+			if(millisecond>9){
+				millisecond=0;
+				tenMillisecond++;
+			}
+			if(tenMillisecond>9){
+				tenMillisecond=0;
+				second++;
+			}
+			if(second>9){
+				second=0;
+				tenSecond++;
+			}
+			if(tenSecond==6){
+				tenSecond=0;
+				min++;
+			}
+			$('#timer').text(min+":"+tenSecond+second+":"+tenMillisecond+millisecond);
+			
+		}
+	</script>
+</body>
+</html>
