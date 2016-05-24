@@ -39,7 +39,7 @@ $userRow=mysql_fetch_array($res);
             }
 
             function changePosition() {
-                var h = $(window).height() - 250;
+                var h = $(window).height() - 375;
                 var w = $(window).width() - 150;
 
                 var newh = Math.floor(Math.random() * h);
@@ -193,9 +193,9 @@ $userRow=mysql_fetch_array($res);
 			        </div>
             </div>
             </div>
-            <div class="spaceDog">
-                </div>
             <div id="twinkling"></div>
         </div>
+            <div class="spaceDog">
+                </div>
     </body>
 </html>
