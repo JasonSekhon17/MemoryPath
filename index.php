@@ -1,4 +1,5 @@
 <?php
+    /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
 session_start();
 include_once 'Login/dbconnect.php';
 
@@ -8,6 +9,7 @@ if(!isset($_SESSION['user']))
 }
 $res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
 $userRow=mysql_fetch_array($res);
+**/
 ?>
 <!DOCTYPE html>
     <html lang="en">
@@ -51,7 +53,7 @@ $userRow=mysql_fetch_array($res);
                 var oldCord = $('.spaceDog').offset();
                 var speed = calcSpeed([oldCord.top, oldCord.left], newCord);
 
-                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed ,function () {
+                $(".spaceDog").animate({ top: newCord[0], left: newCord[1] }, speed, function () {
                     animateDog();
                 });
             }
@@ -96,6 +98,16 @@ $userRow=mysql_fetch_array($res);
                 }
                 e.preventDefault(); // prevent the default action (scroll / move caret)
             });
+
+
+
+            function openMenu() {
+                $("#option").popup('close');
+                window.setTimeout(function () {
+                    $("#instructions").popup('open');
+                }, 100);
+
+            }
         </script>
 
     </head>
@@ -149,12 +161,36 @@ $userRow=mysql_fetch_array($res);
                             <a href="#" data-rel="back" data-transition="slidedown" class="ui-btn ui-corner-all" id="menu-button">Return</a>
                         </div>
                     </div>
-                <a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
+				<a href="#option" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Options</a>
                     <div id="option" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
                         <h1>Options</h1>
-                        <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
-                    </div>
-         
+						<fieldset>
+						  <div data-role="fieldcontain">
+							<label for="gameGrid">Grid</label>
+							<select id="gameGrid" name="gameGrid" data-role="flipswitch">
+								<option>Off</option>
+								<option>On</option>
+							</select>
+						  </div>
+						  <div data-role="fieldcontain">
+							<label for="globalBGM">BGM</label>
+							<select id="globalBGM" name="globalBGM" data-role="flipswitch">
+								<option>Off</option>
+								<option selected = "">On</option>
+							</select>
+						  </div>
+						</fieldset>
+						
+                        <a href="#instructions" id="instructionsLink" class="ui-btn ui-corner-all" onclick="openMenu()">Instructions</a>
+						<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
+						
+											
+					</div>
+                    <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
+							<p>This is a simple popup.</p>
+							<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Close</a>
+						
+			        </div>
             </div>
             </div>
             <div class="spaceDog">
@@ -163,4 +199,3 @@ $userRow=mysql_fetch_array($res);
         </div>
     </body>
 </html>
-    

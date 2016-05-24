@@ -1,7 +1,9 @@
 <?php
+    /**
     session_start();
     include_once 'Login/dbconnect.php';
     include_once 'scoring/score.php';
+    **/
     $startingGridNum;
     
     if ($_POST['game-mode'] == 'easy') {
@@ -562,7 +564,7 @@
                 </div>
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>
-                    <div id="placeForScore"></div>    
+                    <div id="placeForScore"></div>
                     <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
