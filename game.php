@@ -61,7 +61,15 @@
             );
 
             $(document).ready(
-                
+                function () {
+                    if (mode == "easy") {
+                        length = size;
+                    } else if (mode == "normal") {
+                        length = size + 2;
+                    } else if (mode == "hard") {
+                        length = size + 2;
+                    }
+                }
             );
             //  Changes grid to a square based on viewport size ratio
             function resize() {
@@ -415,6 +423,18 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
+                var showPathSpeed;
+                var timeToRememberGrid;
+                if (mode == "easy") {
+                    showPathSpeed = 200;
+                    timeToRememberGrid = 800;
+                } else if (mode == "normal") {
+                    showPathSpeed = 160;
+                    timeToRememberGrid = 700;
+                } else if (mode == "hard") {
+                    showPathSpeed = 120;
+                    timeToRememberGrid = 600;
+                }
                 var i = 0;
                 var interval = setInterval(function () {
                     array = window.pathArray[i];
@@ -424,18 +444,16 @@
                     var cell = table.rows[row].cells[col];
                     $(cell).css('background', 'white');
                     $(cell).addClass('step' + i);
-                    //$(cell).css("animation", "walk-east 0.2s steps(4) infinite");
-                    //y.rows[row].cells[col].className += ' step' + i;
                     i++;
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
-                        setTimeout(resetGrid, 800);
+                        setTimeout(resetGrid, timeToRememberGrid);
                         setTimeout(function () {
                             $(document).trigger("finishShowPath");
-                        }, 800);
+                        }, timeToRememberGrid);
                         timer.init();
                     }
-                }, 200);
+                }, showPathSpeed);
                 //alert (gameStatus + ' ' + gameClear);
             }
             //will reset the all the tiles inside the grid to original
