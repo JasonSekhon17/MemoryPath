@@ -46,7 +46,8 @@
             var isDown = false;
             var path_col;
             var path_row;
-            var length = size;  // Path length desired
+            var length;  // Path length desired
+            var gridChangeInterval = 5;
             //timer object
             var counter;
             //the place where current time is storaged when you pause
@@ -59,6 +60,9 @@
                 resize
             );
 
+            $(document).ready(
+                
+            );
             //  Changes grid to a square based on viewport size ratio
             function resize() {
                 var cw = $('.game-panel').width();
@@ -286,7 +290,7 @@
                         length += 3;
                     }
 
-                    if (stageNumber % 5 == 0 && size < 10) {
+                    if (stageNumber % gridChangeInterval == 0 && size < 10) {
                         increaseGridSize();
                         length = size + ((stageNumber / 3) | 0);
                     }
@@ -297,14 +301,14 @@
                         length += 3;
                     }
 
-                    if (stageNumber % 5 == 0 && size < 10) {
+                    if (stageNumber % gridChangeInterval == 0 && size < 10) {
                         increaseGridSize();
                         length = size + ((stageNumber / 3) | 0);
                     }
                 } else if (mode == "hard") {
                     length += 3;
 
-                    if (stageNumber % 5 == 0 && size < 10) {
+                    if (stageNumber % gridChangeInterval == 0 && size < 10) {
                         increaseGridSize();
                         length = size + ((stageNumber / 3) | 0);
                     }
