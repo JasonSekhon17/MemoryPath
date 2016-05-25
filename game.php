@@ -28,7 +28,9 @@
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
+        <script src="sound.js" type="text/javascript"></script>
+        <script src="blackhole.js" type="text/javascript"></script>
+        <script src="removeblackhole.js" type="text/javascript"></script>
 
         <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         <script>var mode = <?php echo json_encode($gameMode) ?>; </script>
@@ -151,6 +153,7 @@
                                 stageClearScreen();
                                 gameClear = true;
                             }
+                            correctTileSound(cell);
                         } else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
                             $(cell).css("background-color", "red");
                             $(cell).addClass("wrong");
@@ -159,6 +162,7 @@
                             if (life == 0) {
                                 gameOver();
                             }
+                            incorrectTileSound(cell);
                         }
                         $(cell).addClass("clicked");
                     }
@@ -187,9 +191,18 @@
             }
             // Function to reset all game status.
             // Used for testing stage
+            var gamesound = false;
             function resetGame() {
                 gameStatus = false;
                 life = 3;
+                if(gamesound){
+                    removeGameSound();
+                    gamesound = false;
+                }else{
+                    gameSound();
+                    gamesound = true;
+                }
+                
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber = 1;
@@ -240,6 +253,8 @@
                 life = 0;
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
+                removeGameSound();
+                gameoverSound();
             }
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
@@ -467,7 +482,7 @@
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-image', 'none');
                         //$(cell).html($(cell).attr('class'));
-                        $(cell).css('background-color', '#262829');
+                        $(cell).css('background-color', '#808080');
                         $(cell).removeClass('clicked');
                     }
                     col = 0;
@@ -583,7 +598,7 @@
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.php" class="ui-btn ui-corner-all">Back to main menu</a>
+                        <a href="index.php" class="ui-btn ui-corner-all" onclick="removeGameSound()">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
@@ -631,6 +646,9 @@
                 <div id="score">Score: <script>document.write(totalScore);</script></div>
             </div>
             <div id="twinkling2"></div>
+            <audio autoplay="autoplay" loop id="gameSound">
+                <source src="gameSound.mp3">
+            </audio>
         </div>
     </body>
 </html>
