@@ -98,52 +98,55 @@
             // If game has been started, the cells of the table will
             // respond to clicks.
             $(document).on("finishShowPath", function () {
-                $("td.panel").mousedown(function () {
-                    if (gameStatus) {
-                        if ($(this).hasClass("step" + stepOrder)) {
-                            $(this).css("background-color", "green");
-                            stepOrder++;
-                            if (stepOrder == pathArray.length) {
-                                stageClearScreen();
-                                gameClear = true;
-                            }
-                        } else {
-                            if (!$(this).hasClass("clicked")) {
-                                $(this).css("background-color", "red");
-                                life--;
-                                updateLifeMessage();
-                                if (life == 0) {
-                                    gameOver();
-                                }
-                            }
-                        }
-                        $(this).addClass("clicked");
-                    }
-                });
-                $("td.panel").mouseover(function () {
-                    if (gameStatus) {
-                        if (isDown) {
-                            if ($(this).hasClass("step" + stepOrder)) {
-                                $(this).css("background-color", "green");
-                                stepOrder++;
-                                if (stepOrder == pathArray.length) {
-                                    stageClearScreen();
-                                    gameClear = true;
-                                }
-                            } else {
-                                if (!$(this).hasClass("clicked")) {
-                                    $(this).css("background-color", "red");
-                                    life--;
-                                    updateLifeMessage();
-                                    if (life == 0) {
-                                        gameOver();
-                                    }
-                                }
-                            }
-                            $(this).addClass("clicked");
-                        }
-                    }
-                });
+                $("td.panel").on('mousedown', function () {
+                    checkCell(this);
+				});
+				
+				$("td.panel").on('mouseover', function () {
+					if (isDown) {
+						checkCell(this);
+					}
+				});
+								
+				$("td.panel").on('touchstart', function (e) {
+					checkCell(this);
+				});
+				
+				$("td.panel").on('touchmove', function (event) {
+					var lastLocation;	
+					var myLocation = event.originalEvent.changedTouches[0]; 
+					var tile = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
+					
+					if (lastLocation == myLocation) {
+						return true;
+					} else {
+						lastLocation = myLocation;
+						checkCell(tile);
+						return false;
+					}
+				});
+				
+				function checkCell(cell) {
+					if (gameStatus) {
+					if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong"))&& $(cell).hasClass("step" + stepOrder)) {
+							$(cell).css("background-color", "green");
+							stepOrder++;
+							if (stepOrder == pathArray.length) {
+								stageClearScreen();
+								gameClear = true;
+							}
+						} else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
+							$(cell).css("background-color", "red");
+							$(cell).addClass("wrong");
+							life--;
+							updateLifeMessage();
+							if (life == 0) {
+								gameOver();
+							}
+						}
+						$(cell).addClass("clicked");
+			        }
+				}
             });
             // If timer counts down to zero, check if player's life is zero.
             // If life is zero, continue onto gameover process.
@@ -172,13 +175,13 @@
                 gameStatus = false;
                 life = 3;
                 updateLifeMessage();
-                resetGrid();
                 stepOrder = 0;
                 stageNumber = 1;
                 updateStageNumber();
                 pathArray = [];
                 totalScore = 0;
                 updateScoreMessage;
+                resetGrid();
                 resetGridClass();
             }
             // Function to continue onto next stage
@@ -266,7 +269,6 @@
             function startGame() {
                 chosenPath();           // Generate random path. 
                 showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
-                resetGrid();            // Make all grid/cell go back to original color. (Not done)
                 gameStart();            // Implementation of resuming the timer. (Not done)
             }
 
@@ -385,7 +387,6 @@
             // Time interval between the change of color of each tile depends on
             // the game mode and current stage number.
             function showPath() {
-
                 var i = 0;
                 var interval = setInterval(function () {
                     array = window.pathArray[i];
@@ -401,9 +402,10 @@
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
+                        setTimeout(function(){
+							$(document).trigger("finishShowPath");
+						}, 800);
                         timer.init();
-                        $(document).trigger("finishShowPath");
-
                     }
                 }, 200);
                 //alert (gameStatus + ' ' + gameClear);
@@ -419,18 +421,18 @@
                         $(cell).css('background-image', 'none');
                         //$(cell).html($(cell).attr('class'));
                         $(cell).css('background-color', '#808080');
-                    }
+						$(cell).removeClass('clicked');
+					}
                     col = 0;
                 }
             }
             function resetGridClass() {
-
                 var table = $("#grid")[0];
                 for (row = 0; row < window.size; row++) {
                     for (col = 0; col < window.size; col++) {
                         var cell = table.rows[row].cells[col];
                         $(cell).removeClass();
-                        $(cell).addClass('panel');
+                        $(cell).addClass('panel clicked');
                     }
                     col = 0;
                 }
