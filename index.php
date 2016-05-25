@@ -24,6 +24,7 @@ $userRow=mysql_fetch_array($res);
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script src="responsiveslideshow.min.js"></script>
+        <script src="slideshow_control.js"></script>
         <script>
             var triggerLeft = 0;
             var triggerUp = 0;
@@ -206,7 +207,9 @@ $userRow=mysql_fetch_array($res);
 											
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
-							<p>This is a simple popup.</p>
+							<ul class="rslides">
+                                <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
+                            </ul>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
