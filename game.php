@@ -5,12 +5,14 @@
     include_once 'scoring/score.php';
     **/
     $startingGridNum;
+    $gameMode;
     
-    if ($_POST['game-mode'] == 'easy') {
+    $gameMode = $_POST['game-mode'];
+    if ($gameMode == 'easy') {
         $startingGridNum = 4;
-    } else if ($_POST['game-mode'] == 'normal') {
+    } else if ($gameMode == 'normal') {
         $startingGridNum = 5;
-    } else if ($_POST['game-mode'] == 'hard') {
+    } else if ($gameMode == 'hard') {
         $startingGridNum = 6;
     }
 ?>
@@ -29,6 +31,7 @@
 
 
         <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
+        <script>var mode = <?php echo json_encode($gameMode) ?>; </script>
         
         <script>
             var gameStatus = false;         // False if game is paused/stopped, true otherwise.
@@ -51,43 +54,43 @@
             //execute pause function
             var pauseOn = false;
             timer = new Countdown();
-            
-			$(document).ready(
-				resize
-			);
-			
-			//  Changes grid to a square based on viewport size ratio
+
+            $(document).ready(
+                resize
+            );
+
+            //  Changes grid to a square based on viewport size ratio
             function resize() {
-				var cw = $('.game-panel').width();
-				var screenRatio = $(window).width()/$(window).height();
-				if (2.0 < screenRatio) {
-					$('.game-panel').css({ 'width': 30 + '%' });
-					cw = $('.game-panel').width();
-				} else if (1.7 < screenRatio) {
-					$('.game-panel').css({ 'width': 35 + '%' });
-					cw = $('.game-panel').width();
-				} else if (1.3 < screenRatio) {
-					$('.game-panel').css({ 'width': 40 + '%' });
-					cw = $('.game-panel').width();
-				} else if (1.0 < screenRatio) {
-					$('.game-panel').css({ 'width': 50 + '%' });
-					cw = $('.game-panel').width();
-				} else if (.80 < screenRatio) {
-					$('.game-panel').css({ 'width': 85 + '%' });
-					cw = $('.game-panel').width();
-				}
-				$('.game-panel').css({ 'height': cw + 'px' });
-			}
-			
-			//	Dynamically changes grid size when resizing
-			$(document).mouseleave(function () { 
-				var number = 1;
-				var resizing = setInterval(resize, (1000/6));
-						
-				$(document).mouseenter( function() {
-					clearInterval(resizing);
-				});
-			});
+                var cw = $('.game-panel').width();
+                var screenRatio = $(window).width() / $(window).height();
+                if (2.0 < screenRatio) {
+                    $('.game-panel').css({ 'width': 30 + '%' });
+                    cw = $('.game-panel').width();
+                } else if (1.7 < screenRatio) {
+                    $('.game-panel').css({ 'width': 35 + '%' });
+                    cw = $('.game-panel').width();
+                } else if (1.3 < screenRatio) {
+                    $('.game-panel').css({ 'width': 40 + '%' });
+                    cw = $('.game-panel').width();
+                } else if (1.0 < screenRatio) {
+                    $('.game-panel').css({ 'width': 50 + '%' });
+                    cw = $('.game-panel').width();
+                } else if (.80 < screenRatio) {
+                    $('.game-panel').css({ 'width': 85 + '%' });
+                    cw = $('.game-panel').width();
+                }
+                $('.game-panel').css({ 'height': cw + 'px' });
+            }
+
+            //  Dynamically changes grid size when resizing
+            $(document).mouseleave(function () {
+                var number = 1;
+                var resizing = setInterval(resize, (1000 / 6));
+
+                $(document).mouseenter(function () {
+                    clearInterval(resizing);
+                });
+            });
 
             $(document).mousedown(function () {
                 isDown = true;      // When mouse goes down, set isDown to true
@@ -100,53 +103,53 @@
             $(document).on("finishShowPath", function () {
                 $("td.panel").on('mousedown', function () {
                     checkCell(this);
-				});
-				
-				$("td.panel").on('mouseover', function () {
-					if (isDown) {
-						checkCell(this);
-					}
-				});
-								
-				$("td.panel").on('touchstart', function (e) {
-					checkCell(this);
-				});
-				
-				$("td.panel").on('touchmove', function (event) {
-					var lastLocation;	
-					var myLocation = event.originalEvent.changedTouches[0]; 
-					var tile = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
-					
-					if (lastLocation == myLocation) {
-						return true;
-					} else {
-						lastLocation = myLocation;
-						checkCell(tile);
-						return false;
-					}
-				});
-				
-				function checkCell(cell) {
-					if (gameStatus) {
-					if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong"))&& $(cell).hasClass("step" + stepOrder)) {
-							$(cell).css("background-color", "green");
-							stepOrder++;
-							if (stepOrder == pathArray.length) {
-								stageClearScreen();
-								gameClear = true;
-							}
-						} else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
-							$(cell).css("background-color", "red");
-							$(cell).addClass("wrong");
-							life--;
-							updateLifeMessage();
-							if (life == 0) {
-								gameOver();
-							}
-						}
-						$(cell).addClass("clicked");
-			        }
-				}
+                });
+
+                $("td.panel").on('mouseover', function () {
+                    if (isDown) {
+                        checkCell(this);
+                    }
+                });
+
+                $("td.panel").on('touchstart', function (e) {
+                    checkCell(this);
+                });
+
+                $("td.panel").on('touchmove', function (event) {
+                    var lastLocation;
+                    var myLocation = event.originalEvent.changedTouches[0];
+                    var tile = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
+
+                    if (lastLocation == myLocation) {
+                        return true;
+                    } else {
+                        lastLocation = myLocation;
+                        checkCell(tile);
+                        return false;
+                    }
+                });
+
+                function checkCell(cell) {
+                    if (gameStatus) {
+                        if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong")) && $(cell).hasClass("step" + stepOrder)) {
+                            $(cell).css("background-color", "green");
+                            stepOrder++;
+                            if (stepOrder == pathArray.length) {
+                                stageClearScreen();
+                                gameClear = true;
+                            }
+                        } else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
+                            $(cell).css("background-color", "red");
+                            $(cell).addClass("wrong");
+                            life--;
+                            updateLifeMessage();
+                            if (life == 0) {
+                                gameOver();
+                            }
+                        }
+                        $(cell).addClass("clicked");
+                    }
+                }
             });
             // If timer counts down to zero, check if player's life is zero.
             // If life is zero, continue onto gameover process.
@@ -260,7 +263,7 @@
             function gameAct() {
                 if (!gameStatus) {
                     startGame();
-					gameStatus = true;
+                    gameStatus = true;
                     // Try to make the button disappear. (Not done)
                 }
             }
@@ -274,18 +277,39 @@
 
             // This function will make the game more difficult
             function increaseDifficulty() {
-                if (size == 4) {
-                    length++;
-                } else if (size < 7) {
-                    length += 2;
-                } else {
+                if (mode == "easy") {
+                    if (size == 4) {
+                        length++;
+                    } else if (size < 7) {
+                        length += 2;
+                    } else {
+                        length += 3;
+                    }
+
+                    if (stageNumber % 5 == 0 && size < 10) {
+                        increaseGridSize();
+                        length = size + ((stageNumber / 3) | 0);
+                    }
+                } else if (mode == "normal") {
+                    if (size < 7) {
+                        length += 2;
+                    } else {
+                        length += 3;
+                    }
+
+                    if (stageNumber % 5 == 0 && size < 10) {
+                        increaseGridSize();
+                        length = size + ((stageNumber / 3) | 0);
+                    }
+                } else if (mode == "hard") {
                     length += 3;
+
+                    if (stageNumber % 5 == 0 && size < 10) {
+                        increaseGridSize();
+                        length = size + ((stageNumber / 3) | 0);
+                    }
                 }
 
-                if (stageNumber % 5 == 0 && size < 10) {
-                    increaseGridSize();
-                    length = size + ((stageNumber / 3) | 0);
-                }
             }
 
             // This function randomizes paths until one matched length desired
@@ -402,9 +426,9 @@
                     if (i == window.pathArray.length) {
                         clearInterval(interval);
                         setTimeout(resetGrid, 800);
-                        setTimeout(function(){
-							$(document).trigger("finishShowPath");
-						}, 800);
+                        setTimeout(function () {
+                            $(document).trigger("finishShowPath");
+                        }, 800);
                         timer.init();
                     }
                 }, 200);
@@ -421,8 +445,8 @@
                         $(cell).css('background-image', 'none');
                         //$(cell).html($(cell).attr('class'));
                         $(cell).css('background-color', '#808080');
-						$(cell).removeClass('clicked');
-					}
+                        $(cell).removeClass('clicked');
+                    }
                     col = 0;
                 }
             }
