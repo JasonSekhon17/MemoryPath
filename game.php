@@ -145,10 +145,13 @@
                     }
                 });
                 var vortex; // object for blackhole animation
-                var isBlackhole = false;
                 function checkCell(cell) {
                     if (gameStatus) {
                         if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong")) && $(cell).hasClass("step" + stepOrder)) {
+                            
+                            if($(cell).hasClass("clicked")){
+                                $(cell).empty();
+                            }
                             $(cell).css("background-color", "green");
                             stepOrder++;
                             if (stepOrder == pathArray.length) {
@@ -159,7 +162,6 @@
                         } else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
                             var pointer = $(cell);
                             vortexGenerate(pointer);
-                            isBlackhole = true;
                             $(cell).addClass("wrong");                            
                             life--;
                             updateLifeMessage();
