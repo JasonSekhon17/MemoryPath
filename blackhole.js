@@ -1,5 +1,5 @@
-	var looper1,looper2;
-	var degrees1=0,degrees2 = 0;
+	var looper1,looper2,looper3,looper4;
+	var degrees1=0,degrees2 = 0,degrees3=0,degrees4=0;
 	function rotateAnimation1(el,speed){
 		var elem = document.getElementById(el);
 
@@ -43,6 +43,52 @@
 		degrees2++;
 		if(degrees2 > 359){
 			degrees2 = 1;
+		}
+		
+	}
+	function rotateAnimation3(el,speed){
+		var elem = document.getElementById(el);
+
+		if(navigator.userAgent.match("Chrome")){
+			elem.style.WebkitTransform = "rotate("+degrees3+"deg)";
+		} else if(navigator.userAgent.match("Firefox")){
+			elem.style.MozTransform = "rotate("+degrees3+"deg)";
+		} else if(navigator.userAgent.match("MSIE")){
+			elem.style.msTransform = "rotate("+degrees3+"deg)";
+		} else if(navigator.userAgent.match("Opera")){
+			elem.style.OTransform = "rotate("+degrees3+"deg)";
+		} else if(navigator.userAgent.match("Safari")) {
+			elem.style.WebkitTransform = "rotate("+degrees3+"deg)";
+		}else {
+			elem.style.transform = "rotate("+degrees3+"deg)";
+		}
+		looper3 = setTimeout('rotateAnimation1(\''+el+'\','+speed+')',speed);
+		degrees3++;
+		if(degrees3 > 359){
+			degrees3 = 1;
+		}
+		
+	}
+	function rotateAnimation4(el,speed){
+		var elem = document.getElementById(el);
+
+		if(navigator.userAgent.match("Chrome")){
+			elem.style.WebkitTransform = "rotate("+degrees4+"deg)";
+		} else if(navigator.userAgent.match("Firefox")){
+			elem.style.MozTransform = "rotate("+degrees4+"deg)";
+		} else if(navigator.userAgent.match("MSIE")){
+			elem.style.msTransform = "rotate("+degrees4+"deg)";
+		} else if(navigator.userAgent.match("Opera")){
+			elem.style.OTransform = "rotate("+degrees4+"deg)";
+		} else if(navigator.userAgent.match("Safari")) {
+			elem.style.WebkitTransform = "rotate("+degrees4+"deg)";
+		}else {
+			elem.style.transform = "rotate("+degrees4+"deg)";
+		}
+		looper4 = setTimeout('rotateAnimation1(\''+el+'\','+speed+')',speed);
+		degrees4++;
+		if(degrees4 > 359){
+			degrees4 = 1;
 		}
 		
 	}

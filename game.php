@@ -31,6 +31,7 @@
         <script src="sound.js" type="text/javascript"></script>
         <script src="blackhole.js" type="text/javascript"></script>
         <script src="removeblackhole.js" type="text/javascript"></script>
+        <script src="vortex.js" type="text/javascript"></script>
 
         <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         <script>var mode = <?php echo json_encode($gameMode) ?>; </script>
@@ -143,7 +144,8 @@
                         return false;
                     }
                 });
-
+                var vortex; // object for blackhole animation
+                var isBlackhole = false;
                 function checkCell(cell) {
                     if (gameStatus) {
                         if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong")) && $(cell).hasClass("step" + stepOrder)) {
@@ -155,14 +157,18 @@
                             }
                             correctTileSound(cell);
                         } else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
-                            $(cell).css("background-color", "red");
-                            $(cell).addClass("wrong");
+                            var pointer = $(cell);
+                            vortexGenerate(pointer);
+                            isBlackhole = true;
+                            $(cell).addClass("wrong");                            
                             life--;
                             updateLifeMessage();
                             if (life == 0) {
                                 gameOver();
                             }
                             incorrectTileSound(cell);
+                            
+
                         }
                         $(cell).addClass("clicked");
                     }
@@ -193,6 +199,7 @@
             // Used for testing stage
             var gamesound = false;
             function resetGame() {
+                resetTable();
                 gameStatus = false;
                 life = 3;
                 if(gamesound){
@@ -202,7 +209,6 @@
                     gameSound();
                     gamesound = true;
                 }
-                
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber = 1;
@@ -212,6 +218,7 @@
                 updateScoreMessage;
                 resetGrid();
                 resetGridClass();
+                
             }
             // Function to continue onto next stage
             function nextGame() {
@@ -255,10 +262,12 @@
                 $("#gameover").popup("open");
                 removeGameSound();
                 gameoverSound();
+                gameoverBlackhole();
             }
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
+                removeBlackhole();
                 calculateScore();
                 addToTotalScore();
                 clearInterval(counter);
