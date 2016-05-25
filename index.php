@@ -106,8 +106,18 @@ $userRow=mysql_fetch_array($res);
                 window.setTimeout(function () {
                     $("#instructions").popup('open');
                 }, 100);
+			}
 
-            }
+			$(document).on("change", "#gameGrid", function () {
+			//$("#gameGrid").on("change", "On", function(){
+				if($("#gameGrid option:selected").text() == "On") {
+					$('#logo').css('visibility', 'hidden');
+					$('.panel').css('background-color', 'blue');
+				} else {
+					$('#logo').css('visibility', 'visible');
+				}
+			});
+            
         </script>
 
     </head>
