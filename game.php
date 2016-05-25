@@ -61,6 +61,7 @@
             );
 
             $(document).ready(
+
                 function () {
                     if (mode == "easy") {
                         length = size;

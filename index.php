@@ -198,7 +198,7 @@ $userRow=mysql_fetch_array($res);
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
 							<p>This is a simple popup.</p>
-							<a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Close</a>
+							<a href="#" data-rel="back" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
             </div>
