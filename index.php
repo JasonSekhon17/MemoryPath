@@ -20,8 +20,10 @@ $userRow=mysql_fetch_array($res);
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="responsiveslideshow.css">
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script src="responsiveslideshow.min.js"></script>
         <script>
             var triggerLeft = 0;
             var triggerUp = 0;
@@ -107,6 +109,13 @@ $userRow=mysql_fetch_array($res);
                     $("#instructions").popup('open');
                 }, 100);
 			}
+
+            function openOption() {
+                $("#instructions").popup('close');
+                window.setTimeout(function () {
+                    $("#option").popup('open');
+                }, 100);
+            }
 
 			$(document).on("change", "#gameGrid", function () {
 			//$("#gameGrid").on("change", "On", function(){
@@ -198,7 +207,7 @@ $userRow=mysql_fetch_array($res);
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
 							<p>This is a simple popup.</p>
-							<a href="#" data-rel="back" class="ui-btn ui-corner-all">Close</a>
+							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
             </div>
