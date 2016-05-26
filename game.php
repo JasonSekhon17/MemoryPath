@@ -175,13 +175,7 @@
                             var pointer = $(cell);
                             vortexGenerate(pointer);
                             $(cell).addClass("wrong");
-                            life--;
-                            updateLifeMessage();
-                            if(life > 0){
-								failPuzzle();
-							} else {
-								gameOver();
-							}
+                            failPuzzle();
                             incorrectTileSound(cell);
                         }
                         $(cell).addClass("clicked");
@@ -192,13 +186,10 @@
             // If life is zero, continue onto gameover process.
             // If life is not zero, take away one life and restart stage or reset stage.
             if (timer == 0) {
-                if (lifeZero()) {
-                    gameOver();
-                } else {
-                    lifeMinusOne();
-                    // restart or reset stage.
-                }
+				life--;
+				failPuzzle();
             }
+			
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
@@ -291,34 +282,25 @@
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function failPuzzle() {
+                life--;
+                updateLifeMessage();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
 				$(".gameOldTotalScore").text('Score: ' + totalScore);
                 currentTime = 0;
                 $("#timer").html("Time: ");
-                $("#puzzleover").popup("open");
                 removeGameSound();
                 if (soundEffect == "On") {
                     gameoverSound();
                 }
+				if(life > 0){
+					$("#puzzleover").popup("open");
+				} else {
+					$("#gameover").popup("open");
+				}
                 gameoverBlackhole();
             }
 			
-			function gameOver() {
-                clearInterval(counter);
-                $("#hiddenScore").val(totalScore);
-				$(".gameOldTotalScore").text('Score: ' + totalScore);
-                currentTime = 0;
-                life = 0;
-                $("#timer").html("Time: ");
-                $("#gameover").popup("open");
-                removeGameSound();
-                if (soundEffect == "On") {
-                    gameoverSound();
-                }
-                gameoverBlackhole();
-            }
-
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -630,7 +612,7 @@
                         clearInterval(counter);
                         gameClear = false;
                     }
-                    gameOver();
+                    failPuzzle();
                 } else {
                     $(this.target_id).html("Time: " + seconds);
                 }
