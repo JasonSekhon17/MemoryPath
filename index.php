@@ -17,11 +17,14 @@ $userRow=mysql_fetch_array($res);
     <meta charset="utf-8">
         <title>Memory Path</title>
         <link href="style.css" rel="stylesheet" type="text/css"/>
+        <link href="resonsiveslides.css" rel="stylesheet" type="text/css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script src="responsiveslides.min.js"></script>
+        <script src="slideshow_control.js"></script>        
         <script src="sound.js" type="text/javascript"></script>
         <script>
             var triggerLeft = 0;
@@ -100,7 +103,12 @@ $userRow=mysql_fetch_array($res);
                 e.preventDefault(); // prevent the default action (scroll / move caret)
             });
 
-
+            function openOption() {
+                $("#instructions").popup('close');
+                window.setTimeout(function () {
+                    $("#option").popup('open');
+                }, 100);
+            }
 
             function openMenu() {
                 $("#option").popup('close');
@@ -113,9 +121,8 @@ $userRow=mysql_fetch_array($res);
                 //$("#gameGrid").on("change", "On", function(){
                 if ($("#globalBGM option:selected").text() == "Off") {
                     removeMainSound();
-                    alert($('#global').val());
                 } else {
-                    $('#logo').css('visibility', 'visible');
+                    mainSound();
                 }
             });
 
@@ -212,7 +219,7 @@ $userRow=mysql_fetch_array($res);
             <div class="spaceDog">
                 </div>
             <div id="twinkling"></div>
-            <audio autoplay="autoplay" loop id="gameoverSound">
+            <audio autoplay="autoplay" loop id="mainSound">
                 <source src="mainsound.mp3">
             </audio>
         </div>
