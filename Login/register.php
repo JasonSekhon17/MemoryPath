@@ -34,7 +34,6 @@ if(isset($_POST['btn-signup']))
 <link rel="stylesheet" href="registerStyle.css" type="text/css" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
 </head>
 <body>
 <div id="login-form">

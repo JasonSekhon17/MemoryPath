@@ -1,6 +1,9 @@
 <?php
+    /**
     session_start();
     include_once 'Login/dbconnect.php';
+    include_once 'scoring/score.php';
+    **/
     $startingGridNum;
     $gameMode;
     $music = $_POST['gameMusic'];
@@ -172,8 +175,14 @@
                             var pointer = $(cell);
                             vortexGenerate(pointer);
                             $(cell).addClass("wrong");
-                            failPuzzle();
+                            life--;
+                            updateLifeMessage();
+                            if (life == 0) {
+                                gameOver();
+                            }
                             incorrectTileSound(cell);
+
+
                         }
                         $(cell).addClass("clicked");
                     }
@@ -183,8 +192,12 @@
             // If life is zero, continue onto gameover process.
             // If life is not zero, take away one life and restart stage or reset stage.
             if (timer == 0) {
-				life--;
-				failPuzzle();
+                if (lifeZero()) {
+                    gameOver();
+                } else {
+                    lifeMinusOne();
+                    // restart or reset stage.
+                }
             }
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
@@ -196,10 +209,11 @@
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
-                //removeBlackhole();
+                removeBlackhole();
                 updateGameClearPopup();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 $("#timer").html("Time: ");
                 $("#clear").popup("open");
                 stageScore = 0;
@@ -242,6 +256,7 @@
             function resetGame() {
                 resetTable();
                 gameStatus = false;
+                life = 3;
                 stageScore = 0;
                 stepOrder = 0;
                 if (gamesound) {
@@ -263,6 +278,7 @@
             function nextGame() {
                 gameStatus = false;
                 gameClear = false;
+                life = 3;
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber++;
@@ -277,25 +293,22 @@
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
-            function failPuzzle() {
-                life--;
-                updateLifeMessage();
+            function gameOver() {
+                updateOldTotalScore();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
-				$(".gameOldTotalScore").text('Score: ' + totalScore);
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 currentTime = 0;
+                life = 0;
                 $("#timer").html("Time: ");
+                $("#gameover").popup("open");
                 removeGameSound();
                 if (soundEffect == "On") {
                     gameoverSound();
                 }
-				if(life > 0){
-					$("#puzzleover").popup("open");
-				} else {
-					$("#gameover").popup("open");
-				}
                 gameoverBlackhole();
             }
+
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -607,25 +620,9 @@
                         clearInterval(counter);
                         gameClear = false;
                     }
-                    failPuzzle();
+                    gameOver();
                 } else {
                     $(this.target_id).html("Time: " + seconds);
-                }
-            }
-
-
-            /** Posts data to achis.php when start button is clicked. For the achievements challange **/
-            function startAchi(){
-                $.post('Achievements/startAchi.php');
-            }
-
-            /** Posts data to achis.php when start button is clicked. For the achievements challange **/
-            function stageAchi(){
-                if(stageNumber == 10){
-                    $.post('Achievements/stageAchi.php');
-                }
-                if(stageNumber == 25){
-                    $.post('Achievements/stage25Achi.php');
                 }
             }
         </script>
@@ -662,40 +659,36 @@
                         }
                         echo '</table>';
                     ?>
-                    <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct();startAchi();">Start</a>
+                    <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
+                    <form method="post">
+                    <input type="hidden" id="hiddenScore" name="score" value="0" />
+                    <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
+                    </form>
                 </div>
-				<div id="puzzleover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Puzzle Over!</h1>
-                    <div class="placeForScore">
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Game Over!</h1>
+                    <div id="placeForScore">
 						<p class="gameOldTotalScore"></p>
-						<p class="gameStageLives"></p>
 					</div>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
-				
-                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Game Over!</h1>
-                    <div class="placeForScore">
-						<p class="gameOldTotalScore"></p>
-					</div>
-                     <form method="post" action="score.php">
-                    <input type="hidden" id="hiddenScore" name="score" value="0" />
-                    <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
-                    </form>
-                    <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
-                </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Stage Cleared!</h1>
-                    <div class="placeForScore">
+                    <h1>Stage Cleared!</h1> 
+                    <div id="placeForScore">
 						
 							<h3 class="gameStageNumber">Stage 1</h3>
+							<p class="gameOldTotalScore"></p>
+							<p class="gameStageScore"><script>document.write(stageScore);</script></p>
+							<p class="gameGridMultiplier">Grid Size Multiplier:</p>
+							<p class="gameTimeMultiplier">Time Multiplier:</p>
+							<p class="gameTotalStageScore">Total Stage Score:</p>
 							<h3 class="gameNewTotalScore"><script>document.write(totalScore);</script></h3>
 						
 					</div>    
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame();stageAchi();">Next stage</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
 
