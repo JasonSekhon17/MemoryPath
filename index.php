@@ -199,6 +199,13 @@ $userRow=mysql_fetch_array($res);
 								<option selected = "">On</option>
 							</select>
 						  </div>
+                          <div data-role="fieldcontain">
+							<label for="soundEffect">BGM</label>
+							<select id="soundEffect" name="soundEffect" data-role="flipswitch">
+								<option>Off</option>
+								<option selected = "">On</option>
+							</select>
+						  </div>
 						</fieldset>
 						
                         <a href="#instructions" id="instructionsLink" class="ui-btn ui-corner-all" onclick="openMenu()">Instructions</a>
@@ -207,9 +214,12 @@ $userRow=mysql_fetch_array($res);
 											
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
-							<ul class="rslides">
+							<ul class="rslides centered_btns centered_btns1">
                                 <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
+                                <li><img src="instruction2.png" alt="first instruction slide" width="260" height="366"></li>
                             </ul>
+                            <a class="centered-btns_nav centered_btns1_nav prev" href="#">Previous</a>
+                            <a class="centered-btns_nav centered_btns1_nav next" href="#">Next</a>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
