@@ -177,12 +177,12 @@
                             $(cell).addClass("wrong");
                             life--;
                             updateLifeMessage();
-                            if(life > 0){
-								failPuzzle();
-							} else {
-								gameOver();
-							}
+                            if (life == 0) {
+                                gameOver();
+                            }
                             incorrectTileSound(cell);
+
+
                         }
                         $(cell).addClass("clicked");
                     }
@@ -213,6 +213,7 @@
                 updateGameClearPopup();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 $("#timer").html("Time: ");
                 $("#clear").popup("open");
                 stageScore = 0;
@@ -255,6 +256,7 @@
             function resetGame() {
                 resetTable();
                 gameStatus = false;
+                life = 3;
                 stageScore = 0;
                 stepOrder = 0;
                 if (gamesound) {
@@ -276,6 +278,7 @@
             function nextGame() {
                 gameStatus = false;
                 gameClear = false;
+                life = 3;
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber++;
@@ -290,24 +293,11 @@
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
-            function failPuzzle() {
+            function gameOver() {
+                updateOldTotalScore();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
-				$(".gameOldTotalScore").text('Score: ' + totalScore);
-                currentTime = 0;
-                $("#timer").html("Time: ");
-                $("#puzzleover").popup("open");
-                removeGameSound();
-                if (soundEffect == "On") {
-                    gameoverSound();
-                }
-                gameoverBlackhole();
-            }
-			
-			function gameOver() {
-                clearInterval(counter);
-                $("#hiddenScore").val(totalScore);
-				$(".gameOldTotalScore").text('Score: ' + totalScore);
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 currentTime = 0;
                 life = 0;
                 $("#timer").html("Time: ");
@@ -675,27 +665,18 @@
                     <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
                     </form>
                 </div>
-				<div id="puzzleover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Puzzle Over!</h1>
-                    <div class="placeForScore">
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Game Over!</h1>
+                    <div id="placeForScore">
 						<p class="gameOldTotalScore"></p>
-						<p class="gameStageLives"></p>
 					</div>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
-				
-                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Game Over!</h1>
-                    <div class="placeForScore">
-						<p class="gameOldTotalScore"></p>
-					</div>
-                    <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
-                </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1> 
-                    <div class="placeForScore">
+                    <div id="placeForScore">
 						
 							<h3 class="gameStageNumber">Stage 1</h3>
 							<p class="gameOldTotalScore"></p>
