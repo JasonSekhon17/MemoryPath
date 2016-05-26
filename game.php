@@ -493,7 +493,7 @@
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-image', 'none');
                         //$(cell).html($(cell).attr('class'));
-                        $(cell).css('background-color', '#808080');
+                        $(cell).css('background-color', 'black');
                         $(cell).removeClass('clicked');
                     }
                     col = 0;
