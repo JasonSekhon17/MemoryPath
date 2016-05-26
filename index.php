@@ -38,6 +38,8 @@ $userRow=mysql_fetch_array($res);
                 if (window.triggerLeft == 1 && window.triggerUp && window.triggerRight == 1 && window.triggerDown == 1) {
                     $(".spaceDog").css("visibility", "visible");
                     $.post('Achievements/easterAchi.php');
+                    removeMainSound();
+                    easterEggSound();
                 }
             }
 

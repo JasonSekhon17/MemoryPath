@@ -34,4 +34,12 @@ function mainSound(){
 function removeMainSound(){
 	$("#mainSound").remove();
 }
+function easterEggSound(){
+	mainP = $("#menupage");
+	$(mainP).append($('<audio autoplay="autoplay" loop id="easterEggSound"><source src="starwars.mp3"></audio>'));
+}
+function removeEasterEggSound(){
+	$("#easterEggSound").remove();
+}
+
 
