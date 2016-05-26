@@ -22,13 +22,14 @@ $userRow=mysql_fetch_array($res);
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script src="sound.js" type="text/javascript"></script>
         <script>
             var triggerLeft = 0;
             var triggerUp = 0;
             var triggerRight = 0;
             var triggerDown = 0;
 
-            $(document).ready(function(){
+            $(document).ready(function () {
                 animateDog();
             });
 
@@ -61,12 +62,12 @@ $userRow=mysql_fetch_array($res);
             function calcSpeed(prev, next) {
                 var x = Math.abs(prev[1] - next[1]);
                 var y = Math.abs(prev[0] - next[0]);
-    
+
                 var greatest = x > y ? x : y;
-    
+
                 var speedModifier = 0.1;
 
-                var speed = Math.ceil(greatest/speedModifier);
+                var speed = Math.ceil(greatest / speedModifier);
 
                 return speed;
             }
@@ -106,18 +107,18 @@ $userRow=mysql_fetch_array($res);
                 window.setTimeout(function () {
                     $("#instructions").popup('open');
                 }, 100);
-			}
+            }
 
-			$(document).on("change", "#gameGrid", function () {
-			//$("#gameGrid").on("change", "On", function(){
-				if($("#gameGrid option:selected").text() == "On") {
-					$('#logo').css('visibility', 'hidden');
-					$('.panel').css('background-color', 'blue');
-				} else {
-					$('#logo').css('visibility', 'visible');
-				}
-			});
-            
+            $(document).on("change", "#globalBGM", function () {
+                //$("#gameGrid").on("change", "On", function(){
+                if ($("#globalBGM option:selected").text() == "Off") {
+                    removeMainSound();
+                    alert($('#global').val());
+                } else {
+                    $('#logo').css('visibility', 'visible');
+                }
+            });
+
         </script>
 
     </head>
@@ -176,22 +177,15 @@ $userRow=mysql_fetch_array($res);
                         <h1>Options</h1>
 						<fieldset>
 						  <div data-role="fieldcontain">
-							<label for="gameGrid">Grid</label>
-							<select id="gameGrid" name="gameGrid" data-role="flipswitch">
-								<option>Off</option>
-								<option>On</option>
-							</select>
-						  </div>
-						  <div data-role="fieldcontain">
 							<label for="globalBGM">BGM</label>
-							<select id="globalBGM" name="globalBGM" data-role="flipswitch">
+							<select id="globalBGM" name="globalBGM" data-role="slider">
 								<option>Off</option>
 								<option selected = "">On</option>
 							</select>
 						  </div>
                           <div data-role="fieldcontain">
-							<label for="soundEffect">BGM</label>
-							<select id="soundEffect" name="soundEffect" data-role="flipswitch">
+							<label for="soundEffect">Sould Effect</label>
+							<select id="soundEffect" name="soundEffect" data-role="slider">
 								<option>Off</option>
 								<option selected = "">On</option>
 							</select>
@@ -204,7 +198,6 @@ $userRow=mysql_fetch_array($res);
 											
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
-<<<<<<< HEAD
 							<ul class="rslides centered_btns centered_btns1">
                                 <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
                                 <li><img src="instruction2.png" alt="first instruction slide" width="260" height="366"></li>
@@ -212,10 +205,6 @@ $userRow=mysql_fetch_array($res);
                             <a class="centered-btns_nav centered_btns1_nav prev" href="#">Previous</a>
                             <a class="centered-btns_nav centered_btns1_nav next" href="#">Next</a>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
-=======
-							<p>This is a simple popup.</p>
-							<a href="#" data-rel="back" class="ui-btn ui-corner-all">Close</a>
->>>>>>> e971b6ffe2347a46d2f84afb2b096a5005ebdbf2
 						
 			        </div>
             </div>
