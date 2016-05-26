@@ -1,5 +1,4 @@
 <?php
-    /** connects to the 000webhost database. Will only work here: http://jasontestsite.net63.net/MemoryPath/
 session_start();
 include_once 'Login/dbconnect.php';
 
@@ -9,7 +8,6 @@ if(!isset($_SESSION['user']))
 }
 $res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
 $userRow=mysql_fetch_array($res);
-**/
 ?>
 <!DOCTYPE html>
     <html lang="en">
@@ -39,6 +37,7 @@ $userRow=mysql_fetch_array($res);
             function showDog() {
                 if (window.triggerLeft == 1 && window.triggerUp && window.triggerRight == 1 && window.triggerDown == 1) {
                     $(".spaceDog").css("visibility", "visible");
+                    $.post('Achievements/easterAchi.php');
                 }
             }
 
@@ -224,6 +223,48 @@ $userRow=mysql_fetch_array($res);
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
+                    <a href="#achievements" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" id="menu-button" data-transition="pop" data-position-to="window">Achievements</a>
+                    <div id="achievements" data-role="popup" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
+                        <div class="achievement-gallery">
+                            <center>
+                            <?php
+
+                            if($userRow['start'] == '0' || $userRow['easter'] == '0' || $userRow['stage10'] == '0' || $userRow['stage25'] == '0'){
+                                echo "<h2>Locked Achievements</h2>";
+                            }
+                                if ($userRow['start'] == '0'){
+                                    echo "<img src='Achievement-images/startFade.jpg' class='faded-achievement'><br>";
+                                }
+                                if ($userRow['easter'] == '0'){
+                                    echo "<img src='Achievement-images/easterFade.jpg' class='faded-achievement'><br>";
+                                }
+                                if ($userRow['stage10'] == '0'){
+                                    echo "<img src='Achievement-images/stageFade.jpg' class='faded-achievement'><br>";
+                                }
+                                if ($userRow['stage25'] == '0'){
+                                    echo "<img src='Achievement-images/stage25Fade.jpg' class='faded-achievement'><br>";
+                                }
+
+                            if($userRow['start'] == '1' || $userRow['easter'] || '1' && $userRow['stage10'] || '1' || $userRow['stage25'] == '1'){
+                                echo "<h2>Unlocked Achievements</h2>";
+                            }
+                                if ($userRow['start'] == '1'){
+                                    echo "<img src='Achievement-images/startClear.jpg' class='clear-achievement'><br>";
+                                }
+                                if ($userRow['easter'] == '1'){
+                                    echo "<img src='Achievement-images/easterClear.jpg' class='clear-achievement'><br>";
+                                }
+                                if ($userRow['stage10'] == '1'){
+                                    echo "<img src='Achievement-images/stageClear.jpg' class='clear-achievement'><br>";
+                                }
+                                if ($userRow['stage25'] == '1'){
+                                    echo "<img src='Achievement-images/stage25Clear.jpg' class='clear-achievement'><br>";
+                                }
+                            ?>
+                        </center>
+                        </div>
+                    <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="fade">Return</a>
+                    </div>
             </div>
             </div>
             <div class="spaceDog">

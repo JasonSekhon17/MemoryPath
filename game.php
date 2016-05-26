@@ -1,9 +1,6 @@
 <?php
-    /**
     session_start();
     include_once 'Login/dbconnect.php';
-    include_once 'scoring/score.php';
-    **/
     $startingGridNum;
     $gameMode;
     $music = $_POST['gameMusic'];
@@ -189,7 +186,6 @@
 				life--;
 				failPuzzle();
             }
-			
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
@@ -200,7 +196,7 @@
             // Shows a stage clear screen.
             // May be a popup, or just some texts.
             function stageClearScreen() {
-                removeBlackhole();
+                //removeBlackhole();
                 updateGameClearPopup();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
@@ -300,7 +296,6 @@
 				}
                 gameoverBlackhole();
             }
-			
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -617,6 +612,22 @@
                     $(this.target_id).html("Time: " + seconds);
                 }
             }
+
+
+            /** Posts data to achis.php when start button is clicked. For the achievements challange **/
+            function startAchi(){
+                $.post('Achievements/startAchi.php');
+            }
+
+            /** Posts data to achis.php when start button is clicked. For the achievements challange **/
+            function stageAchi(){
+                if(stageNumber == 10){
+                    $.post('Achievements/stageAchi.php');
+                }
+                if(stageNumber == 25){
+                    $.post('Achievements/stage25Achi.php');
+                }
+            }
         </script>
     </head>
     <body>
@@ -651,11 +662,7 @@
                         }
                         echo '</table>';
                     ?>
-                    <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct()">Start</a>
-                    <form method="post">
-                    <input type="hidden" id="hiddenScore" name="score" value="0" />
-                    <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
-                    </form>
+                    <a href="#" id="actButton" class="ui-btn ui-corner-all ui-btn-inline" onclick="gameAct();startAchi();">Start</a>
                 </div>
 				<div id="puzzleover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Puzzle Over!</h1>
@@ -672,24 +679,23 @@
                     <div class="placeForScore">
 						<p class="gameOldTotalScore"></p>
 					</div>
+                     <form method="post" action="score.php">
+                    <input type="hidden" id="hiddenScore" name="score" value="0" />
+                    <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
+                    </form>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Stage Cleared!</h1> 
+                    <h1>Stage Cleared!</h1>
                     <div class="placeForScore">
 						
 							<h3 class="gameStageNumber">Stage 1</h3>
-							<p class="gameOldTotalScore"></p>
-							<p class="gameStageScore"><script>document.write(stageScore);</script></p>
-							<p class="gameGridMultiplier">Grid Size Multiplier:</p>
-							<p class="gameTimeMultiplier">Time Multiplier:</p>
-							<p class="gameTotalStageScore">Total Stage Score:</p>
 							<h3 class="gameNewTotalScore"><script>document.write(totalScore);</script></h3>
 						
 					</div>    
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
-                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
+                    <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame();stageAchi();">Next stage</a>
                 </div>
             </div>
 

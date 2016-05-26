@@ -29,15 +29,17 @@ if(isset($_POST['btn-signup']))
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Memory Path - Register</title>
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="registerStyle.css" type="text/css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 <body>
 <div id="login-form">
 <form method="post">
 <table>
+<tr class="header"><td>Register</td></tr>
 <tr>
 <td><input type="text" name="name" placeholder="User Name" required /></td>
 </tr>

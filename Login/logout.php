@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 
 if(!isset($_SESSION['user']))
@@ -12,7 +13,10 @@ else if(isset($_SESSION['user'])!="")
 
 if(isset($_GET['logout']))
 {
- session_destroy();
  unset($_SESSION['user']);
+ header("Location: login.php");
+ session_destroy();
+ exit();
 }
+ob_end_flush();
 ?>

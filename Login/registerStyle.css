@@ -1,0 +1,67 @@
+body{
+  overflow: hidden;
+  height:100%;
+  background-image: url("../background2.png");
+  background-size: cover;
+}
+.md-scroll-mask { position: initial;}
+
+table{
+	width: 300px;
+	margin:auto;
+	margin-top:20px;
+	padding:20px 0px;
+	background-color:rgba(255, 255, 255, 0.2);
+	border:1px solid white;
+}
+tr{
+	width:100%;
+}
+td{
+	width:100%;
+}
+.header{
+	text-align:center;
+	font-family: sans-serif;
+	font-weight:bolder;
+	font-size:30px;
+	color: white;
+}
+input{
+	margin:auto;
+	width:90%;
+	margin-top:10px;
+	padding-top:5px;
+	display:block;
+	color:black;
+	background-color: white;
+	font-size:20px;
+	text-indent: 4px;
+	font-family: sans-serif;
+	font-weight:bolder;
+}
+
+button{
+	margin:auto;
+	display:block;
+	padding: 5px 20px;
+	margin-top:10px;
+	font-size:20px;
+	border:1px solid white;
+	font-family: sans-serif;
+	font-weight:bolder;
+	color: white;
+	background-color:rgba(0, 0, 0, 0.4);
+}
+
+a{
+	display:block;
+	text-align: center;
+	margin-top:20px;
+	text-decoration: none;
+	font-size:20px;
+	font-family: sans-serif;
+	font-weight:bolder;
+	color: white;
+}
+
