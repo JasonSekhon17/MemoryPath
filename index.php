@@ -219,6 +219,7 @@ $userRow=mysql_fetch_array($res);
 							<ul class="rslides">
                                 <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
                                 <li><img src="instruction2.png" alt="second instruction slide" width="260" height="366"></li>
+                                <li><img src="instruction3.png" alt="second instruction slide" width="260" height="366"></li>
                             </ul>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
