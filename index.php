@@ -150,7 +150,7 @@ $userRow=mysql_fetch_array($res);
                     <p><img src="logo2.png" alt="logo" id="logo"></p>
                 </div>
                 <a href="#gamemode" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" data-transition="pop" data-position-to="window" id="menu-button">Play</a>
-                    <div id="gamemode" data-role="popup" class="ui-corner-all ui-content" data-theme="a" data-dismissible="false">
+                    <div id="gamemode" data-role="popup" class="ui-corner-all ui-content" data-theme="b" data-dismissible="false" data-overlay-theme="a">
                         <form method="post" action="game.php" data-ajax="false">
                             <fieldset data-role="controlgroup">
                                 <legend>Please choose your game mode</legend>
@@ -168,7 +168,7 @@ $userRow=mysql_fetch_array($res);
                         </form>
                     </div>
                 <a href="#highscore" data-rel="popup" data-transition="slideup" data-position-to="window" class="ui-btn ui-corner-all ui-btn-inline" id="menu-button">High Scores</a>
-                    <div id="highscore" data-role="popup" class="ui-content ui-btn-left" data-theme="a" data-dismissible="false" data-overlay-theme="a">
+                    <div id="highscore" data-role="popup" class="ui-content ui-btn-left" data-theme="b" data-dismissible="false" data-overlay-theme="a">
                         <div id="popup-title">
                             <h1>High Score</h1>
                             <div id="score-rank">
@@ -216,9 +216,9 @@ $userRow=mysql_fetch_array($res);
 											
 					</div>
                     <div data-role="popup" id="instructions" data-dismissible="false" class="ui-content ui-corner-all" data-overlay-theme="a" data-theme="b">
-							<ul class="rslides centered_btns centered_btns1">
+							<ul class="rslides">
                                 <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
-                                <li><img src="instruction2.png" alt="first instruction slide" width="260" height="366"></li>
+                                <li><img src="instruction2.png" alt="second instruction slide" width="260" height="366"></li>
                             </ul>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
