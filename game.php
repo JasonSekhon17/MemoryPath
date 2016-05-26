@@ -539,8 +539,10 @@
             }
             function Countdown() {
                 //time declared
+				this.baseTime = 10; // Base length of timer
+                
                 if (pauseOn == false) {
-                    this.start_time = 20;
+                    this.start_time = this.baseTime;
                 } else {
                     this.start_time = currentTime;
                 }
@@ -556,7 +558,7 @@
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.seconds = 20 + (5 * stageNumber);
+                this.seconds = this.baseTime + (2 * ((stageNumber / gridChangeInterval) | 0));
                 this.update_target();
             }
             // basic calculation decrementing time as countdown.
