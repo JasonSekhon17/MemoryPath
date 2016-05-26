@@ -1,5 +1,5 @@
 <?php
-	    
+	  
 	session_start();
     include_once 'Login/dbconnect.php';
 	
@@ -309,7 +309,7 @@
                 $("#game-screen").reload();
             }
 			function updateTriesMessage() {
-				$(".gameTries").text('Attempts: ' + tries);
+				$(".gameTries").text('Attempts Remaining: ' + tries);
 			}
             function updateLifeMessage() {
                 $("#footer #life").html('Life: ' + life);
@@ -676,8 +676,8 @@
 				<div id="puzzleover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Puzzle Over!</h1>
                     <div class="placeForScore">
-						<p class="gameOldTotalScore"></p>
-						<p class="gameTries"></p>
+						<h3 class="gameOldTotalScore"></h3>
+						<h3 class="gameTries"></h3>
 					</div>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
