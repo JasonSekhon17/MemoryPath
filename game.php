@@ -316,17 +316,20 @@
                 $("#footer #life").html('Life: ' + life);
             }
             function updateScoreMessage() {
-                $("#footer #score").html('Score: ' + stageScore);
+                $("#footer #score").html('Stage Score: ' + stageScore);
             }
             function updateStageNumber() {
                 $("#headerForGamePage h2").html('Stage ' + stageNumber);
             }
 
-            function updateOldTotalScore() {
-                $(".gameOldTotalScore").html('Total Score: ' + totalScore);
-            }
 
             // Shows the score achieved by the player for the current stage.
+			
+			function updateOldTotalScore() {
+				$(".gameOldTotalScore").html('Old Total Score: ' + totalScore);
+			}
+			
+			// Shows the score achieved by the player for the current stage.
             function updateGameClearPopup() {
                 // Implementation here.
                 gridSizeMultiplier = size - 3;
@@ -675,13 +678,13 @@
                     <h1>Stage Cleared!</h1> 
                     <div id="placeForScore">
 						
-							<p class="gameStageNumber">Stage 1</p>
+							<h3 class="gameStageNumber">Stage 1</h3>
 							<p class="gameOldTotalScore"></p>
 							<p class="gameStageScore"><script>document.write(stageScore);</script></p>
 							<p class="gameGridMultiplier">Grid Size Multiplier:</p>
 							<p class="gameTimeMultiplier">Time Multiplier:</p>
 							<p class="gameTotalStageScore">Total Stage Score:</p>
-							<p class="gameNewTotalScore"><script>document.write(totalScore);</script></p>
+							<h3 class="gameNewTotalScore"><script>document.write(totalScore);</script></h3>
 						
 					</div>    
                     <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
@@ -691,7 +694,7 @@
 
             <div data-role="footer" id="footer">
                     <div id="life">Life: <script>document.write(life);</script></div>
-                <div id="score">Score: <script>document.write(stageScore);</script></div>
+                <div id="score">Stage Score: <script>document.write(stageScore);</script></div>
             </div>
             <div id="twinkling2"></div>
             
