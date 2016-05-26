@@ -28,7 +28,10 @@
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
+        <script src="sound.js" type="text/javascript"></script>
+        <script src="blackhole.js" type="text/javascript"></script>
+        <script src="removeblackhole.js" type="text/javascript"></script>
+        <script src="vortex.js" type="text/javascript"></script>
 
         <script>var size = <?php echo json_encode($startingGridNum) ?>; </script>
         <script>var mode = <?php echo json_encode($gameMode) ?>; </script>
@@ -141,24 +144,35 @@
                         return false;
                     }
                 });
-
+                var vortex; // object for blackhole animation
                 function checkCell(cell) {
                     if (gameStatus) {
                         if ((!$(cell).hasClass("clicked") || $(cell).hasClass("wrong")) && $(cell).hasClass("step" + stepOrder)) {
+                            
+                            if($(cell).hasClass("clicked")){
+                                $(cell).empty();
+                            }
                             $(cell).css("background-color", "green");
+							stageScore += 10;
+							updateScoreMessage();
                             stepOrder++;
                             if (stepOrder == pathArray.length) {
                                 stageClearScreen();
                                 gameClear = true;
                             }
+                            correctTileSound(cell);
                         } else if (!$(cell).hasClass("clicked") && $(cell).hasClass('panel')) {
-                            $(cell).css("background-color", "red");
-                            $(cell).addClass("wrong");
+                            var pointer = $(cell);
+                            vortexGenerate(pointer);
+                            $(cell).addClass("wrong");                            
                             life--;
                             updateLifeMessage();
                             if (life == 0) {
                                 gameOver();
                             }
+                            incorrectTileSound(cell);
+                            
+
                         }
                         $(cell).addClass("clicked");
                     }
@@ -180,25 +194,75 @@
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
             if (gameClear) {
                 stageClearScreen();
-                calculateScore();
-                showScoreAchieved();
-                addToTotalScore();
-                startNewStage();
             }
+			
+			// Shows a stage clear screen.
+            // May be a popup, or just some texts.
+            function stageClearScreen() {
+                removeBlackhole();
+				updateGameClearPopup();
+                clearInterval(counter);
+                $("#hiddenScore").val(totalScore);
+                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
+                $("#timer").html("Time: ");
+                $("#clear").popup("open");
+                stageScore = 0;
+            }
+			
+			// This function starts the game.
+            function gameAct() {
+                if (!gameStatus) {
+                    startGame();
+                    gameStatus = true;
+                    // Try to make the button disappear. (Not done)
+                }
+            }
+			
+			// This function basically makes the timer start counting down.
+            // It will be called when the start button is clicked on, or when 
+            // the menu popup is cleared.
+            function gameStart() {
+                // Implementation needed.
+            }
+            // This function will pause the game, which means making the timer stop.
+            // It will only be called when the menu button is clicked on and the menu 
+            // popup appears.
+            function pauseGame() {
+                // Implementation needed.
+            }
+			
+            // This function will start the game. Timer will start to count down.
+            // Only called by the start button.
+            function startGame() {
+                updateOldTotalScore();
+				chosenPath();           // Generate random path. 
+                showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
+                gameStart();            // Implementation of resuming the timer. (Not done)
+            }
+
             // Function to reset all game status.
             // Used for testing stage
+            var gamesound = false;
             function resetGame() {
+                resetTable();
                 gameStatus = false;
                 life = 3;
-                updateLifeMessage();
+				stageScore = 0;
                 stepOrder = 0;
-                stageNumber = 1;
+                if(gamesound){
+                    removeGameSound();
+                    gamesound = false;
+                }else{
+                    gameSound();
+                    gamesound = true;
+                }
+                updateLifeMessage();
                 updateStageNumber();
                 pathArray = [];
-                totalScore = 0;
-                updateScoreMessage;
+                updateScoreMessage();
                 resetGrid();
                 resetGridClass();
+                
             }
             // Function to continue onto next stage
             function nextGame() {
@@ -215,24 +279,12 @@
                 resetGrid();
                 resetGridClass();
             }
-            function updateGridSize() {
-                $("#game-screen").reload();
-            }
-            function updateLifeMessage() {
-                $("#footer #life").html('Life: ' + life);
-            }
-            function updateScoreMessage() {
-                $("#footer #score").html('Score: ' + totalScore);
-            }
-            function updateStageNumber() {
-                $("#headerForGamePage h2").html('Stage ' + stageNumber);
-            }
+            
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function gameOver() {
-                calculateScore();
-                addToTotalScore();
+				updateOldTotalScore();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
                 $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
@@ -240,54 +292,50 @@
                 life = 0;
                 $("#timer").html("Time: ");
                 $("#gameover").popup("open");
+                removeGameSound();
+                gameoverSound();
+                gameoverBlackhole();
             }
-            // Shows a stage clear screen.
-            // May be a popup, or just some texts.
-            function stageClearScreen() {
-                calculateScore();
-                addToTotalScore();
-                clearInterval(counter);
-                $("#hiddenScore").val(totalScore);
-                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
-                $("#timer").html("Time: ");
-                $("#clear").popup("open");
-                stageScore = 0;
+			
+			function updateGridSize() {
+                $("#game-screen").reload();
             }
-            // Calculate the score achieved by the player for the current stage.
-            // Calculation involves the time and life remaining.
-            function calculateScore() {
-                stageScore = Math.floor(3.14 * Math.pow(timer.seconds, 2));
+            function updateLifeMessage() {
+                $("#footer #life").html('Life: ' + life);
             }
-            // Shows the score achieved by the player for the current stage.
-            // Can be done in any method desired.
-            function showScoreAchieved() {
+            function updateScoreMessage() {
+                $("#footer #score").html('Score: ' + stageScore);
+            }
+            function updateStageNumber() {
+                $("#headerForGamePage h2").html('Stage ' + stageNumber);
+            }
+			
+			function updateOldTotalScore() {
+				$(".gameOldTotalScore").html('Total Score: ' + totalScore);
+			}
+			
+			// Shows the score achieved by the player for the current stage.
+            function updateGameClearPopup() {
                 // Implementation here.
-            }
-            // Add the current score to total score and reset the current score.
-            function addToTotalScore() {
-                totalScore += stageScore;
-            }
+				gridSizeMultiplier = size - 3;
+				timeMultiplier = 1 + (timer.seconds / timer.baseTime);
+				totalStageScore = (stageScore * gridSizeMultiplier * timeMultiplier)|0;
+				totalScore += totalStageScore;
+				$(".gameStageNumber").html('Stage ' + stageNumber);
+				$(".gameStageScore").html('Stage Score: ' + stageScore);						
+				$(".gameGridMultiplier").html('Grid Size Multiplier: x' + gridSizeMultiplier);
+				$(".gameTimeMultiplier").html('Time Multiplier: x' + timeMultiplier);
+				$(".gameTotalStageScore").html('Total Stage Score: ' + totalStageScore);
+				$(".gameNewTotalScore").html('New Total Score: ' + totalScore);		
+				
+			}
+            
             // Reset timer, grid/table, life remaining, start button, and update total score.
             // Grid/table size may be changed depending on stage number.
             function startNewStage() {
                 // Implementation here.
             }
-            // This function starts the game.
-            function gameAct() {
-                if (!gameStatus) {
-                    startGame();
-                    gameStatus = true;
-                    // Try to make the button disappear. (Not done)
-                }
-            }
-            // This function will start the game. Timer will start to count down.
-            // Only called by the start button.
-            function startGame() {
-                chosenPath();           // Generate random path. 
-                showPath();             // Show the user the path by making the corresponding grid/cell change color. (Not done)
-                gameStart();            // Implementation of resuming the timer. (Not done)
-            }
-
+            
             // This function will make the game more difficult
             function increaseDifficulty() {
                 if (mode == "easy") {
@@ -467,7 +515,7 @@
                         var cell = table.rows[row].cells[col];
                         $(cell).css('background-image', 'none');
                         //$(cell).html($(cell).attr('class'));
-                        $(cell).css('background-color', '#262829');
+                        $(cell).css('background-color', 'black');
                         $(cell).removeClass('clicked');
                     }
                     col = 0;
@@ -499,22 +547,13 @@
                 }
                 window.size++;
             }
-            // This function basically makes the timer start counting down.
-            // It will be called when the start button is clicked on, or when 
-            // the menu popup is cleared.
-            function gameStart() {
-                // Implementation needed.
-            }
-            // This function will pause the game, which means making the timer stop.
-            // It will only be called when the menu button is clicked on and the menu 
-            // popup appears.
-            function pauseGame() {
-                // Implementation needed.
-            }
+            
             function Countdown() {
                 //time declared
+				this.baseTime = 10; // Base length of timer
+                
                 if (pauseOn == false) {
-                    this.start_time = 20;
+                    this.start_time = this.baseTime;
                 } else {
                     this.start_time = currentTime;
                 }
@@ -530,7 +569,7 @@
             // storaged in an array whose values are able to be used 
             //individually
             Countdown.prototype.reset = function () {
-                this.seconds = 20 + (5 * stageNumber);
+                this.seconds = this.baseTime + (2 * ((stageNumber / gridChangeInterval) | 0));
                 this.update_target();
             }
             // basic calculation decrementing time as countdown.
@@ -583,7 +622,7 @@
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.php" class="ui-btn ui-corner-all">Back to main menu</a>
+                        <a href="index.php" class="ui-btn ui-corner-all" onclick="removeGameSound()">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
@@ -613,14 +652,26 @@
                 </div>
                 <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Game Over!</h1>
-                    <div id="placeForScore"></div>
+                    <div id="placeForScore">
+						<p class="gameOldTotalScore"></p>
+					</div>
                     <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1> 
-                    <div id="placeForScore"></div>    
+                    <div id="placeForScore">
+						
+							<p class="gameStageNumber">Stage 1</p>
+							<p class="gameOldTotalScore"></p>
+							<p class="gameStageScore"><script>document.write(stageScore);</script></p>
+							<p class="gameGridMultiplier">Grid Size Multiplier:</p>
+							<p class="gameTimeMultiplier">Time Multiplier:</p>
+							<p class="gameTotalStageScore">Total Stage Score:</p>
+							<p class="gameNewTotalScore"><script>document.write(totalScore);</script></p>
+						
+					</div>    
                     <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
@@ -628,9 +679,12 @@
 
             <div data-role="footer" id="footer">
                     <div id="life">Life: <script>document.write(life);</script></div>
-                <div id="score">Score: <script>document.write(totalScore);</script></div>
+                <div id="score">Score: <script>document.write(stageScore);</script></div>
             </div>
             <div id="twinkling2"></div>
+            <audio autoplay="autoplay" loop id="gameSound">
+                <source src="gameSound.mp3">
+            </audio>
         </div>
     </body>
 </html>
