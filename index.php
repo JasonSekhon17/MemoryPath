@@ -220,8 +220,6 @@ $userRow=mysql_fetch_array($res);
                                 <li><img src="instruction1.png" alt="first instruction slide" width="260" height="366"></li>
                                 <li><img src="instruction2.png" alt="first instruction slide" width="260" height="366"></li>
                             </ul>
-                            <a class="centered-btns_nav centered_btns1_nav prev" href="#">Previous</a>
-                            <a class="centered-btns_nav centered_btns1_nav next" href="#">Next</a>
 							<a href="#" onclick="openOption()" class="ui-btn ui-corner-all">Close</a>
 						
 			        </div>
