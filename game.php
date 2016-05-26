@@ -1,6 +1,8 @@
 <?php
-    session_start();
+	    
+	session_start();
     include_once 'Login/dbconnect.php';
+	
     $startingGridNum;
     $gameMode;
     $music = $_POST['gameMusic'];
@@ -44,7 +46,8 @@
             var totalScore = 0;                 // Total score of player for this game.
             var stageScore = 0;                 // Score for current stage.
             var life = 3;                   // Player's life for current stage.
-            var timer = 60;               // Placeholder variable to represent timer, acts as an integer
+            var tries = 3;
+			var timer = 60;               // Placeholder variable to represent timer, acts as an integer
             var pathArray = [];                  // Records the correct path's coordinate.
             var stepOrder = 0;
             var isDown = false;
@@ -172,8 +175,13 @@
                             var pointer = $(cell);
                             vortexGenerate(pointer);
                             $(cell).addClass("wrong");
-                            failPuzzle();
-                            incorrectTileSound(cell);
+                            life--;
+							updateLifeMessage();
+							if (life > 0) {
+								incorrectTileSound(cell);
+							} else {
+								failPuzzle();
+							}
                         }
                         $(cell).addClass("clicked");
                     }
@@ -184,7 +192,6 @@
             // If life is not zero, take away one life and restart stage or reset stage.
             if (timer == 0) {
 				life--;
-				failPuzzle();
             }
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
@@ -240,7 +247,8 @@
             // Used for testing stage
             var gamesound = false;
             function resetGame() {
-                resetTable();
+                life = 3;
+				resetTable();
                 gameStatus = false;
                 stageScore = 0;
                 stepOrder = 0;
@@ -278,27 +286,31 @@
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
             function failPuzzle() {
-                life--;
-                updateLifeMessage();
+                tries--;
+                updateTriesMessage();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
 				$(".gameOldTotalScore").text('Score: ' + totalScore);
                 currentTime = 0;
                 $("#timer").html("Time: ");
                 removeGameSound();
-                if (soundEffect == "On") {
-                    gameoverSound();
-                }
-				if(life > 0){
+                if(tries > 0){
 					$("#puzzleover").popup("open");
 				} else {
 					$("#gameover").popup("open");
 				}
+				if (soundEffect == "On") {
+                    gameoverSound();
+                }
                 gameoverBlackhole();
             }
+			
             function updateGridSize() {
                 $("#game-screen").reload();
             }
+			function updateTriesMessage() {
+				$(".gameTries").text('Attempts: ' + tries);
+			}
             function updateLifeMessage() {
                 $("#footer #life").html('Life: ' + life);
             }
@@ -308,10 +320,7 @@
             function updateStageNumber() {
                 $("#headerForGamePage h2").html('Stage ' + stageNumber);
             }
-
-
             // Shows the score achieved by the player for the current stage.
-			
 			function updateOldTotalScore() {
 				$(".gameOldTotalScore").html('Old Total Score: ' + totalScore);
 			}
@@ -668,7 +677,7 @@
                     <h1>Puzzle Over!</h1>
                     <div class="placeForScore">
 						<p class="gameOldTotalScore"></p>
-						<p class="gameStageLives"></p>
+						<p class="gameTries"></p>
 					</div>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
