@@ -118,11 +118,20 @@ $userRow=mysql_fetch_array($res);
             }
 
             $(document).on("change", "#globalBGM", function () {
-                //$("#gameGrid").on("change", "On", function(){
                 if ($("#globalBGM option:selected").text() == "Off") {
                     removeMainSound();
+                    document.getElementById('gameMusic').value = "Off";
                 } else {
                     mainSound();
+                    document.getElementById('gameMusic').value = "On";
+                }
+            });
+
+            $(document).on("change", "#soundEffect", function () {
+                if ($("#soundEffect option:selected").text() == "Off") {
+                    document.getElementById('gameSoundEffect').value = "Off";
+                } else {
+                    document.getElementById('gameSoundEffect').value = "On";
                 }
             });
 
@@ -151,6 +160,8 @@ $userRow=mysql_fetch_array($res);
                                 <label for="game-mode-2">Normal mode</label>
                                 <input type="radio" name="game-mode" id="game-mode-3" value="hard">
                                 <label for="game-mode-3">Hard mode</label>
+                                <input type="hidden" name="gameMusic" id="gameMusic" value="On">
+                                <input type="hidden" name="soundEffect" id="gameSoundEffect" value="On">
                             </fieldset>
                             <a href="#" data-rel="back" class="ui-btn ui-corner-all" id="menu-button">Return</a>
                             <input type="submit" name="submit" value="Start game">
@@ -191,7 +202,7 @@ $userRow=mysql_fetch_array($res);
 							</select>
 						  </div>
                           <div data-role="fieldcontain">
-							<label for="soundEffect">Sould Effect</label>
+							<label for="soundEffect">Sound Effect</label>
 							<select id="soundEffect" name="soundEffect" data-role="slider">
 								<option>Off</option>
 								<option selected = "">On</option>
