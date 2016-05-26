@@ -637,7 +637,7 @@
                 <a href="#game-menu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window" onclick="timer.pauseTimer()" >Menu</a>
                     <div data-role="popup" data-theme="b" class="ui-content ui-corner-all" data-dismissible="false" id="game-menu">
                         <a href="#in-game-instruction" data-rel="popup" data-transition="popup" class="ui-btn ui-corner-all" data-position-to="window">Instruction</a>
-                        <a href="index.php" class="ui-btn ui-corner-all" onclick="removeGameSound()">Back to main menu</a>
+                        <a href="index.php" class="ui-btn ui-corner-all" onclick="removeGameSound()" data-ajax="false">Back to main menu</a>
                         <a href="#" data-rel="back" class="ui-btn ui-corner-all" data-transition="slidedown" onclick="timer.restart()">Return to game</a>
                     </div>
             </div>
@@ -670,7 +670,7 @@
                     <div id="placeForScore">
 						<p class="gameOldTotalScore"></p>
 					</div>
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
 
@@ -687,7 +687,7 @@
 							<h3 class="gameNewTotalScore"><script>document.write(totalScore);</script></h3>
 						
 					</div>    
-                    <a href="index.php" class="ui-btn ui-corner-all">Return to main menu</a>
+                    <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="nextGame()">Next stage</a>
                 </div>
             </div>
