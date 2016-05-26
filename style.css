@@ -300,8 +300,11 @@ td {
     
 }
 
+#puzzleover {
+	position: relative;
+}
 
-#clear, #gameover {
+#clear, #gameover, #puzzleover {
     text-align: center;
 }
 

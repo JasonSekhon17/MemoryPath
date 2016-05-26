@@ -175,14 +175,8 @@
                             var pointer = $(cell);
                             vortexGenerate(pointer);
                             $(cell).addClass("wrong");
-                            life--;
-                            updateLifeMessage();
-                            if (life == 0) {
-                                gameOver();
-                            }
+                            failPuzzle();
                             incorrectTileSound(cell);
-
-
                         }
                         $(cell).addClass("clicked");
                     }
@@ -192,13 +186,10 @@
             // If life is zero, continue onto gameover process.
             // If life is not zero, take away one life and restart stage or reset stage.
             if (timer == 0) {
-                if (lifeZero()) {
-                    gameOver();
-                } else {
-                    lifeMinusOne();
-                    // restart or reset stage.
-                }
+				life--;
+				failPuzzle();
             }
+			
             // If the stage is cleared, a list of functions will be called.
             // It will end with starting a new stage.
             // **This code snippet needs to be constantly checked, possibly need to do something more.**
@@ -213,7 +204,6 @@
                 updateGameClearPopup();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
-                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
                 $("#timer").html("Time: ");
                 $("#clear").popup("open");
                 stageScore = 0;
@@ -256,7 +246,6 @@
             function resetGame() {
                 resetTable();
                 gameStatus = false;
-                life = 3;
                 stageScore = 0;
                 stepOrder = 0;
                 if (gamesound) {
@@ -278,7 +267,6 @@
             function nextGame() {
                 gameStatus = false;
                 gameClear = false;
-                life = 3;
                 updateLifeMessage();
                 stepOrder = 0;
                 stageNumber++;
@@ -293,22 +281,26 @@
             // This function contains the entire gameover process.
             // Includes showing gameover screen, showing score achieved, entering name
             // for ranking, and anything else that needs to be done.
-            function gameOver() {
-                updateOldTotalScore();
+            function failPuzzle() {
+                life--;
+                updateLifeMessage();
                 clearInterval(counter);
                 $("#hiddenScore").val(totalScore);
-                $("#placeForScore").html("<h3>Score: " + totalScore + "</h3>");
+				$(".gameOldTotalScore").text('Score: ' + totalScore);
                 currentTime = 0;
-                life = 0;
                 $("#timer").html("Time: ");
-                $("#gameover").popup("open");
                 removeGameSound();
                 if (soundEffect == "On") {
                     gameoverSound();
                 }
+				if(life > 0){
+					$("#puzzleover").popup("open");
+				} else {
+					$("#gameover").popup("open");
+				}
                 gameoverBlackhole();
             }
-
+			
             function updateGridSize() {
                 $("#game-screen").reload();
             }
@@ -620,7 +612,7 @@
                         clearInterval(counter);
                         gameClear = false;
                     }
-                    gameOver();
+                    failPuzzle();
                 } else {
                     $(this.target_id).html("Time: " + seconds);
                 }
@@ -665,18 +657,27 @@
                     <button type="submit" class="ui-btn ui-corner-all ui-btn-inline" name="btn-score">Submit Score</button>
                     </form>
                 </div>
-                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
-                    <h1>Game Over!</h1>
-                    <div id="placeForScore">
+				<div id="puzzleover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Puzzle Over!</h1>
+                    <div class="placeForScore">
 						<p class="gameOldTotalScore"></p>
+						<p class="gameStageLives"></p>
 					</div>
                     <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
                     <a data-rel="back" class="ui-btn ui-corner-all" onclick="resetGame()">Restart stage</a>
                 </div>
+				
+                <div id="gameover" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
+                    <h1>Game Over!</h1>
+                    <div class="placeForScore">
+						<p class="gameOldTotalScore"></p>
+					</div>
+                    <a href="index.php" class="ui-btn ui-corner-all" data-ajax="false">Return to main menu</a>
+                </div>
 
                 <div id="clear" data-role="popup" data-transition="pop" data-theme="b" data-overlay-theme="a" class="ui-content ui-corner-all" data-dismissible="false">
                     <h1>Stage Cleared!</h1> 
-                    <div id="placeForScore">
+                    <div class="placeForScore">
 						
 							<h3 class="gameStageNumber">Stage 1</h3>
 							<p class="gameOldTotalScore"></p>
