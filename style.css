@@ -3,6 +3,7 @@ body{
   height: 100%;
   width:100%;
 }
+
 .md-scroll-mask { position: initial;}
 
 table, th, td {
@@ -13,6 +14,7 @@ td {
 	height:20px;
 	min-width:20px;
 }
+
 /* For Michael's work */
 #menupage {
     height: 100%;
@@ -32,6 +34,7 @@ td {
     z-index: 99;
 }
 #content{
+	max-height:100%;
     position: relative;
     z-index: 99;   
 }
@@ -43,8 +46,8 @@ td {
 #logo {
     margin-left: auto;
     margin-right: auto;
-    height: 220px;
-    width: 200px;
+    height: auto;
+    width: 35%;
     display: block;
     z-index: 99;
 }
@@ -125,10 +128,10 @@ td {
     z-index: 99;
 }
 .game-panel {
-    width: 85%;
+	display:table;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
-    margin-top:20px;
     padding:0;
     opacity:1; 
     z-index: 99;
@@ -279,7 +282,6 @@ td {
 #twinkling, #twinkling2{
   background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
   z-index:-10;
-
   -moz-animation:move-twink-back 200s linear infinite;
   -ms-animation:move-twink-back 200s linear infinite;
   -o-animation:move-twink-back 200s linear infinite;
