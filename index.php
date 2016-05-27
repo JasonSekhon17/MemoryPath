@@ -1,4 +1,5 @@
 <?php
+/**
 session_start();
 include_once 'Login/dbconnect.php';
 
@@ -8,7 +9,9 @@ if(!isset($_SESSION['user']))
 }
 $res=mysql_query("SELECT * FROM users WHERE user_id=".$_SESSION['user']);
 $userRow=mysql_fetch_array($res);
+**/
 ?>
+
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -147,8 +150,8 @@ $userRow=mysql_fetch_array($res);
                 <a href="Login/logout.php?logout" class="ui-btn ui-corner-all ui-btn-inline" data-position-to="window"><?php echo $userRow['username'];?> : Sign Out</a>
             </div>
             <div data-role="content" id="content">
-                <div id="logo">
-                    <p><img src="logo2.png" alt="logo" id="logo"></p>
+                <div id="logoDiv">
+                    <img src="logo2.png" alt="logo" id="logo">
                 </div>
                 <a href="#gamemode" class="ui-btn ui-corner-all ui-btn-inline" data-rel="popup" data-transition="pop" data-position-to="window" id="menu-button">Play</a>
                     <div id="gamemode" data-role="popup" class="ui-corner-all ui-content" data-theme="b" data-dismissible="false" data-overlay-theme="a">

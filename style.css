@@ -34,7 +34,6 @@ td {
     z-index: 99;
 }
 #content{
-	max-height:100%;
     position: relative;
     z-index: 99;   
 }
@@ -46,8 +45,8 @@ td {
 #logo {
     margin-left: auto;
     margin-right: auto;
-    height: auto;
-    width: 35%;
+    max-height: 35vh;
+    max-width: 35vh;
     display: block;
     z-index: 99;
 }
@@ -55,8 +54,6 @@ td {
 #popup-title {
     text-align: center;
 }
-
-
 
 #score-rank {
     display: block;
