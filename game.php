@@ -1,5 +1,5 @@
 <?php
-	  
+	
 	session_start();
     include_once 'Login/dbconnect.php';
 	
@@ -269,6 +269,8 @@
             }
             // Function to continue onto next stage
             function nextGame() {
+				resetTable();
+				life = 3;
                 gameStatus = false;
                 gameClear = false;
                 updateLifeMessage();
